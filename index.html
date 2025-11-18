@@ -377,6 +377,81 @@
             background: #333;
             border-radius: 3px;
         }
+
+        /* --- MOBILE RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+                height: auto;
+                /* Allow scrolling */
+            }
+
+            /* 1. Simulation on Top */
+            .simulation-area {
+                order: 1;
+                width: 100%;
+                height: 40vh;
+                /* Fixed height for sim */
+                min-height: 300px;
+                border-left: none;
+                border-bottom: var(--border);
+            }
+
+            /* 2. Timeline Strip */
+            .sidebar {
+                order: 2;
+                width: 100%;
+                height: 70px;
+                flex-direction: row;
+                overflow-x: auto;
+                overflow-y: hidden;
+                border-right: none;
+                border-bottom: var(--border);
+                padding: 10px;
+                white-space: nowrap;
+            }
+
+            .timeline-item {
+                display: inline-block;
+                width: auto;
+                min-width: 120px;
+                margin-bottom: 0;
+                margin-right: 10px;
+                padding: 10px;
+            }
+
+            /* 3. Narrative Below */
+            .narrative {
+                order: 3;
+                width: 100%;
+                height: auto;
+                padding: 20px;
+                overflow-y: visible;
+                /* Let page scroll */
+            }
+
+            /* Adjustments */
+            header {
+                font-size: 0.8rem;
+                padding: 10px;
+                text-align: center;
+            }
+
+            .archive-status {
+                display: none;
+                /* Hide status on small screens to save space */
+            }
+
+            .intro-title {
+                font-size: 3rem;
+            }
+
+            .controls-overlay {
+                width: 95%;
+                bottom: 10px;
+                padding: 15px;
+            }
+        }
     </style>
 </head>
 
@@ -525,7 +600,8 @@
                         <p><strong>Simulation:</strong> Watch the "Swarm". Agents (Blue) actively hunt for tasks, moving faster and more efficiently than humans (Green).</p>` :
                         `<p>Vers 2030, l'IA a cessé d'être un "chatbot" pour devenir un "Agent".</p>
                         <p>Un Agent ne fait pas que parler ; il <em>agit</em>. Il pouvait naviguer sur le web, utiliser des logiciels et coder des applications entières sans intervention humaine.</p>
-                        <p>La saisie de données, le codage de base et le service client ont commencé à s'automatiser. L'économie a tenu bon grâce à la création de nouveaux rôles.</p>`,
+                        <p>La saisie de données, le codage de base et le service client ont commencé à s'automatiser. L'économie a tenu bon grâce à la création de nouveaux rôles.</p>
+                        <p><strong>Simulation :</strong> Regardez l'essaim. Les agents (bleus) chassent activement les tâches, se déplaçant plus vite et plus efficacement que les humains (verts).</p>`,
                     simId: "AGENTS",
                     controls: `<label>${translations[lang].controls.autonomy} <span id="val1">0%</span></label><input type="range" min="0" max="100" value="0" oninput="updateParam('p1', this.value)">`
                 },
@@ -540,7 +616,8 @@
                         <p><strong>Simulation:</strong> The robot arm. Increase <em>Dexterity</em> to see it match human speed and precision.</p>` :
                         `<p>Pendant longtemps, nous pensions que les emplois manuels étaient sûrs. "L'IA ne peut pas réparer un tuyau", disions-nous.</p>
                         <p>Nous avions tort. À la fin des années 2030, la robotique humanoïde a résolu les problèmes de batterie et de moteur. Combinés au "Cerveau" de l'IA avancée, les robots pouvaient apprendre des tâches physiques.</p>
-                        <p>C'était le tournant. L'automatisation a quitté l'écran pour entrer dans l'usine et le chantier.</p>`,
+                        <p>C'était le tournant. L'automatisation a quitté l'écran pour entrer dans l'usine et le chantier.</p>
+                        <p><strong>Simulation :</strong> Le bras robotique. Augmentez la <em>Dextérité</em> pour le voir égaler la vitesse et la précision humaines.</p>`,
                     simId: "ROBOTICS",
                     controls: `<label>${translations[lang].controls.dexterity} <span id="val1">Clumsy</span></label><input type="range" min="0" max="100" value="10" oninput="updateParam('p1', this.value)">`
                 },
@@ -555,7 +632,8 @@
                         <p><strong>Simulation:</strong> Solar Bloom. Watch the arrays multiply organically like a living organism, driving energy costs to zero.</p>` :
                         `<p>Les robots avaient besoin d'énergie, et ils ont trouvé un moyen de la produire eux-mêmes. Des panneaux solaires auto-réplicants ont commencé à couvrir les déserts.</p>
                         <p>Avec l'IA optimisant le réseau et les robots fabriquant des panneaux pour le prix du sable, le coût de l'énergie s'est effondré.</p>
-                        <p>C'était l'événement "Zéro Énergétique". Soudain, le coût pour faire tourner une usine ou dessaler l'eau est devenu négligeable.</p>`,
+                        <p>C'était l'événement "Zéro Énergétique". Soudain, le coût pour faire tourner une usine ou dessaler l'eau est devenu négligeable.</p>
+                        <p><strong>Simulation :</strong> Floraison Solaire. Regardez les panneaux se multiplier organiquement comme un organisme vivant, réduisant les coûts énergétiques à zéro.</p>`,
                     simId: "ENERGY",
                     controls: `<label>${translations[lang].controls.solar} <span id="val1">Low</span></label><input type="range" min="0" max="100" value="10" oninput="updateParam('p1', this.value)">`
                 },
@@ -570,7 +648,8 @@
                         <p><strong>Simulation:</strong> Observe the "GDP" (Yellow Line) vs "Median Wage" (Green Line). Increase automation to see GDP soar while wages stagnate.</p>` :
                         `<p>Cette décennie est souvent mal comprise. Ce n'était pas une dépression ; c'était un <strong>Boom</strong>.</p>
                         <p>Avec des robots travaillant 24/7 pour des centimes, le coût des biens a chuté. Les profits des entreprises ont atteint des sommets.</p>
-                        <p>Le chômage a augmenté, mais les gens survivaient grâce à l'économie des "petits boulots". Nous l'avons appelé le "Crépuscule Doré".</p>`,
+                        <p>Le chômage a augmenté, mais les gens survivaient grâce à l'économie des "petits boulots". Nous l'avons appelé le "Crépuscule Doré".</p>
+                        <p><strong>Simulation :</strong> Observez le "PIB" (Ligne Jaune) vs "Salaire Médian" (Ligne Verte). Augmentez l'automatisation pour voir le PIB monter en flèche tandis que les salaires stagnent.</p>`,
                     simId: "BOOM",
                     controls: `<label>${translations[lang].controls.auto} <span id="val1">Low</span></label><input type="range" min="0" max="100" value="0" oninput="updateParam('p1', this.value)">`
                 },
@@ -585,7 +664,8 @@
                         <p><strong>Simulation:</strong> The Worker Pool. As you increase <em>Cost Pressure</em>, workers turn red (insolvent) and drop out of the economy.</p>` :
                         `<p>En 2050, la tendance était indéniable. Le travail humain n'était plus compétitif. Pourquoi embaucher un humain à 20$/h quand un robot le fait pour 0,05$/h ?</p>
                         <p>Les salaires ont commencé à baisser. L'économie des petits boulots est devenue l'économie du désespoir.</p>
-                        <p>Les dettes ont commencé à faire défaut. Les fissures dans la fondation étaient visibles pour tous.</p>`,
+                        <p>Les dettes ont commencé à faire défaut. Les fissures dans la fondation étaient visibles pour tous.</p>
+                        <p><strong>Simulation :</strong> Le bassin de travailleurs. En augmentant la <em>Pression des Coûts</em>, les travailleurs deviennent rouges (insolvables) et sortent de l'économie.</p>`,
                     simId: "SQUEEZE",
                     controls: `<label>${translations[lang].controls.pressure} <span id="val1">Normal</span></label><input type="range" min="0" max="100" value="0" oninput="updateParam('p1', this.value)">`
                 },
@@ -599,7 +679,8 @@
                         <p>Deflation set in. Prices dropped, but no one bought anything because they were waiting for prices to drop further, or simply had zero income.</p>
                         <p><strong>Simulation:</strong> Velocity visualization. Watch the particles (transactions) slow down as Wealth Concentration hits 99%.</p>` :
                         `<p>Une économie nécessite la <strong>Vélocité de l'Argent</strong>. Je vous paie, vous payez l'épicier, l'épicier paie le fermier.</p>
-                        <p>En 2058, cette boucle a ralenti. Les entreprises avaient tout l'argent, mais personne à qui vendre. Elles avaient automatisé le client jusqu'à l'inexistence.</p>`,
+                        <p>En 2058, cette boucle a ralenti. Les entreprises avaient tout l'argent, mais personne à qui vendre. Elles avaient automatisé le client jusqu'à l'inexistence.</p>
+                        <p><strong>Simulation :</strong> Visualisation de la vélocité. Regardez les particules (transactions) ralentir alors que la concentration des richesses atteint 99%.</p>`,
                     simId: "FREEZE",
                     controls: `<label>${translations[lang].controls.wealth} <span id="val1">Low</span></label><input type="range" min="0" max="100" value="0" oninput="updateParam('p1', this.value)">`
                 },
@@ -614,7 +695,8 @@
                         <p><strong>Simulation:</strong> The Economy Graph. Watch Productivity (Blue) go vertical while Employment (Green) crashes. When unemployment hits 50%, the system breaks.</p>` :
                         `<p><strong>C'est le point de bascule de l'histoire.</strong></p>
                         <p>En 2060, la chaîne d'approvisionnement mondiale s'est arrêtée. Les entrepôts étaient pleins. Mais la couche transactionnelle a cessé d'exister. Le chômage a atteint 60%.</p>
-                        <p>Ce n'était pas un krach boursier ; c'était un <strong>Krach de la Demande</strong>. Le moteur du capitalisme s'est grippé.</p>`,
+                        <p>Ce n'était pas un krach boursier ; c'était un <strong>Krach de la Demande</strong>. Le moteur du capitalisme s'est grippé.</p>
+                        <p><strong>Simulation :</strong> Le graphique de l'économie. Regardez la productivité (bleu) devenir verticale tandis que l'emploi (vert) s'effondre. Quand le chômage atteint 50%, le système casse.</p>`,
                     simId: "CRASH",
                     controls: `<label>${translations[lang].controls.timeline} <span id="val1">2040</span></label><input type="range" min="2040" max="2070" value="2040" oninput="updateParam('p1', this.value)">`
                 },
@@ -628,7 +710,8 @@
                         <p>The money was printed, given out, spent once on food, and immediately vacuumed back up by the automated corporations, sitting in their accounts doing nothing. The loop was broken.</p>
                         <p><strong>Simulation:</strong> Attempt to inject liquidity. Watch the water (money) pour in, but drain out instantly because there is no "Labor Floor" to hold it.</p>` :
                         `<p>Les gouvernements ont paniqué. Ils ont essayé la vieille méthode : Imprimer de l'argent et le prêter aux gens.</p>
-                        <p>Cela a échoué immédiatement. On ne peut prêter de l'argent qu'à ceux qui ont un emploi pour le rembourser. Sans emploi, le crédit ne valait rien.</p>`,
+                        <p>Cela a échoué immédiatement. On ne peut prêter de l'argent qu'à ceux qui ont un emploi pour le rembourser. Sans emploi, le crédit ne valait rien.</p>
+                        <p><strong>Simulation :</strong> Tentative d'injection de liquidités. Regardez l'eau (argent) couler, mais se vider instantanément car il n'y a pas de "sol de travail" pour la retenir.</p>`,
                     simId: "STIMULUS",
                     controls: `<button class="nav-btn" style="width:100%; background:#ef4444" onclick="triggerStimulus()">${translations[lang].controls.stimulus}</button>`
                 },
@@ -642,7 +725,8 @@
                         <p>If robots make the resources, we just need to distribute the tickets.</p>
                         <p><strong>Simulation:</strong> Circuit Rewiring. Connect the "Production" node directly to the "Consumption" node, bypassing the broken "Labor" switch.</p>` :
                         `<p>La société faisait face à un choix : Mourir de faim au milieu de l'abondance, ou changer le système d'exploitation.</p>
-                        <p>Les économistes ont réalisé que l'automatisation avait rendu le travail obsolète. <strong>L'argent devait être découplé du Travail.</strong></p>`,
+                        <p>Les économistes ont réalisé que l'automatisation avait rendu le travail obsolète. <strong>L'argent devait être découplé du Travail.</strong></p>
+                        <p><strong>Simulation :</strong> Recâblage du circuit. Connectez le nœud "Production" directement au nœud "Consommation", en contournant l'interrupteur cassé du "Travail".</p>`,
                     simId: "SCALE",
                     controls: `<label>${translations[lang].controls.ideology} <span id="val1">Traditional</span></label><input type="range" min="0" max="100" value="0" oninput="updateParam('p1', this.value)">`
                 },
@@ -657,7 +741,8 @@
                         <p><strong>Simulation:</strong> The Flow. Open the valve to let the "Tax Particles" flow from the factories to the people, restarting the cycle.</p>` :
                         `<p>Le traité a été signé. La "Taxe d'Automatisation" a été mise en œuvre. Chaque heure de robot générait une micro-taxe.</p>
                         <p>Ce revenu était distribué instantanément à chaque citoyen sous forme de <strong>Dividende Universel</strong>.</p>
-                        <p>Ce n'était pas de la charité. C'était l'injection de carburant nécessaire pour faire tourner la machine.</p>`,
+                        <p>Ce n'était pas de la charité. C'était l'injection de carburant nécessaire pour faire tourner la machine.</p>
+                        <p><strong>Simulation :</strong> Le Flux. Ouvrez la vanne pour laisser les "Particules de Taxe" couler des usines vers les gens, redémarrant le cycle.</p>`,
                     simId: "DIVIDEND",
                     controls: `<label>${translations[lang].controls.valve} <span id="val1">Closed</span></label><input type="range" min="0" max="100" value="0" oninput="updateParam('p1', this.value)">`
                 },
@@ -672,7 +757,8 @@
                         <p><strong>Simulation:</strong> The Tree of Life. Allocate time to "Community", "Art", and "Sport" to see the tree grow. Neglect them, and it withers.</p>` :
                         `<p>La survie était résolue. Mais un nouveau problème a émergé : Le Sens.</p>
                         <p>Pendant 5000 ans, les humains se définissaient par leur travail. Sans travail, la dépression a explosé.</p>
-                        <p>Nous avons dû nous réinventer culturellement. L'art, la philosophie, le sport et la communauté sont devenus les nouveaux critères de succès.</p>`,
+                        <p>Nous avons dû nous réinventer culturellement. L'art, la philosophie, le sport et la communauté sont devenus les nouveaux critères de succès.</p>
+                        <p><strong>Simulation :</strong> L'Arbre de Vie. Allouez du temps à la "Communauté", à "l'Art" et au "Sport" pour voir l'arbre grandir. Négligez-les, et il se flétrit.</p>`,
                     simId: "PURPOSE",
                     controls: `<label>${translations[lang].controls.focus} <span id="val1">0%</span></label><input type="range" min="0" max="100" value="0" oninput="updateParam('p1', this.value)">`
                 },
@@ -686,7 +772,8 @@
                         <p>The leaders of this era weren't the richest; they were the most trusted. Social capital replaced financial capital as the primary power structure.</p>
                         <p><strong>Simulation:</strong> Network Graph. Watch how the nodes gravitate towards the "High Trust" leader rather than the "High Wealth" leader.</p>` :
                         `<p>En 2080, être "Milliardaire" n'avait plus de sens. Si tout le monde peut s'offrir une Ferrari (imprimée par des robots), la Ferrari perd son statut.</p>
-                        <p>Le statut s'est déplacé vers ce que les robots ne pouvaient pas produire : <strong>Légitimité, Confiance et Attention.</strong></p>`,
+                        <p>Le statut s'est déplacé vers ce que les robots ne pouvaient pas produire : <strong>Légitimité, Confiance et Attention.</strong></p>
+                        <p><strong>Simulation :</strong> Graphe de réseau. Observez comment les nœuds gravitent vers le leader "Haute Confiance" plutôt que vers le leader "Haute Richesse".</p>`,
                     simId: "STATUS",
                     controls: `<label>${translations[lang].controls.metric} <span id="val1">Money</span></label><input type="range" min="0" max="1" step="1" value="0" oninput="updateParam('p1', this.value)">`
                 },
@@ -700,7 +787,8 @@
                         <p>This prevented a permanent aristocracy. It ensured that the "Prime Reality" circulated among the population rather than being hoarded.</p>
                         <p><strong>Simulation:</strong> The Zone Lottery. You are the Green Dot. Watch your location shift between Zones A (Beach), B (City), C (Forest), and D (Suburbs) over time.</p>` :
                         `<p>Les robots pouvaient imprimer des biens, mais pas la Terre. Qui obtient la maison sur la plage ?</p>
-                        <p>Nous sommes passés aux "Droits d'Accès". Au lieu d'acheter la terre pour toujours, vous obteniez des baux limités dans le temps.</p>`,
+                        <p>Nous sommes passés aux "Droits d'Accès". Au lieu d'acheter la terre pour toujours, vous obteniez des baux limités dans le temps.</p>
+                        <p><strong>Simulation :</strong> La Loterie de Zone. Vous êtes le point vert. Regardez votre emplacement changer entre les zones A (Plage), B (Ville), C (Forêt) et D (Banlieue) au fil du temps.</p>`,
                     simId: "LAND",
                     controls: `<button class="nav-btn" onclick="updateParam('p1', 0)">${translations[lang].controls.market}</button> <button class="nav-btn" onclick="updateParam('p1', 1)">${translations[lang].controls.access}</button>`
                 },
@@ -714,7 +802,8 @@
                         <p>We essentially built a nuclear reactor for intelligence, carefully managed to prevent a meltdown.</p>
                         <p><strong>Simulation:</strong> The Reactor. Increase Research Speed, but keep Risk below the critical threshold using Safety Checks.</p>` :
                         `<p>L'intelligence de l'IA était maintenant des milliards de fois supérieure à l'intelligence humaine. Le risque était existentiel.</p>
-                        <p>La société a construit les "Grands Garde-fous". Nous avons utilisé l'IA pour surveiller l'IA.</p>`,
+                        <p>La société a construit les "Grands Garde-fous". Nous avons utilisé l'IA pour surveiller l'IA.</p>
+                        <p><strong>Simulation :</strong> Le Réacteur. Augmentez la vitesse de recherche, mais gardez le risque sous le seuil critique en utilisant les contrôles de sécurité.</p>`,
                     simId: "GUARDRAILS",
                     controls: `<label>${translations[lang].controls.research} <span id="val1">Safe</span></label><input type="range" min="0" max="100" value="20" oninput="updateParam('p1', this.value)">`
                 },
@@ -729,7 +818,8 @@
                         <p><strong>Simulation:</strong> The Departure. Initiate the launch sequence to witness humanity's next step.</p>` :
                         `<p>Nous y sommes, en 2150.</p>
                         <p>Nous avons découplé la survie du travail. Nous avons une intelligence et une énergie illimitées.</p>
-                        <p>La seule frontière restante est vers l'extérieur. Nous ne sommes plus des travailleurs ; nous sommes des explorateurs.</p>`,
+                        <p>La seule frontière restante est vers l'extérieur. Nous ne sommes plus des travailleurs ; nous sommes des explorateurs.</p>
+                        <p><strong>Simulation :</strong> Le Départ. Lancez la séquence de lancement pour assister à la prochaine étape de l'humanité.</p>`,
                     simId: "SPACE",
                     controls: `<button class="nav-btn" style="width:100%; background:var(--accent-cyan); padding: 15px; font-weight:bold; letter-spacing:2px;" onclick="triggerLaunch()">${translations[lang].controls.launch}</button>`
                 }
@@ -1377,84 +1467,115 @@
                 ctx.fillStyle = `rgba(239, 68, 68, ${0.1 + Math.sin(t * 10) * 0.05})`;
                 ctx.fillRect(0, 0, w, h);
 
-                // Glitch Lines
-                for (let i = 0; i < 10; i++) {
-                    ctx.fillStyle = 'rgba(255,255,255,0.1)';
-                    const y = Math.random() * h;
-                    ctx.fillRect(0, y, w, Math.random() * 5);
+                // Binary Rain
+                ctx.fillStyle = 'rgba(255, 0, 0, 0.3)';
+                ctx.font = '14px monospace';
+                for (let i = 0; i < 20; i++) {
+                    ctx.fillText(Math.random() > 0.5 ? '1' : '0', Math.random() * w, Math.random() * h);
                 }
             }
 
-            // Graph
+            // Graph Layout
             const pad = 60;
             const graphW = w - pad * 2;
             const graphH = h - pad * 2;
+            const originX = pad;
+            const originY = h - pad;
 
             // Axes
             ctx.strokeStyle = '#555';
             ctx.lineWidth = 2;
-            ctx.beginPath(); ctx.moveTo(pad, h - pad); ctx.lineTo(w - pad, h - pad); ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(pad, h - pad); ctx.lineTo(pad, pad); ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(w - pad, h - pad); ctx.lineTo(w - pad, pad); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(originX, originY); ctx.lineTo(originX + graphW, originY); ctx.stroke(); // X
+            ctx.beginPath(); ctx.moveTo(originX, originY); ctx.lineTo(originX, pad); ctx.stroke(); // Y
 
-            // Productivity (Blue)
+            // 1. Productivity (Blue - Exponential)
             ctx.strokeStyle = '#06b6d4';
             ctx.lineWidth = 4;
-            ctx.shadowColor = '#06b6d4'; ctx.shadowBlur = 10;
-            ctx.beginPath(); ctx.moveTo(pad, h - pad);
+            ctx.shadowColor = '#06b6d4'; ctx.shadowBlur = 15;
+            ctx.beginPath();
+            ctx.moveTo(originX, originY - graphH * 0.2); // Start a bit up
 
-            const currentX = pad + graphW * progress;
-            for (let x = pad; x <= currentX; x += 5) {
-                const p = (x - pad) / graphW;
-                const y = (h - pad) - (p * p * graphH); // Exponential
+            // Draw full curve up to current year
+            for (let i = 0; i <= progress * 100; i++) {
+                const p = i / 100; // 0 to progress
+                const x = originX + p * graphW;
+                const y = (originY - graphH * 0.2) - (p * p * graphH * 0.8);
                 ctx.lineTo(x, y);
             }
             ctx.stroke();
             ctx.shadowBlur = 0;
 
-            // Employment (Green -> Red)
+            // Label
+            if (progress > 0.1) {
+                ctx.fillStyle = '#06b6d4';
+                ctx.font = 'bold 14px sans-serif';
+                ctx.fillText("PRODUCTIVITY", originX + 10, originY - graphH * 0.2 - 20);
+            }
+
+            // 2. Employment (Green -> Red Crash)
+            // We draw this in two segments: Pre-2060 and Post-2060
+
+            const crashP = (2060 - 2040) / 30; // ~0.66
+
+            // Segment 1: Stable (Green)
+            ctx.strokeStyle = '#10b981';
             ctx.lineWidth = 4;
-            ctx.beginPath(); ctx.moveTo(pad, pad + graphH * 0.2);
+            ctx.shadowColor = '#10b981'; ctx.shadowBlur = 10;
+            ctx.beginPath();
+            ctx.moveTo(originX, originY - graphH * 0.6); // Start high
 
-            for (let x = pad; x <= currentX; x += 5) {
-                const p = (x - pad) / graphW;
-                let y = pad + graphH * 0.2;
-
-                if (p > 0.6) { // Crash starts
-                    y += (p - 0.6) * graphH * 3; // Steep drop
-                    // Noise
-                    y += (Math.random() - 0.5) * 20;
-                    ctx.strokeStyle = '#ef4444'; // Turn red
-                    ctx.shadowColor = '#ef4444'; ctx.shadowBlur = 10;
-                } else {
-                    ctx.strokeStyle = '#10b981';
-                    ctx.shadowColor = '#10b981'; ctx.shadowBlur = 5;
-                }
-
-                // Break line if crashing
-                if (p > 0.6 && Math.random() > 0.9) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
+            const endStable = Math.min(progress, crashP);
+            for (let i = 0; i <= endStable * 100; i++) {
+                const p = i / 100;
+                const x = originX + p * graphW;
+                // Slight decline before crash
+                const y = (originY - graphH * 0.6) + (p * graphH * 0.1);
+                ctx.lineTo(x, y);
             }
             ctx.stroke();
+
+            // Segment 2: The Crash (Red)
+            if (progress > crashP) {
+                ctx.strokeStyle = '#ef4444';
+                ctx.shadowColor = '#ef4444'; ctx.shadowBlur = 20;
+                ctx.beginPath();
+                // Start where green left off
+                const startX = originX + crashP * graphW;
+                const startY = (originY - graphH * 0.6) + (crashP * graphH * 0.1);
+                ctx.moveTo(startX, startY);
+
+                for (let i = Math.floor(crashP * 100); i <= progress * 100; i++) {
+                    const p = i / 100;
+                    const localP = (p - crashP) / (1 - crashP); // 0 to 1 during crash phase
+                    const x = originX + p * graphW;
+
+                    // Dramatic drop with noise
+                    let y = startY + (localP * graphH * 0.8); // Drop 80% of height
+                    y += (Math.random() - 0.5) * 20; // Jitter
+
+                    ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+            }
             ctx.shadowBlur = 0;
 
-            // Labels
-            ctx.fillStyle = '#06b6d4'; ctx.font = 'bold 14px monospace'; ctx.fillText("PRODUCTIVITY (AI)", pad + 10, pad + 20);
-            ctx.fillStyle = isCrash ? '#ef4444' : '#10b981'; ctx.textAlign = 'right'; ctx.fillText("HUMAN EMPLOYMENT", w - pad - 10, pad + 20);
+            // Employment Label
+            ctx.fillStyle = isCrash ? '#ef4444' : '#10b981';
+            ctx.fillText("EMPLOYMENT", originX + 10, originY - graphH * 0.6 - 10);
 
-            // CRASH OVERLAY
+            // Big Overlay Text
             if (isCrash) {
-                ctx.textAlign = 'center';
-
-                // Big Text
                 ctx.save();
                 ctx.translate(w / 2, h / 2);
-                ctx.rotate((Math.random() - 0.5) * 0.1);
+                ctx.rotate(-0.1);
                 ctx.fillStyle = '#ef4444';
+                ctx.textAlign = 'center';
                 ctx.font = '900 60px sans-serif';
+                ctx.shadowColor = '#000'; ctx.shadowBlur = 20;
                 ctx.fillText("SYSTEM FAILURE", 0, 0);
+
+                ctx.font = '20px monospace';
                 ctx.fillStyle = '#fff';
-                ctx.font = 'bold 24px monospace';
                 ctx.fillText("DEMAND COLLAPSE // UNEMPLOYMENT > 60%", 0, 40);
                 ctx.restore();
 
@@ -1884,17 +2005,25 @@
             }
             ctx.restore();
 
-            // Text Overlay
+            // Text Overlay (Drawn last to be on top)
             if (!simState.launch) {
                 ctx.fillStyle = '#fff';
                 ctx.textAlign = 'center';
                 ctx.font = '16px monospace';
                 ctx.fillText("AWAITING LAUNCH COMMAND", w / 2, h / 2 - 60);
             } else if (simState.launchTime > 10) {
-                ctx.fillStyle = `rgba(255, 255, 255, ${Math.min(1, (simState.launchTime - 10) / 5)})`;
+                ctx.save();
+                ctx.shadowColor = '#06b6d4';
+                ctx.shadowBlur = 20;
+                ctx.fillStyle = '#fff';
                 ctx.textAlign = 'center';
-                ctx.font = '30px monospace';
-                ctx.fillText("DESTINATION: ALPHA CENTAURI", w / 2, h / 2);
+                ctx.font = '900 60px sans-serif'; // Larger font
+                ctx.fillText("MISSION: CENTAURI", w / 2, h / 2); // New text
+                ctx.font = '20px monospace';
+                ctx.shadowBlur = 0;
+                ctx.fillStyle = 'rgba(255,255,255,0.8)';
+                ctx.fillText("VELOCITY: 0.2c // ETA: 20 YEARS", w / 2, h / 2 + 40);
+                ctx.restore();
             }
         }
 
