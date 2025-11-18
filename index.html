@@ -1,25 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Grand Archive: 2025-2150</title>
     <style>
         :root {
-            --bg-dark: #0a0b10;
-            --bg-panel: #14161f;
-            --text-primary: #e2e8f0;
+            --bg-dark: #050505;
+            --bg-panel: #0f1115;
+            --text-primary: #f0f4f8;
             --text-secondary: #94a3b8;
             --accent-cyan: #06b6d4;
             --accent-green: #10b981;
             --accent-red: #ef4444;
             --accent-gold: #f59e0b;
-            --border: 1px solid rgba(255,255,255,0.08);
+            --border: 1px solid rgba(255, 255, 255, 0.08);
             --font-mono: 'Courier New', monospace;
             --font-sans: system-ui, -apple-system, sans-serif;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         body {
             background-color: var(--bg-dark);
@@ -31,11 +36,127 @@
             overflow: hidden;
         }
 
+        /* --- INTRO OVERLAY --- */
+        #introOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transition: opacity 1s ease-out;
+        }
+
+        .intro-content {
+            max-width: 700px;
+            padding: 40px;
+            animation: fadeIn 2s ease-in;
+        }
+
+        .intro-title {
+            font-size: 4rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -2px;
+            font-weight: 800;
+        }
+
+        .intro-subtitle {
+            font-family: var(--font-mono);
+            color: var(--accent-cyan);
+            font-size: 1rem;
+            margin-bottom: 30px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        .intro-text {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 50px;
+            line-height: 1.6;
+        }
+
+        .lang-selection {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: 1px solid var(--text-secondary);
+            color: var(--text-secondary);
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: var(--font-mono);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .lang-btn.active,
+        .lang-btn:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
+        }
+
+        .enter-btn {
+            background: var(--text-primary);
+            color: #000;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0;
+            transform: translateY(10px);
+            pointer-events: none;
+        }
+
+        .enter-btn.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+
+        .enter-btn:hover {
+            background: var(--accent-cyan);
+            box-shadow: 0 0 30px rgba(6, 182, 212, 0.4);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         /* --- LAYOUT --- */
         .main-container {
             display: flex;
             flex: 1;
-            height: calc(100vh - 60px); /* Subtract header */
+            height: calc(100vh - 60px);
         }
 
         /* SIDEBAR (Timeline) */
@@ -46,6 +167,7 @@
             overflow-y: auto;
             display: flex;
             flex-direction: column;
+            flex-shrink: 0;
         }
 
         .timeline-item {
@@ -53,42 +175,74 @@
             border-bottom: var(--border);
             cursor: pointer;
             transition: all 0.2s;
-            opacity: 0.6;
+            opacity: 0.5;
             display: flex;
             flex-direction: column;
         }
 
-        .timeline-item:hover { opacity: 1; background: rgba(255,255,255,0.02); }
+        .timeline-item:hover {
+            opacity: 0.8;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
         .timeline-item.active {
             opacity: 1;
-            background: rgba(6, 182, 212, 0.1);
+            background: rgba(6, 182, 212, 0.05);
             border-left: 3px solid var(--accent-cyan);
         }
 
-        .t-year { font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-cyan); margin-bottom: 4px; }
-        .t-title { font-size: 0.95rem; font-weight: 600; }
+        .t-year {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--accent-cyan);
+            margin-bottom: 4px;
+        }
+
+        .t-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
 
         /* CENTER (Narrative) */
         .narrative {
             flex: 1;
             max-width: 500px;
-            padding: 40px;
+            padding: 50px;
             overflow-y: auto;
             border-right: var(--border);
-            background: radial-gradient(circle at top left, #1a1d26 0%, #0a0b10 100%);
+            background: radial-gradient(circle at top left, #14161f 0%, #0a0b10 100%);
+            flex-shrink: 0;
         }
 
-        h1 { font-size: 2rem; margin-bottom: 10px; color: white; letter-spacing: -0.5px; }
-        h2 { font-size: 0.9rem; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 30px; font-family: var(--font-mono); }
-        
-        p { 
-            line-height: 1.8; 
-            color: var(--text-secondary); 
-            margin-bottom: 25px; 
-            font-size: 1.05rem; 
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            color: white;
+            letter-spacing: -1px;
+            line-height: 1.1;
         }
 
-        strong { color: var(--text-primary); }
+        h2 {
+            font-size: 0.8rem;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            font-family: var(--font-mono);
+            opacity: 0.8;
+        }
+
+        p {
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+            font-size: 1.05rem;
+        }
+
+        strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
 
         /* RIGHT (Simulation) */
         .simulation-area {
@@ -97,6 +251,7 @@
             background: #000;
             display: flex;
             flex-direction: column;
+            overflow: hidden;
         }
 
         canvas {
@@ -111,30 +266,63 @@
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(20, 22, 31, 0.9);
-            backdrop-filter: blur(10px);
-            border: var(--border);
-            padding: 20px;
-            border-radius: 12px;
+            background: rgba(15, 17, 21, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 16px;
             width: 80%;
-            max-width: 500px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            max-width: 450px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
             transition: opacity 0.3s;
+            z-index: 10;
         }
 
-        .control-group { margin-bottom: 15px; }
-        .control-group:last-child { margin-bottom: 0; }
-        
-        label { 
-            display: flex; justify-content: space-between; 
-            font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; 
-            margin-bottom: 8px; color: var(--text-secondary); 
+        .control-group {
+            margin-bottom: 20px;
+        }
+
+        .control-group:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+            font-weight: 600;
         }
 
         input[type=range] {
             width: 100%;
             accent-color: var(--accent-cyan);
             cursor: pointer;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            appearance: none;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: var(--accent-cyan);
+            cursor: pointer;
+            margin-top: -6px;
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
         }
 
         /* HEADER */
@@ -143,31 +331,78 @@
             border-bottom: var(--border);
             display: flex;
             align-items: center;
-            padding: 0 20px;
+            padding: 0 25px;
             background: var(--bg-dark);
             justify-content: space-between;
         }
 
-        .archive-status { font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-green); }
+        .archive-status {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--accent-green);
+            letter-spacing: 1px;
+        }
+
         .nav-btn {
-            background: var(--bg-panel); border: var(--border); color: white;
-            padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 0.9rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
             transition: 0.2s;
         }
-        .nav-btn:hover { background: rgba(255,255,255,0.1); }
-        .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
 
         /* Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg-dark); }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
 
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 3px;
+        }
     </style>
 </head>
+
 <body>
 
+    <!-- INTRO OVERLAY -->
+    <div id="introOverlay">
+        <div class="intro-content">
+            <div class="intro-subtitle">System Boot Sequence Initiated</div>
+            <div class="intro-title">ARCHIVE 2150</div>
+            <div class="intro-text" id="introText">
+                In a world of emergent AI, discover the history of the future.<br>
+                Become the historian of a society transformed.
+            </div>
+
+            <div class="lang-selection">
+                <button class="lang-btn active" onclick="selectLang('en', this)">English</button>
+                <button class="lang-btn" onclick="selectLang('fr', this)">Français</button>
+            </div>
+
+            <button class="enter-btn" id="enterBtn" onclick="startExperience()">ENTER ARCHIVE</button>
+        </div>
+    </div>
+
     <header>
-        <div style="font-weight:bold;">ARCHIVE_2150 // HISTORICAL RECONSTRUCTION</div>
+        <div style="font-weight:800; letter-spacing: -0.5px;">ARCHIVE_2150 // HISTORICAL RECONSTRUCTION</div>
         <div class="archive-status">● SYSTEM ONLINE</div>
     </header>
 
@@ -191,871 +426,1483 @@
         </div>
     </div>
 
-<script>
-/**
- * --- DATA STRUCTURE: THE HISTORY ---
- * This array contains every "Section" of the lesson.
- */
-const chapters = [
-    {
-        year: "2025",
-        title: "The Spark",
-        subtitle: "Where we stand today",
-        text: `
-            <p>Welcome, student. You are accessing this archive from the year 2150. We are looking back at the most turbulent century in human history.</p>
-            <p>It starts in <strong>2025</strong>. At this moment, AI was still "Digital." Large Language Models (LLMs) could write code and poetry, but they were trapped in servers. They had no hands.</p>
-            <p>The economy was stable. People worked for wages. Capital (machines) and Labor (humans) were roughly balanced partners. But the spark had been lit. The cost of intelligence was dropping by 10x every year.</p>
-            <p><strong>Simulation:</strong> Observe the neural network. It is growing, but isolated. Adjust the <em>Compute Power</em> to see how the network density increases.</p>
-        `,
-        simId: "SPARK",
-        controls: `<label>Compute Power <span id="val1">Low</span></label><input type="range" min="10" max="100" value="20" oninput="updateParam('p1', this.value)">`
-    },
-    {
-        year: "2028-2032",
-        title: "The Agentic Era",
-        subtitle: "From Chatbots to Workers",
-        text: `
-            <p>By roughly 2030, AI stopped being a "chatbot" and became an "Agent."</p>
-            <p>An Agent doesn't just talk; it <em>does</em>. It could browse the web, use software, send emails, and code entire apps without human intervention. This was the first wave of displacement: white-collar digital tasks.</p>
-            <p>Data entry, basic coding, translation, and customer service began to automate. However, the economy held up because new roles (supervisors, prompt engineers) were created.</p>
-            <p><strong>Simulation:</strong> Watch the "Task Queue." Previously, humans (Green) cleared tasks. Now, AI Agents (Blue) begin to intercept them.</p>
-        `,
-        simId: "AGENTS",
-        controls: `<label>AI Autonomy Level <span id="val1">0%</span></label><input type="range" min="0" max="100" value="0" oninput="updateParam('p1', this.value)">`
-    },
-    {
-        year: "2035-2040",
-        title: "The Physical Link",
-        subtitle: "Robotics catches up",
-        text: `
-            <p>For a long time, we thought blue-collar jobs were safe. "AI can't fix a clear plumbing pipe," we said.</p>
-            <p>We were wrong. By the late 2030s, humanoid robotics solved the battery and motor issues. Combined with the "Brain" of advanced AI, robots could now learn physical tasks by watching videos.</p>
-            <p>This was the turning point. Automation left the screen and entered the factory, the warehouse, and the construction site.</p>
-            <p><strong>Simulation:</strong> The robot arm. Increase <em>Dexterity</em> to see it match human speed and precision.</p>
-        `,
-        simId: "ROBOTICS",
-        controls: `<label>Robotic Dexterity <span id="val1">Clumsy</span></label><input type="range" min="0" max="100" value="10" oninput="updateParam('p1', this.value)">`
-    },
-    {
-        year: "2040-2050",
-        title: "The Golden Twilight",
-        subtitle: "The Boom before the Bust",
-        text: `
-            <p>This decade is often misunderstood. It wasn't a depression; it was a <strong>Boom</strong>.</p>
-            <p>With robots working 24/7 for pennies, the cost of goods plummeted. TVs, cars, and houses became cheaper to build. Corporate profits hit all-time highs.</p>
-            <p>Unemployment rose to 15%, but people survived on "Gig" work and cheap prices. We called it the "Golden Twilight" because everything looked shiny, but the sun was setting on the wage-labor system.</p>
-            <p><strong>Simulation:</strong> Observe the "GDP" (Yellow Line) vs "Median Wage" (Green Line). Increase automation to see GDP soar while wages stagnate.</p>
-        `,
-        simId: "BOOM",
-        controls: `<label>Automation Integration <span id="val1">Low</span></label><input type="range" min="0" max="100" value="0" oninput="updateParam('p1', this.value)">`
-    },
-    {
-        year: "2050-2055",
-        title: "The Squeeze",
-        subtitle: "The math breaks down",
-        text: `
-            <p>By 2050, the trend became undeniable. Human labor was no longer competitive. Why hire a human for $20/hour when a bot does it for $0.05/hour?</p>
-            <p>Wages began to actively shrink. People took 2nd and 3rd jobs to compete. The "Gig Economy" became the "Desperation Economy."</p>
-            <p>Crucially, debt began to default. People couldn't pay mortgages. The cracks in the foundation were visible to everyone.</p>
-            <p><strong>Simulation:</strong> The Worker Pool. As you increase <em>Cost Pressure</em>, workers turn red (insolvent) and drop out of the economy.</p>
-        `,
-        simId: "SQUEEZE",
-        controls: `<label>Corporate Cost Pressure <span id="val1">Normal</span></label><input type="range" min="0" max="100" value="0" oninput="updateParam('p1', this.value)">`
-    },
-    {
-        year: "2058",
-        title: "The Velocity Freeze",
-        subtitle: "Money stops moving",
-        text: `
-            <p>An economy requires the <strong>Velocity of Money</strong>. I pay you, you pay the grocer, the grocer pays the farmer.</p>
-            <p>In 2058, this loop slowed to a crawl. Corporations had all the money, but no one to sell to. They had automated the customer out of existence.</p>
-            <p>Deflation set in. Prices dropped, but no one bought anything because they were waiting for prices to drop further, or simply had zero income.</p>
-            <p><strong>Simulation:</strong> Velocity visualization. Watch the particles (transactions) slow down as Wealth Concentration hits 99%.</p>
-        `,
-        simId: "FREEZE",
-        controls: `<label>Wealth Concentration <span id="val1">Low</span></label><input type="range" min="0" max="100" value="0" oninput="updateParam('p1', this.value)">`
-    },
-    {
-        year: "2060",
-        title: "THE BIG CRASH",
-        subtitle: "The Silent Depression",
-        text: `
-            <p><strong>This is the pivot point of history.</strong></p>
-            <p>In 2060, the global supply chain halted. Warehouses were full of goods. Robots stood ready to build more. But the transaction layer ceased to exist. Unemployment hit 60%.</p>
-            <p>It wasn't a stock market crash; it was a <strong>Demand Crash</strong>. The engine of capitalism (Labor for Income for Consumption) seized up completely.</p>
-            <p><strong>Simulation:</strong> This is the Economy. Increase time. Watch Productivity (Blue) go vertical. Watch Wages (Green) hit zero. Watch the "Inventory" (Boxes) pile up until the system throws a critical error.</p>
-        `,
-        simId: "CRASH",
-        controls: `<label>Timeline <span id="val1">2040</span></label><input type="range" min="2040" max="2070" value="2040" oninput="updateParam('p1', this.value)">`
-    },
-    {
-        year: "2061",
-        title: "The Failed Stimulus",
-        subtitle: "Why printing money didn't work",
-        text: `
-            <p>Governments panicked. They tried the old playbook: Print money and lend it to people (Stimulus/Debt).</p>
-            <p>It failed immediately. Why? Because you can only lend money to people who have jobs to pay it back. With no jobs, the credit was worthless.</p>
-            <p>The money was printed, given out, spent once on food, and immediately vacuumed back up by the automated corporations, sitting in their accounts doing nothing. The loop was broken.</p>
-            <p><strong>Simulation:</strong> Attempt to inject liquidity. Watch the water (money) pour in, but drain out instantly because there is no "Labor Floor" to hold it.</p>
-        `,
-        simId: "STIMULUS",
-        controls: `<button class="nav-btn" style="width:100%; background:#ef4444" onclick="triggerStimulus()">INJECT $10 TRILLION</button>`
-    },
-    {
-        year: "2062-2064",
-        title: "The Realization",
-        subtitle: "No Choice Left",
-        text: `
-            <p>Society faced a choice: Starve amidst abundance, or change the operating system.</p>
-            <p>Economists realized that automation had turned labor into a legacy feature. We couldn't "create jobs" because humans were biologically obsolete for economic production.</p>
-            <p>The realization was simple: <strong>Money must be decoupled from Labor.</strong> Money is just a ticket to allocate resources. If robots make the resources, we just need to distribute the tickets.</p>
-            <p><strong>Simulation:</strong> The Scale. Balance "Production Capacity" against "Distribution Logic."</p>
-        `,
-        simId: "SCALE",
-        controls: `<label>Ideological Shift <span id="val1">Traditional</span></label><input type="range" min="0" max="100" value="0" oninput="updateParam('p1', this.value)">`
-    },
-    {
-        year: "2065",
-        title: "The Dividend Compact",
-        subtitle: "Dividend Socialism",
-        text: `
-            <p>The treaty was signed. The "Automation Tax" was implemented. Every robot hour worked generated a micro-tax.</p>
-            <p>This revenue was not filtered through bureaucracy; it was distributed instantly to every citizen as a <strong>Universal Dividend</strong>.</p>
-            <p>This wasn't charity. It was the fuel injection required to make the machine run. The moment the dividend went live, the warehouses opened, goods moved, and the economy restarted.</p>
-            <p><strong>Simulation:</strong> Connect the pipes. Open the "Dividend Valve" to close the loop between Producer and Consumer.</p>
-        `,
-        simId: "DIVIDEND",
-        controls: `<label>Dividend Valve Flow <span id="val1">Closed</span></label><input type="range" min="0" max="100" value="0" oninput="updateParam('p1', this.value)">`
-    },
-    {
-        year: "2070",
-        title: "The Purpose Crisis",
-        subtitle: "What do we do now?",
-        text: `
-            <p>Survival was solved. But a new problem emerged: Meaning.</p>
-            <p>For 5,000 years, humans defined themselves by their jobs. "I am a baker." "I am a coder." Without work, depression rates spiked.</p>
-            <p>We had to culturally reinvent ourselves. We moved from a "Production Society" to an "Exploration Society." Art, philosophy, sport, and community became the new metrics of success.</p>
-            <p><strong>Simulation:</strong> The Mental Health Grid. Allocate "Time" to Social, Creative, and Physical activities to stabilize the population mood.</p>
-        `,
-        simId: "PURPOSE",
-        controls: `<label>Focus: Creativity <span id="val1">0%</span></label><input type="range" min="0" max="100" value="0" oninput="updateParam('p1', this.value)">`
-    },
-    {
-        year: "2080",
-        title: "The Legitimacy Economy",
-        subtitle: "Status without Wealth",
-        text: `
-            <p>In 2080, being a "Billionaire" became meaningless. If everyone can afford a Ferrari (printed by robots), the Ferrari loses status.</p>
-            <p>Status shifted to things robots couldn't produce: <strong>Legitimacy, Trust, and Attention.</strong></p>
-            <p>The leaders of this era weren't the richest; they were the most trusted. Social capital replaced financial capital as the primary power structure.</p>
-            <p><strong>Simulation:</strong> Hierarchy Visualization. Watch how the "Leader" node changes from the one with most Gold (Money) to the one with most Connections (Trust).</p>
-        `,
-        simId: "STATUS",
-        controls: `<label>Metric: <span id="val1">Money</span></label><input type="range" min="0" max="1" step="1" value="0" oninput="updateParam('p1', this.value)">`
-    },
-    {
-        year: "2090",
-        title: "Allocation of the Scarce",
-        subtitle: "Land and Reality",
-        text: `
-            <p>Robots could print goods, but they couldn't print Land. Who gets the beach house?</p>
-            <p>We moved to "Access Rights." Instead of buying land forever, you gained time-limited leases based on lotteries and merit.</p>
-            <p>This prevented a permanent aristocracy. It ensured that the "Prime Reality" circulated among the population rather than being hoarded.</p>
-            <p><strong>Simulation:</strong> The Map. Toggle between "Market Allocation" (Static Ownership) and "Access Allocation" (Circulation).</p>
-        `,
-        simId: "LAND",
-        controls: `<button class="nav-btn" onclick="updateParam('p1', 0)">Market Mode</button> <button class="nav-btn" onclick="updateParam('p1', 1)">Access Mode</button>`
-    },
-    {
-        year: "2100",
-        title: "The Guardrails",
-        subtitle: "Containing the Infinite",
-        text: `
-            <p>AI Intelligence was now billions of times greater than human intelligence. The risk wasn't economic anymore; it was existential.</p>
-            <p>Society built the "Great Guardrails." We used AI to police AI. Research was accelerated, but automated safety loops checked every discovery before implementation.</p>
-            <p>We essentially built a nuclear reactor for intelligence, carefully managed to prevent a meltdown.</p>
-            <p><strong>Simulation:</strong> The Reactor. Increase Research Speed, but keep Risk below the critical threshold using Safety Checks.</p>
-        `,
-        simId: "GUARDRAILS",
-        controls: `<label>Research Speed <span id="val1">Safe</span></label><input type="range" min="0" max="100" value="20" oninput="updateParam('p1', this.value)">`
-    },
-    {
-        year: "2150",
-        title: "The Horizon",
-        subtitle: "To the Stars",
-        text: `
-            <p>Here we are, in 2150.</p>
-            <p>We have decoupled survival from labor. We have stabilized the social structure. We have unlimited intelligence and energy.</p>
-            <p>The only frontier left is outwards. The surplus energy of humanity is now directed at Mars, Europa, and Alpha Centauri. We are no longer laborers; we are explorers.</p>
-            <p><strong>Simulation:</strong> Launch the fleet.</p>
-        `,
-        simId: "SPACE",
-        controls: `<button class="nav-btn" style="width:100%; background:var(--accent-cyan)" onclick="triggerLaunch()">INITIATE LAUNCH SEQUENCE</button>`
-    }
-];
+    <script>
+        /**
+         * --- INTERNATIONALIZATION & DATA ---
+         */
+        const translations = {
+            en: {
+                title: "ARCHIVE_2150 // HISTORICAL RECONSTRUCTION",
+                status: "● SYSTEM ONLINE",
+                back: "&larr; Back",
+                next: "Next Era &rarr;",
+                intro: {
+                    subtitle: "System Boot Sequence Initiated",
+                    text: "In a world of emergent AI, discover the history of the future.<br>Become the historian of a society transformed.",
+                    enter: "ENTER ARCHIVE"
+                },
+                controls: {
+                    compute: "Compute Power",
+                    autonomy: "AI Autonomy Level",
+                    dexterity: "Robotic Dexterity",
+                    solar: "Solar Efficiency",
+                    auto: "Automation Integration",
+                    pressure: "Corporate Cost Pressure",
+                    wealth: "Wealth Concentration",
+                    timeline: "Timeline",
+                    stimulus: "INJECT $10 TRILLION",
+                    ideology: "Ideological Shift",
+                    valve: "Dividend Valve Flow",
+                    focus: "Focus: Creativity",
+                    metric: "Metric:",
+                    market: "Market Mode",
+                    access: "Access Mode",
+                    research: "Research Speed",
+                    launch: "INITIATE LAUNCH SEQUENCE"
+                }
+            },
+            fr: {
+                title: "ARCHIVE_2150 // RECONSTRUCTION HISTORIQUE",
+                status: "● SYSTÈME EN LIGNE",
+                back: "&larr; Retour",
+                next: "Ère Suivante &rarr;",
+                intro: {
+                    subtitle: "Séquence de Démarrage Initiée",
+                    text: "Dans un monde d'IA émergente, découvrez l'histoire du futur.<br>Devenez l'historien d'une société transformée.",
+                    enter: "ENTRER DANS L'ARCHIVE"
+                },
+                controls: {
+                    compute: "Puissance de Calcul",
+                    autonomy: "Niveau d'Autonomie IA",
+                    dexterity: "Dextérité Robotique",
+                    solar: "Efficacité Solaire",
+                    auto: "Intégration de l'Automatisation",
+                    pressure: "Pression des Coûts",
+                    wealth: "Concentration des Richesses",
+                    timeline: "Chronologie",
+                    stimulus: "INJECTER 10 BILLIONS $",
+                    ideology: "Changement Idéologique",
+                    valve: "Flux du Dividende",
+                    focus: "Focus: Créativité",
+                    metric: "Métrique:",
+                    market: "Mode Marché",
+                    access: "Mode Accès",
+                    research: "Vitesse de Recherche",
+                    launch: "LANCER LA SÉQUENCE"
+                }
+            }
+        };
 
-/**
- * --- APP STATE & INIT ---
- */
-let currentChapterIdx = 0;
-let simParams = { p1: 0, p2: 0 };
-let canvas, ctx;
-let animationFrame;
+        let currentLang = 'en';
 
-// Canvas Helpers
-function resizeCanvas() {
-    const rect = canvas.parentElement.getBoundingClientRect();
-    canvas.width = rect.width;
-    canvas.height = rect.height;
-}
+        function getChapters(lang) {
+            const isEn = lang === 'en';
+            return [
+                {
+                    year: "2025",
+                    title: isEn ? "The Spark" : "L'Étincelle",
+                    subtitle: isEn ? "Where we stand today" : "Où nous en sommes",
+                    text: isEn ?
+                        `<p>Welcome, student. You are accessing this archive from the year 2150. We are looking back at the most turbulent century in human history.</p>
+                        <p>It starts in <strong>2025</strong>. At this moment, AI was still "Digital." Large Language Models (LLMs) could write code and poetry, but they were trapped in servers. They had no hands.</p>
+                        <p>The economy was stable. People worked for wages. Capital (machines) and Labor (humans) were roughly balanced partners. But the spark had been lit. The cost of intelligence was dropping by 10x every year.</p>
+                        <p><strong>Simulation:</strong> Observe the neural network. It is growing, but isolated. Adjust the <em>Compute Power</em> to see how the network density increases.</p>` :
+                        `<p>Bienvenue, étudiant. Vous accédez à cette archive depuis l'an 2150. Nous regardons en arrière sur le siècle le plus turbulent de l'histoire humaine.</p>
+                        <p>Tout commence en <strong>2025</strong>. À ce moment, l'IA était encore "Numérique". Les LLM pouvaient écrire du code et de la poésie, mais ils étaient piégés dans des serveurs. Ils n'avaient pas de mains.</p>
+                        <p>L'économie était stable. Les gens travaillaient pour un salaire. Le Capital (machines) et le Travail (humains) étaient des partenaires à peu près équilibrés. Mais l'étincelle avait été allumée.</p>
+                        <p><strong>Simulation :</strong> Observez le réseau neuronal. Il grandit, mais reste isolé. Ajustez la <em>Puissance de Calcul</em> pour voir la densité du réseau augmenter.</p>`,
+                    simId: "SPARK",
+                    controls: `<label>${translations[lang].controls.compute} <span id="val1">Low</span></label><input type="range" min="10" max="100" value="20" oninput="updateParam('p1', this.value)">`
+                },
+                {
+                    year: "2028-2032",
+                    title: isEn ? "The Agentic Era" : "L'Ère Agentique",
+                    subtitle: isEn ? "From Chatbots to Workers" : "Des Chatbots aux Travailleurs",
+                    text: isEn ?
+                        `<p>By roughly 2030, AI stopped being a "chatbot" and became an "Agent."</p>
+                        <p>An Agent doesn't just talk; it <em>does</em>. It could browse the web, use software, send emails, and code entire apps without human intervention. This was the first wave of displacement: white-collar digital tasks.</p>
+                        <p>Data entry, basic coding, translation, and customer service began to automate. However, the economy held up because new roles (supervisors, prompt engineers) were created.</p>
+                        <p><strong>Simulation:</strong> Watch the "Swarm". Agents (Blue) actively hunt for tasks, moving faster and more efficiently than humans (Green).</p>` :
+                        `<p>Vers 2030, l'IA a cessé d'être un "chatbot" pour devenir un "Agent".</p>
+                        <p>Un Agent ne fait pas que parler ; il <em>agit</em>. Il pouvait naviguer sur le web, utiliser des logiciels et coder des applications entières sans intervention humaine.</p>
+                        <p>La saisie de données, le codage de base et le service client ont commencé à s'automatiser. L'économie a tenu bon grâce à la création de nouveaux rôles.</p>`,
+                    simId: "AGENTS",
+                    controls: `<label>${translations[lang].controls.autonomy} <span id="val1">0%</span></label><input type="range" min="0" max="100" value="0" oninput="updateParam('p1', this.value)">`
+                },
+                {
+                    year: "2035-2040",
+                    title: isEn ? "The Physical Link" : "Le Lien Physique",
+                    subtitle: isEn ? "Robotics catches up" : "La robotique rattrape son retard",
+                    text: isEn ?
+                        `<p>For a long time, we thought blue-collar jobs were safe. "AI can't fix a clear plumbing pipe," we said.</p>
+                        <p>We were wrong. By the late 2030s, humanoid robotics solved the battery and motor issues. Combined with the "Brain" of advanced AI, robots could now learn physical tasks by watching videos.</p>
+                        <p>This was the turning point. Automation left the screen and entered the factory, the warehouse, and the construction site.</p>
+                        <p><strong>Simulation:</strong> The robot arm. Increase <em>Dexterity</em> to see it match human speed and precision.</p>` :
+                        `<p>Pendant longtemps, nous pensions que les emplois manuels étaient sûrs. "L'IA ne peut pas réparer un tuyau", disions-nous.</p>
+                        <p>Nous avions tort. À la fin des années 2030, la robotique humanoïde a résolu les problèmes de batterie et de moteur. Combinés au "Cerveau" de l'IA avancée, les robots pouvaient apprendre des tâches physiques.</p>
+                        <p>C'était le tournant. L'automatisation a quitté l'écran pour entrer dans l'usine et le chantier.</p>`,
+                    simId: "ROBOTICS",
+                    controls: `<label>${translations[lang].controls.dexterity} <span id="val1">Clumsy</span></label><input type="range" min="0" max="100" value="10" oninput="updateParam('p1', this.value)">`
+                },
+                {
+                    year: "2042",
+                    title: isEn ? "The Energy Zero" : "Le Zéro Énergétique",
+                    subtitle: isEn ? "Infinite Power" : "Énergie Infinie",
+                    text: isEn ?
+                        `<p>Robots needed energy, and they found a way to make it themselves. Self-replicating solar arrays began to cover the deserts.</p>
+                        <p>With AI optimizing the grid and robots manufacturing panels for the cost of raw sand, the price of energy collapsed to near zero.</p>
+                        <p>This was the "Energy Zero" event. Suddenly, the cost to run a factory, desalinate water, or smelt steel became negligible. The only limit was raw materials.</p>
+                        <p><strong>Simulation:</strong> Solar Bloom. Watch the arrays multiply organically like a living organism, driving energy costs to zero.</p>` :
+                        `<p>Les robots avaient besoin d'énergie, et ils ont trouvé un moyen de la produire eux-mêmes. Des panneaux solaires auto-réplicants ont commencé à couvrir les déserts.</p>
+                        <p>Avec l'IA optimisant le réseau et les robots fabriquant des panneaux pour le prix du sable, le coût de l'énergie s'est effondré.</p>
+                        <p>C'était l'événement "Zéro Énergétique". Soudain, le coût pour faire tourner une usine ou dessaler l'eau est devenu négligeable.</p>`,
+                    simId: "ENERGY",
+                    controls: `<label>${translations[lang].controls.solar} <span id="val1">Low</span></label><input type="range" min="0" max="100" value="10" oninput="updateParam('p1', this.value)">`
+                },
+                {
+                    year: "2045-2050",
+                    title: isEn ? "The Golden Twilight" : "Le Crépuscule Doré",
+                    subtitle: isEn ? "The Boom before the Bust" : "Le Boom avant le Krach",
+                    text: isEn ?
+                        `<p>This decade is often misunderstood. It wasn't a depression; it was a <strong>Boom</strong>.</p>
+                        <p>With robots working 24/7 for pennies, the cost of goods plummeted. TVs, cars, and houses became cheaper to build. Corporate profits hit all-time highs.</p>
+                        <p>Unemployment rose to 15%, but people survived on "Gig" work and cheap prices. We called it the "Golden Twilight" because everything looked shiny, but the sun was setting on the wage-labor system.</p>
+                        <p><strong>Simulation:</strong> Observe the "GDP" (Yellow Line) vs "Median Wage" (Green Line). Increase automation to see GDP soar while wages stagnate.</p>` :
+                        `<p>Cette décennie est souvent mal comprise. Ce n'était pas une dépression ; c'était un <strong>Boom</strong>.</p>
+                        <p>Avec des robots travaillant 24/7 pour des centimes, le coût des biens a chuté. Les profits des entreprises ont atteint des sommets.</p>
+                        <p>Le chômage a augmenté, mais les gens survivaient grâce à l'économie des "petits boulots". Nous l'avons appelé le "Crépuscule Doré".</p>`,
+                    simId: "BOOM",
+                    controls: `<label>${translations[lang].controls.auto} <span id="val1">Low</span></label><input type="range" min="0" max="100" value="0" oninput="updateParam('p1', this.value)">`
+                },
+                {
+                    year: "2050-2055",
+                    title: isEn ? "The Squeeze" : "L'Étau",
+                    subtitle: isEn ? "The math breaks down" : "Les mathématiques s'effondrent",
+                    text: isEn ?
+                        `<p>By 2050, the trend became undeniable. Human labor was no longer competitive. Why hire a human for $20/hour when a bot does it for $0.05/hour?</p>
+                        <p>Wages began to actively shrink. People took 2nd and 3rd jobs to compete. The "Gig Economy" became the "Desperation Economy."</p>
+                        <p>Crucially, debt began to default. People couldn't pay mortgages. The cracks in the foundation were visible to everyone.</p>
+                        <p><strong>Simulation:</strong> The Worker Pool. As you increase <em>Cost Pressure</em>, workers turn red (insolvent) and drop out of the economy.</p>` :
+                        `<p>En 2050, la tendance était indéniable. Le travail humain n'était plus compétitif. Pourquoi embaucher un humain à 20$/h quand un robot le fait pour 0,05$/h ?</p>
+                        <p>Les salaires ont commencé à baisser. L'économie des petits boulots est devenue l'économie du désespoir.</p>
+                        <p>Les dettes ont commencé à faire défaut. Les fissures dans la fondation étaient visibles pour tous.</p>`,
+                    simId: "SQUEEZE",
+                    controls: `<label>${translations[lang].controls.pressure} <span id="val1">Normal</span></label><input type="range" min="0" max="100" value="0" oninput="updateParam('p1', this.value)">`
+                },
+                {
+                    year: "2058",
+                    title: isEn ? "The Velocity Freeze" : "Le Gel de la Vélocité",
+                    subtitle: isEn ? "Money stops moving" : "L'argent arrête de circuler",
+                    text: isEn ?
+                        `<p>An economy requires the <strong>Velocity of Money</strong>. I pay you, you pay the grocer, the grocer pays the farmer.</p>
+                        <p>In 2058, this loop slowed to a crawl. Corporations had all the money, but no one to sell to. They had automated the customer out of existence.</p>
+                        <p>Deflation set in. Prices dropped, but no one bought anything because they were waiting for prices to drop further, or simply had zero income.</p>
+                        <p><strong>Simulation:</strong> Velocity visualization. Watch the particles (transactions) slow down as Wealth Concentration hits 99%.</p>` :
+                        `<p>Une économie nécessite la <strong>Vélocité de l'Argent</strong>. Je vous paie, vous payez l'épicier, l'épicier paie le fermier.</p>
+                        <p>En 2058, cette boucle a ralenti. Les entreprises avaient tout l'argent, mais personne à qui vendre. Elles avaient automatisé le client jusqu'à l'inexistence.</p>`,
+                    simId: "FREEZE",
+                    controls: `<label>${translations[lang].controls.wealth} <span id="val1">Low</span></label><input type="range" min="0" max="100" value="0" oninput="updateParam('p1', this.value)">`
+                },
+                {
+                    year: "2060",
+                    title: isEn ? "THE BIG CRASH" : "LE GRAND KRACH",
+                    subtitle: isEn ? "The Silent Depression" : "La Dépression Silencieuse",
+                    text: isEn ?
+                        `<p><strong>This is the pivot point of history.</strong></p>
+                        <p>In 2060, the global supply chain halted. Warehouses were full of goods. Robots stood ready to build more. But the transaction layer ceased to exist. Unemployment hit 60%.</p>
+                        <p>It wasn't a stock market crash; it was a <strong>Demand Crash</strong>. The engine of capitalism (Labor for Income for Consumption) seized up completely.</p>
+                        <p><strong>Simulation:</strong> The Economy Graph. Watch Productivity (Blue) go vertical while Employment (Green) crashes. When unemployment hits 50%, the system breaks.</p>` :
+                        `<p><strong>C'est le point de bascule de l'histoire.</strong></p>
+                        <p>En 2060, la chaîne d'approvisionnement mondiale s'est arrêtée. Les entrepôts étaient pleins. Mais la couche transactionnelle a cessé d'exister. Le chômage a atteint 60%.</p>
+                        <p>Ce n'était pas un krach boursier ; c'était un <strong>Krach de la Demande</strong>. Le moteur du capitalisme s'est grippé.</p>`,
+                    simId: "CRASH",
+                    controls: `<label>${translations[lang].controls.timeline} <span id="val1">2040</span></label><input type="range" min="2040" max="2070" value="2040" oninput="updateParam('p1', this.value)">`
+                },
+                {
+                    year: "2061",
+                    title: isEn ? "The Failed Stimulus" : "L'Échec du Stimulus",
+                    subtitle: isEn ? "Why printing money didn't work" : "Pourquoi imprimer de l'argent n'a pas marché",
+                    text: isEn ?
+                        `<p>Governments panicked. They tried the old playbook: Print money and lend it to people (Stimulus/Debt).</p>
+                        <p>It failed immediately. Why? Because you can only lend money to people who have jobs to pay it back. With no jobs, the credit was worthless.</p>
+                        <p>The money was printed, given out, spent once on food, and immediately vacuumed back up by the automated corporations, sitting in their accounts doing nothing. The loop was broken.</p>
+                        <p><strong>Simulation:</strong> Attempt to inject liquidity. Watch the water (money) pour in, but drain out instantly because there is no "Labor Floor" to hold it.</p>` :
+                        `<p>Les gouvernements ont paniqué. Ils ont essayé la vieille méthode : Imprimer de l'argent et le prêter aux gens.</p>
+                        <p>Cela a échoué immédiatement. On ne peut prêter de l'argent qu'à ceux qui ont un emploi pour le rembourser. Sans emploi, le crédit ne valait rien.</p>`,
+                    simId: "STIMULUS",
+                    controls: `<button class="nav-btn" style="width:100%; background:#ef4444" onclick="triggerStimulus()">${translations[lang].controls.stimulus}</button>`
+                },
+                {
+                    year: "2062-2064",
+                    title: isEn ? "The Realization" : "La Réalisation",
+                    subtitle: isEn ? "No Choice Left" : "Plus le choix",
+                    text: isEn ?
+                        `<p>Society faced a choice: Starve amidst abundance, or change the operating system.</p>
+                        <p>Economists realized that automation had turned labor into a legacy feature. The realization was simple: <strong>Money must be decoupled from Labor.</strong></p>
+                        <p>If robots make the resources, we just need to distribute the tickets.</p>
+                        <p><strong>Simulation:</strong> Circuit Rewiring. Connect the "Production" node directly to the "Consumption" node, bypassing the broken "Labor" switch.</p>` :
+                        `<p>La société faisait face à un choix : Mourir de faim au milieu de l'abondance, ou changer le système d'exploitation.</p>
+                        <p>Les économistes ont réalisé que l'automatisation avait rendu le travail obsolète. <strong>L'argent devait être découplé du Travail.</strong></p>`,
+                    simId: "SCALE",
+                    controls: `<label>${translations[lang].controls.ideology} <span id="val1">Traditional</span></label><input type="range" min="0" max="100" value="0" oninput="updateParam('p1', this.value)">`
+                },
+                {
+                    year: "2065",
+                    title: isEn ? "The Dividend Compact" : "Le Pacte du Dividende",
+                    subtitle: isEn ? "Dividend Socialism" : "Socialisme de Dividende",
+                    text: isEn ?
+                        `<p>The treaty was signed. The "Automation Tax" was implemented. Every robot hour worked generated a micro-tax.</p>
+                        <p>This revenue was not filtered through bureaucracy; it was distributed instantly to every citizen as a <strong>Universal Dividend</strong>.</p>
+                        <p>This wasn't charity. It was the fuel injection required to make the machine run. The moment the dividend went live, the warehouses opened, goods moved, and the economy restarted.</p>
+                        <p><strong>Simulation:</strong> The Flow. Open the valve to let the "Tax Particles" flow from the factories to the people, restarting the cycle.</p>` :
+                        `<p>Le traité a été signé. La "Taxe d'Automatisation" a été mise en œuvre. Chaque heure de robot générait une micro-taxe.</p>
+                        <p>Ce revenu était distribué instantanément à chaque citoyen sous forme de <strong>Dividende Universel</strong>.</p>
+                        <p>Ce n'était pas de la charité. C'était l'injection de carburant nécessaire pour faire tourner la machine.</p>`,
+                    simId: "DIVIDEND",
+                    controls: `<label>${translations[lang].controls.valve} <span id="val1">Closed</span></label><input type="range" min="0" max="100" value="0" oninput="updateParam('p1', this.value)">`
+                },
+                {
+                    year: "2070",
+                    title: isEn ? "The Purpose Crisis" : "La Crise du Sens",
+                    subtitle: isEn ? "What do we do now?" : "Que fait-on maintenant ?",
+                    text: isEn ?
+                        `<p>Survival was solved. But a new problem emerged: Meaning.</p>
+                        <p>For 5,000 years, humans defined themselves by their jobs. "I am a baker." "I am a coder." Without work, depression rates spiked.</p>
+                        <p>We had to culturally reinvent ourselves. We moved from a "Production Society" to an "Exploration Society." Art, philosophy, sport, and community became the new metrics of success.</p>
+                        <p><strong>Simulation:</strong> The Tree of Life. Allocate time to "Community", "Art", and "Sport" to see the tree grow. Neglect them, and it withers.</p>` :
+                        `<p>La survie était résolue. Mais un nouveau problème a émergé : Le Sens.</p>
+                        <p>Pendant 5000 ans, les humains se définissaient par leur travail. Sans travail, la dépression a explosé.</p>
+                        <p>Nous avons dû nous réinventer culturellement. L'art, la philosophie, le sport et la communauté sont devenus les nouveaux critères de succès.</p>`,
+                    simId: "PURPOSE",
+                    controls: `<label>${translations[lang].controls.focus} <span id="val1">0%</span></label><input type="range" min="0" max="100" value="0" oninput="updateParam('p1', this.value)">`
+                },
+                {
+                    year: "2080",
+                    title: isEn ? "The Legitimacy Economy" : "L'Économie de la Légitimité",
+                    subtitle: isEn ? "Status without Wealth" : "Statut sans Richesse",
+                    text: isEn ?
+                        `<p>In 2080, being a "Billionaire" became meaningless. If everyone can afford a Ferrari (printed by robots), the Ferrari loses status.</p>
+                        <p>Status shifted to things robots couldn't produce: <strong>Legitimacy, Trust, and Attention.</strong></p>
+                        <p>The leaders of this era weren't the richest; they were the most trusted. Social capital replaced financial capital as the primary power structure.</p>
+                        <p><strong>Simulation:</strong> Network Graph. Watch how the nodes gravitate towards the "High Trust" leader rather than the "High Wealth" leader.</p>` :
+                        `<p>En 2080, être "Milliardaire" n'avait plus de sens. Si tout le monde peut s'offrir une Ferrari (imprimée par des robots), la Ferrari perd son statut.</p>
+                        <p>Le statut s'est déplacé vers ce que les robots ne pouvaient pas produire : <strong>Légitimité, Confiance et Attention.</strong></p>`,
+                    simId: "STATUS",
+                    controls: `<label>${translations[lang].controls.metric} <span id="val1">Money</span></label><input type="range" min="0" max="1" step="1" value="0" oninput="updateParam('p1', this.value)">`
+                },
+                {
+                    year: "2090",
+                    title: isEn ? "Allocation of the Scarce" : "Allocation de la Rareté",
+                    subtitle: isEn ? "Land and Reality" : "Terre et Réalité",
+                    text: isEn ?
+                        `<p>Robots could print goods, but they couldn't print Land. Who gets the beach house?</p>
+                        <p>We moved to "Access Rights." Instead of buying land forever, you gained time-limited leases based on lotteries and merit.</p>
+                        <p>This prevented a permanent aristocracy. It ensured that the "Prime Reality" circulated among the population rather than being hoarded.</p>
+                        <p><strong>Simulation:</strong> The Zone Lottery. You are the Green Dot. Watch your location shift between Zones A (Beach), B (City), C (Forest), and D (Suburbs) over time.</p>` :
+                        `<p>Les robots pouvaient imprimer des biens, mais pas la Terre. Qui obtient la maison sur la plage ?</p>
+                        <p>Nous sommes passés aux "Droits d'Accès". Au lieu d'acheter la terre pour toujours, vous obteniez des baux limités dans le temps.</p>`,
+                    simId: "LAND",
+                    controls: `<button class="nav-btn" onclick="updateParam('p1', 0)">${translations[lang].controls.market}</button> <button class="nav-btn" onclick="updateParam('p1', 1)">${translations[lang].controls.access}</button>`
+                },
+                {
+                    year: "2100",
+                    title: isEn ? "The Guardrails" : "Les Garde-fous",
+                    subtitle: isEn ? "Containing the Infinite" : "Contenir l'Infini",
+                    text: isEn ?
+                        `<p>AI Intelligence was now billions of times greater than human intelligence. The risk wasn't economic anymore; it was existential.</p>
+                        <p>Society built the "Great Guardrails." We used AI to police AI. Research was accelerated, but automated safety loops checked every discovery before implementation.</p>
+                        <p>We essentially built a nuclear reactor for intelligence, carefully managed to prevent a meltdown.</p>
+                        <p><strong>Simulation:</strong> The Reactor. Increase Research Speed, but keep Risk below the critical threshold using Safety Checks.</p>` :
+                        `<p>L'intelligence de l'IA était maintenant des milliards de fois supérieure à l'intelligence humaine. Le risque était existentiel.</p>
+                        <p>La société a construit les "Grands Garde-fous". Nous avons utilisé l'IA pour surveiller l'IA.</p>`,
+                    simId: "GUARDRAILS",
+                    controls: `<label>${translations[lang].controls.research} <span id="val1">Safe</span></label><input type="range" min="0" max="100" value="20" oninput="updateParam('p1', this.value)">`
+                },
+                {
+                    year: "2150",
+                    title: isEn ? "The Horizon" : "L'Horizon",
+                    subtitle: isEn ? "To the Stars" : "Vers les Étoiles",
+                    text: isEn ?
+                        `<p>Here we are, in 2150.</p>
+                        <p>We have decoupled survival from labor. We have stabilized the social structure. We have unlimited intelligence and energy.</p>
+                        <p>The only frontier left is outwards. The surplus energy of humanity is now directed at Mars, Europa, and Alpha Centauri. We are no longer laborers; we are explorers.</p>
+                        <p><strong>Simulation:</strong> The Departure. Initiate the launch sequence to witness humanity's next step.</p>` :
+                        `<p>Nous y sommes, en 2150.</p>
+                        <p>Nous avons découplé la survie du travail. Nous avons une intelligence et une énergie illimitées.</p>
+                        <p>La seule frontière restante est vers l'extérieur. Nous ne sommes plus des travailleurs ; nous sommes des explorateurs.</p>`,
+                    simId: "SPACE",
+                    controls: `<button class="nav-btn" style="width:100%; background:var(--accent-cyan); padding: 15px; font-weight:bold; letter-spacing:2px;" onclick="triggerLaunch()">${translations[lang].controls.launch}</button>`
+                }
+            ];
+        }
 
-function init() {
-    canvas = document.getElementById('simCanvas');
-    ctx = canvas.getContext('2d');
-    
-    // Populate Sidebar
-    const sidebar = document.getElementById('sidebar');
-    chapters.forEach((chap, i) => {
-        const div = document.createElement('div');
-        div.className = `timeline-item ${i === 0 ? 'active' : ''}`;
-        div.innerHTML = `<div class="t-year">${chap.year}</div><div class="t-title">${chap.title}</div>`;
-        div.onclick = () => loadChapter(i);
-        sidebar.appendChild(div);
-    });
+        /**
+         * --- APP STATE & INIT ---
+         */
+        let chapters = [];
+        let currentChapterIdx = 0;
+        let simParams = { p1: 0, p2: 0 };
+        let canvas, ctx;
+        let animationFrame;
+        let simState = {};
 
-    window.addEventListener('resize', resizeCanvas);
-    loadChapter(0);
-}
+        function selectLang(lang, btn) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
 
-/**
- * --- CORE LOGIC ---
- */
-function loadChapter(index) {
-    currentChapterIdx = index;
-    simParams = { p1: 0, p2: 0 }; // Reset params
-    
-    // UI Updates
-    const chap = chapters[index];
-    const sidebarItems = document.querySelectorAll('.timeline-item');
-    sidebarItems.forEach((item, i) => {
-        item.className = `timeline-item ${i === index ? 'active' : ''}`;
-        // Scroll to active
-        if (i === index) item.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    });
+            // Update Intro Text
+            const t = translations[lang].intro;
+            document.querySelector('.intro-subtitle').innerText = t.subtitle;
+            document.querySelector('#introText').innerHTML = t.text;
+            document.querySelector('#enterBtn').innerText = t.enter;
 
-    // Narrative Update
-    const narrative = document.getElementById('narrativeContent');
-    narrative.innerHTML = `
-        <h2>${chap.year} // ${chap.subtitle}</h2>
-        <h1>${chap.title}</h1>
-        ${chap.text}
-        <div style="margin-top:40px; display:flex; gap:10px;">
-            <button class="nav-btn" onclick="prev()" ${index===0?'disabled':''}>&larr; Back</button>
-            <button class="nav-btn" onclick="next()" ${index===chapters.length-1?'disabled':''}>Next Era &rarr;</button>
-        </div>
-    `;
+            // Show Enter Button
+            document.querySelector('#enterBtn').classList.add('visible');
+        }
 
-    // Controls Update
-    const controls = document.getElementById('simControls');
-    controls.innerHTML = chap.controls;
-    controls.style.opacity = chap.controls ? 1 : 0;
-    controls.style.pointerEvents = chap.controls ? 'all' : 'none';
+        function startExperience() {
+            document.getElementById('introOverlay').style.opacity = 0;
+            setTimeout(() => {
+                document.getElementById('introOverlay').style.display = 'none';
+                init();
+            }, 1000);
+        }
 
-    // Reset Sim values based on defaults in HTML strings (parsing rough default)
-    // Actually, the slider oninput handles the state update, we just need to reset visual state.
-    const defaultInput = controls.querySelector('input');
-    if(defaultInput) {
-        simParams.p1 = parseFloat(defaultInput.value);
-        updateParam('p1', simParams.p1); // Update label
-    }
+        // Canvas Helpers
+        function resizeCanvas() {
+            if (!canvas) return;
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+        }
 
-    // Start Animation Loop
-    if (animationFrame) cancelAnimationFrame(animationFrame);
-    resizeCanvas();
-    renderLoop();
-}
+        function init() {
+            canvas = document.getElementById('simCanvas');
+            ctx = canvas.getContext('2d');
 
-function updateParam(key, value) {
-    simParams[key] = parseFloat(value);
-    
-    // Update label text dynamically if exists
-    const labelSpan = document.getElementById('val1');
-    if(labelSpan) {
-        // Custom label logic based on current chapter
-        const id = chapters[currentChapterIdx].simId;
-        if (id === "CRASH") labelSpan.innerText = value;
-        else labelSpan.innerText = value + "%";
-    }
-}
+            // Load Data
+            chapters = getChapters(currentLang);
 
-function next() { if(currentChapterIdx < chapters.length-1) loadChapter(currentChapterIdx+1); }
-function prev() { if(currentChapterIdx > 0) loadChapter(currentChapterIdx-1); }
+            // Populate Sidebar
+            const sidebar = document.getElementById('sidebar');
+            sidebar.innerHTML = ''; // Clear existing
+            chapters.forEach((chap, i) => {
+                const div = document.createElement('div');
+                div.className = `timeline-item ${i === 0 ? 'active' : ''}`;
+                div.innerHTML = `<div class="t-year">${chap.year}</div><div class="t-title">${chap.title}</div>`;
+                div.onclick = () => loadChapter(i);
+                sidebar.appendChild(div);
+            });
 
-/**
- * --- VISUALIZATION ENGINE ---
- * A giant switch statement that draws the specific "Toy" for the era.
- */
-let simState = {}; // Persist particles etc
+            window.addEventListener('resize', resizeCanvas);
+            loadChapter(0);
+        }
 
-function renderLoop() {
-    const w = canvas.width;
-    const h = canvas.height;
-    ctx.clearRect(0, 0, w, h);
-    
-    const id = chapters[currentChapterIdx].simId;
-    const time = Date.now() * 0.001;
+        /**
+         * --- CORE LOGIC ---
+         */
+        function loadChapter(index) {
+            currentChapterIdx = index;
+            simParams = { p1: 0, p2: 0 }; // Reset params
+            simState = {}; // Reset sim state for new chapter
 
-    switch (id) {
-        case "SPARK": renderSpark(w, h, time); break;
-        case "AGENTS": renderAgents(w, h, time); break;
-        case "ROBOTICS": renderRobotics(w, h, time); break;
-        case "BOOM": renderBoom(w, h, time); break;
-        case "SQUEEZE": renderSqueeze(w, h, time); break;
-        case "FREEZE": renderFreeze(w, h, time); break;
-        case "CRASH": renderCrash(w, h, time); break;
-        case "STIMULUS": renderStimulus(w, h, time); break;
-        case "SCALE": renderScale(w, h, time); break;
-        case "DIVIDEND": renderDividend(w, h, time); break;
-        case "PURPOSE": renderPurpose(w, h, time); break;
-        case "STATUS": renderStatus(w, h, time); break;
-        case "LAND": renderLand(w, h, time); break;
-        case "GUARDRAILS": renderGuardrails(w, h, time); break;
-        case "SPACE": renderSpace(w, h, time); break;
-    }
+            // UI Updates
+            const chap = chapters[index];
+            const sidebarItems = document.querySelectorAll('.timeline-item');
+            sidebarItems.forEach((item, i) => {
+                item.className = `timeline-item ${i === index ? 'active' : ''}`;
+                if (i === index) item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
 
-    animationFrame = requestAnimationFrame(renderLoop);
-}
+            // Narrative Update
+            const narrative = document.getElementById('narrativeContent');
+            narrative.innerHTML = `
+                <h2>${chap.year} // ${chap.subtitle}</h2>
+                <h1>${chap.title}</h1>
+                ${chap.text}
+                <div style="margin-top:40px; display:flex; gap:10px;">
+                    <button class="nav-btn" onclick="prev()" ${index === 0 ? 'disabled' : ''}>${translations[currentLang].back}</button>
+                    <button class="nav-btn" onclick="next()" ${index === chapters.length - 1 ? 'disabled' : ''}>${translations[currentLang].next}</button>
+                </div>
+            `;
 
-// --- INDIVIDUAL SIMULATIONS ---
+            // Controls Update
+            const controls = document.getElementById('simControls');
+            controls.innerHTML = chap.controls;
 
-function renderSpark(w, h, t) {
-    const density = simParams.p1; 
-    const count = Math.floor(density * 2);
-    
-    ctx.fillStyle = '#06b6d4';
-    ctx.strokeStyle = 'rgba(6, 182, 212, 0.3)';
-    
-    // Draw Neural Nodes
-    const nodes = [];
-    for(let i=0; i<count; i++) {
-        // Deterministic psuedo-random positions based on i and t
-        const x = w/2 + Math.cos(i*13 + t*0.2) * (w/4 + Math.sin(t)*20);
-        const y = h/2 + Math.sin(i*19 + t*0.3) * (h/4);
-        nodes.push({x,y});
-        
-        ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI*2); ctx.fill();
-    }
-    
-    // Draw Connections
-    ctx.lineWidth = 1;
-    for(let i=0; i<nodes.length; i++) {
-        for(let j=i+1; j<nodes.length; j++) {
-            const dist = Math.hypot(nodes[i].x - nodes[j].x, nodes[i].y - nodes[j].y);
-            if(dist < 100) {
-                ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[j].x, nodes[j].y); ctx.stroke();
+            // Initialize default params from controls if present
+            const inputs = controls.querySelectorAll('input');
+            inputs.forEach(input => {
+                if (input.oninput) {
+                    // Extract param name from oninput string (hacky but works for this structure)
+                    // oninput="updateParam('p1', this.value)"
+                    const match = input.getAttribute('oninput').match(/'(p\d)'/);
+                    if (match) {
+                        simParams[match[1]] = parseFloat(input.value);
+                        updateParam(match[1], input.value);
+                    }
+                }
+            });
+
+            // Start Animation Loop
+            if (animationFrame) cancelAnimationFrame(animationFrame);
+            resizeCanvas();
+            renderLoop();
+        }
+
+        function updateParam(key, value) {
+            simParams[key] = parseFloat(value);
+            const labelSpan = document.getElementById(key === 'p1' ? 'val1' : 'val2');
+            if (labelSpan) {
+                const id = chapters[currentChapterIdx].simId;
+                if (id === "CRASH") labelSpan.innerText = value;
+                else if (id === "LAND" || id === "STATUS") labelSpan.innerText = ""; // No text update needed
+                else if (id === "SPACE") labelSpan.innerText = value + (key === 'p2' ? "°" : "%");
+                else labelSpan.innerText = value + (id === "GUARDRAILS" ? "" : "%");
             }
         }
-    }
-}
 
-function renderAgents(w, h, t) {
-    const aiLevel = simParams.p1 / 100; // 0 to 1
-    
-    // Queue Bar
-    const barX = w * 0.2;
-    const barW = w * 0.6;
-    const taskCount = 10;
-    
-    for(let i=0; i<taskCount; i++) {
-        const x = barX + (barW/taskCount)*i;
-        const y = h/2;
-        
-        // Determine who solves the task
-        // Lower index tasks are easier, automated first
-        const isAutomated = (i / taskCount) < aiLevel;
-        
-        ctx.fillStyle = isAutomated ? '#06b6d4' : '#10b981';
-        ctx.fillRect(x + 5, y - 20, (barW/taskCount)-10, 40);
-        
-        // Label
-        ctx.fillStyle = '#fff';
-        ctx.font = '10px sans-serif';
-        ctx.fillText(isAutomated ? "AI" : "HUMAN", x + 10, y + 5);
-    }
-    
-    ctx.fillStyle = '#fff';
-    ctx.textAlign = 'center';
-    ctx.font = '14px sans-serif';
-    ctx.fillText(`White Collar Automation: ${Math.round(aiLevel*100)}%`, w/2, h/2 - 50);
-}
+        function next() { if (currentChapterIdx < chapters.length - 1) loadChapter(currentChapterIdx + 1); }
+        function prev() { if (currentChapterIdx > 0) loadChapter(currentChapterIdx - 1); }
 
-function renderRobotics(w, h, t) {
-    const skill = simParams.p1; // 0 to 100
-    const speed = 0.5 + (skill/20);
-    
-    const cx = w/2;
-    const cy = h * 0.7;
-    
-    // Target
-    const tx = cx + Math.cos(t * speed) * 150;
-    const ty = cy - 200 + Math.sin(t * speed * 1.3) * 50;
-    
-    // Draw Target
-    ctx.fillStyle = '#ef4444';
-    ctx.beginPath(); ctx.arc(tx, ty, 10, 0, Math.PI*2); ctx.fill();
-    
-    // Arm Segments (Inverse Kinematics approx)
-    ctx.strokeStyle = '#f59e0b';
-    ctx.lineWidth = 10;
-    ctx.lineCap = 'round';
-    
-    // Base
-    ctx.beginPath(); ctx.moveTo(cx, cy); 
-    
-    // Jitter based on low skill
-    const jitter = (100 - skill) * 0.5;
-    const jx = (Math.random()-0.5) * jitter;
-    const jy = (Math.random()-0.5) * jitter;
-    
-    ctx.lineTo(tx + jx, ty + jy);
-    ctx.stroke();
-    
-    // Base Box
-    ctx.fillStyle = '#333';
-    ctx.fillRect(cx-20, cy, 40, 20);
-    
-    ctx.fillStyle = '#fff';
-    ctx.fillText(`Precision: ${skill}%`, cx, cy + 40);
-}
+        /**
+         * --- VISUALIZATION ENGINE ---
+         */
+        function renderLoop() {
+            const w = canvas.width;
+            const h = canvas.height;
+            ctx.clearRect(0, 0, w, h);
 
-function renderBoom(w, h, t) {
-    const auto = simParams.p1;
-    
-    // Grid
-    ctx.strokeStyle = '#333';
-    ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.moveTo(50, h-50); ctx.lineTo(w-50, h-50); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(50, h-50); ctx.lineTo(50, 50); ctx.stroke();
-    
-    // GDP Line (Yellow) - Exponential
-    ctx.strokeStyle = '#f59e0b';
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.moveTo(50, h-50);
-    const endX = 50 + (w-100) * (auto/100);
-    
-    for(let x=50; x<w-50; x+=10) {
-        const progress = (x-50)/(w-100);
-        // GDP goes up
-        const y = (h-50) - (progress * progress * 200) - (progress * auto * 2);
-        ctx.lineTo(x, y);
-    }
-    ctx.stroke();
-    
-    // Wage Line (Green) - Flat/Dip
-    ctx.strokeStyle = '#10b981';
-    ctx.beginPath();
-    ctx.moveTo(50, h-50);
-    for(let x=50; x<w-50; x+=10) {
-        const progress = (x-50)/(w-100);
-        // Wages rise then plateau then dip
-        let y = (h-50) - (progress * 100);
-        if (progress > 0.6) y += (progress - 0.6) * 50 * (auto/50); // Dip logic
-        ctx.lineTo(x, y);
-    }
-    ctx.stroke();
-    
-    ctx.fillStyle = '#f59e0b'; ctx.fillText("GDP (Profits)", w-100, h/2);
-    ctx.fillStyle = '#10b981'; ctx.fillText("Wages", w-100, h-80);
-}
+            const id = chapters[currentChapterIdx].simId;
+            const time = Date.now() * 0.001;
 
-function renderSqueeze(w, h, t) {
-    const pressure = simParams.p1;
-    const cols = 10;
-    const rows = 5;
-    const gap = w / (cols + 2);
-    
-    for(let i=0; i<cols; i++) {
-        for(let j=0; j<rows; j++) {
-            const x = gap + i*gap;
-            const y = 50 + j * 50;
-            
-            // Person Status
-            // Higher pressure = more red people
-            const threshold = (100 - pressure) / 100;
-            // Pseudo random based on index
-            const val = (Math.sin(i*j*12) + 1) / 2;
-            
-            const isSolvent = val < threshold;
-            
-            ctx.fillStyle = isSolvent ? '#10b981' : '#ef4444';
-            ctx.beginPath(); ctx.arc(x, y, 10, 0, Math.PI*2); ctx.fill();
-            
-            if (!isSolvent) {
-                ctx.strokeStyle = '#ef4444';
-                ctx.beginPath(); ctx.moveTo(x-5, y-5); ctx.lineTo(x+5, y+5); ctx.stroke();
-                ctx.beginPath(); ctx.moveTo(x+5, y-5); ctx.lineTo(x-5, y+5); ctx.stroke();
+            switch (id) {
+                case "SPARK": renderSpark(w, h, time); break;
+                case "AGENTS": renderAgents(w, h, time); break;
+                case "ROBOTICS": renderRobotics(w, h, time); break;
+                case "ENERGY": renderEnergy(w, h, time); break;
+                case "BOOM": renderBoom(w, h, time); break;
+                case "SQUEEZE": renderSqueeze(w, h, time); break;
+                case "FREEZE": renderFreeze(w, h, time); break;
+                case "CRASH": renderCrash(w, h, time); break;
+                case "STIMULUS": renderStimulus(w, h, time); break;
+                case "SCALE": renderScale(w, h, time); break;
+                case "DIVIDEND": renderDividend(w, h, time); break;
+                case "PURPOSE": renderPurpose(w, h, time); break;
+                case "STATUS": renderStatus(w, h, time); break;
+                case "LAND": renderLand(w, h, time); break;
+                case "GUARDRAILS": renderGuardrails(w, h, time); break;
+                case "SPACE": renderSpace(w, h, time); break;
             }
+
+            animationFrame = requestAnimationFrame(renderLoop);
         }
-    }
-    
-    ctx.fillStyle = '#fff';
-    ctx.fillText("Green: Solvent | Red: Insolvent", w/2, h-20);
-}
 
-function renderFreeze(w, h, t) {
-    const concentration = simParams.p1; // 0 to 100
-    // Speed of particles depends on concentration (Higher concentration = Slower velocity for most)
-    
-    const particleCount = 50;
-    if(!simState.freeze) {
-        simState.freeze = Array.from({length:50}, () => ({
-            x: Math.random()*w, y: Math.random()*h, 
-            vx: (Math.random()-0.5)*5, vy: (Math.random()-0.5)*5
-        }));
-    }
-    
-    const speedMod = Math.max(0.05, 1 - (concentration/100));
-    
-    simState.freeze.forEach(p => {
-        p.x += p.vx * speedMod;
-        p.y += p.vy * speedMod;
-        
-        if(p.x < 0 || p.x > w) p.vx *= -1;
-        if(p.y < 0 || p.y > h) p.vy *= -1;
-        
-        ctx.fillStyle = '#10b981';
-        ctx.beginPath(); ctx.arc(p.x, p.y, 3, 0, Math.PI*2); ctx.fill();
-    });
-    
-    // The Hoard
-    const r = (concentration/100) * 100;
-    ctx.fillStyle = 'rgba(245, 158, 11, 0.3)';
-    ctx.beginPath(); ctx.arc(w/2, h/2, r, 0, Math.PI*2); ctx.fill();
-    ctx.fillStyle = '#fff';
-    ctx.fillText("Stagnant Capital", w/2, h/2);
-}
+        // --- SIMULATIONS ---
 
-function renderCrash(w, h, t) {
-    const year = simParams.p1; // 2040 - 2070
-    const progress = (year - 2040) / 30;
-    
-    // Split screen: Left = Chart, Right = Warehouse
-    
-    // 1. CHART
-    const cw = w/2;
-    ctx.strokeStyle = '#333';
-    ctx.strokeRect(10, 10, cw-20, h-20);
-    
-    // Productivity (Blue)
-    ctx.strokeStyle = '#06b6d4';
-    ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.moveTo(10, h-20);
-    ctx.lineTo(10 + (cw-20)*progress, h-20 - (progress*progress*300));
-    ctx.stroke();
-    
-    // Wages (Green)
-    ctx.strokeStyle = '#10b981';
-    ctx.beginPath(); ctx.moveTo(10, h-20);
-    let wy = h-20 - (progress * 100);
-    if (year > 2055) wy = h-20; // Crash to zero
-    ctx.lineTo(10 + (cw-20)*progress, wy);
-    ctx.stroke();
-    
-    // 2. WAREHOUSE (Right side)
-    const wx = w/2 + 20;
-    const ww = w/2 - 40;
-    ctx.fillStyle = '#222';
-    ctx.fillRect(wx, 10, ww, h-20);
-    
-    // Boxes piling up
-    let boxCount = Math.floor(progress * 200);
-    if (year > 2060) boxCount = 500; // Max out
-    
-    ctx.fillStyle = '#f59e0b';
-    const boxSize = 10;
-    for(let i=0; i<boxCount; i++) {
-        const bx = wx + (i % Math.floor(ww/boxSize)) * boxSize;
-        const by = (h-20) - Math.floor(i / Math.floor(ww/boxSize)) * boxSize - boxSize;
-        if(by > 10) ctx.fillRect(bx, by, boxSize-1, boxSize-1);
-    }
-    
-    if (year >= 2060) {
-        ctx.fillStyle = 'rgba(239, 68, 68, 0.8)';
-        ctx.font = '30px sans-serif';
-        ctx.fillText("DEMAND COLLAPSE", w * 0.75, h/2);
-    }
-}
+        function renderSpark(w, h, t) {
+            const density = simParams.p1;
+            const count = Math.floor(density * 2) + 20;
 
-function renderStimulus(w, h, t) {
-    // Bucket with a hole
-    const bx = w/2 - 50;
-    const by = h/2;
-    const bw = 100;
-    const bh = 100;
-    
-    // Bucket
-    ctx.strokeStyle = '#fff';
-    ctx.lineWidth = 4;
-    ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(bx, by+bh); ctx.lineTo(bx+bw, by+bh); ctx.lineTo(bx+bw, by); ctx.stroke();
-    
-    // Hole
-    ctx.clearRect(bx+20, by+bh-2, 60, 10);
-    
-    // Water (Money)
-    if(simState.stimulusActive) {
-        simState.waterLevel = 100;
-        simState.stimulusActive = false;
-    }
-    
-    if(simState.waterLevel > 0) {
-        simState.waterLevel -= 2;
-        const level = simState.waterLevel;
-        
-        ctx.fillStyle = '#10b981';
-        ctx.fillRect(bx+5, by+bh - level, bw-10, level);
-        
-        // Draining out
-        ctx.fillStyle = '#10b981';
-        ctx.fillRect(bx+30, by+bh+5, 40, h - (by+bh));
-        
-        ctx.fillStyle = '#fff';
-        ctx.fillText("Leaking to Corporate Savings...", w/2, h-20);
-    } else {
-        ctx.fillStyle = '#555';
-        ctx.fillText("No Liquidity Retention", w/2, h/2+50);
-    }
-}
-// Trigger function for button
-window.triggerStimulus = () => { simState.stimulusActive = true; }
-
-
-function renderScale(w, h, t) {
-    const shift = simParams.p1;
-    
-    const cx = w/2;
-    const cy = h/2;
-    
-    // Scale Beam
-    const angle = (shift - 50) * 0.01; // Tilt
-    
-    ctx.save();
-    ctx.translate(cx, cy);
-    ctx.rotate(angle);
-    
-    ctx.strokeStyle = '#fff';
-    ctx.lineWidth = 4;
-    ctx.beginPath(); ctx.moveTo(-100, 0); ctx.lineTo(100, 0); ctx.stroke();
-    
-    // Plates
-    ctx.fillStyle = '#ef4444'; // Starvation
-    ctx.beginPath(); ctx.arc(-100, 0, 20, 0, Math.PI*2); ctx.fill();
-    ctx.fillStyle = '#fff'; ctx.fillText("Collapse", -120, -30);
-
-    ctx.fillStyle = '#10b981'; // UBI
-    ctx.beginPath(); ctx.arc(100, 0, 20, 0, Math.PI*2); ctx.fill();
-    ctx.fillStyle = '#fff'; ctx.fillText("Dividend", 80, -30);
-
-    ctx.restore();
-    
-    // Triangle Base
-    ctx.fillStyle = '#555';
-    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx-20, cy+50); ctx.lineTo(cx+20, cy+50); ctx.fill();
-}
-
-function renderDividend(w, h, t) {
-    const flow = simParams.p1;
-    
-    // Robot Factory (Left)
-    ctx.fillStyle = '#333';
-    ctx.fillRect(50, h/2 - 40, 60, 80);
-    ctx.fillStyle = '#06b6d4'; ctx.fillText("ROBOTS", 55, h/2+5);
-    
-    // People (Right)
-    ctx.fillStyle = '#333';
-    ctx.fillRect(w-110, h/2 - 40, 60, 80);
-    ctx.fillStyle = '#10b981'; ctx.fillText("PEOPLE", w-100, h/2+5);
-    
-    // Top Pipe (Goods)
-    ctx.strokeStyle = '#444'; ctx.lineWidth=8;
-    ctx.beginPath(); ctx.moveTo(110, h/2-20); ctx.lineTo(w-110, h/2-20); ctx.stroke();
-    
-    // Bottom Pipe (Dividend Money)
-    ctx.strokeStyle = flow > 0 ? '#10b981' : '#444';
-    ctx.beginPath(); ctx.moveTo(w-110, h/2+20); ctx.lineTo(110, h/2+20); ctx.stroke();
-    
-    // Particles
-    if(simState.frame === undefined) simState.frame = 0;
-    simState.frame++;
-    
-    // Goods
-    if(simState.frame % 10 === 0) {
-        if(!simState.goods) simState.goods = [];
-        simState.goods.push({x: 110, y: h/2-20});
-    }
-    if(simState.goods) {
-        simState.goods.forEach((g,i) => {
-            g.x += 2;
-            ctx.fillStyle = '#f59e0b'; ctx.fillRect(g.x, g.y-4, 8, 8);
-            // Jam if no flow
-            if(g.x > w/2 && flow < 10) {
-                g.x -= 2; ctx.fillStyle = '#ef4444';
+            if (!simState.nodes || simState.nodes.length !== count) {
+                simState.nodes = Array.from({ length: count }, () => ({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    z: Math.random() * 200 - 100, // 3D depth
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5
+                }));
+                simState.pulses = [];
             }
-            if(g.x > w-110) simState.goods.splice(i,1);
-        });
-    }
-    
-    // Money
-    if(flow > 0 && simState.frame % (110 - flow) === 0) {
-        if(!simState.money) simState.money = [];
-        simState.money.push({x: w-110, y: h/2+20});
-    }
-    if(simState.money) {
-        simState.money.forEach((m,i) => {
-            m.x -= 2;
-            ctx.fillStyle = '#10b981'; ctx.beginPath(); ctx.arc(m.x, m.y, 4, 0, Math.PI*2); ctx.fill();
-            if(m.x < 110) simState.money.splice(i,1);
-        });
-    }
-}
 
-function renderPurpose(w, h, t) {
-    const focus = simParams.p1;
-    // Pie Chart visualization
-    const cx = w/2, cy = h/2;
-    const r = 100;
-    
-    // Base (Work - shrinking)
-    const workSlice = Math.max(0, 2 * Math.PI * (1 - focus/100));
-    
-    ctx.beginPath(); ctx.moveTo(cx, cy);
-    ctx.arc(cx, cy, r, 0, workSlice);
-    ctx.fillStyle = '#555'; // Work (Gray)
-    ctx.fill();
-    
-    // Creative (Growing)
-    ctx.beginPath(); ctx.moveTo(cx, cy);
-    ctx.arc(cx, cy, r, workSlice, 2 * Math.PI);
-    ctx.fillStyle = '#f59e0b'; // Creative (Gold)
-    ctx.fill();
-    
-    ctx.fillStyle = '#fff';
-    ctx.fillText("Gray: Labor | Gold: Creation", cx - 60, h - 20);
-}
+            // 3D Rotation
+            const angle = t * 0.2;
+            const cx = w / 2, cy = h / 2;
 
-function renderStatus(w, h, t) {
-    const mode = simParams.p1; // 0 = Money, 1 = Trust
-    
-    const nodes = [
-        {x: w/2, y: h/2 - 50, money: 100, trust: 20}, // Rich Guy
-        {x: w/2 - 60, y: h/2 + 50, money: 10, trust: 90}, // Community Leader
-        {x: w/2 + 60, y: h/2 + 50, money: 20, trust: 80}, // Artist
-    ];
-    
-    nodes.forEach(n => {
-        // Radius based on status metric
-        const size = mode == 0 ? n.money/2 : n.trust/2;
-        const color = mode == 0 ? '#f59e0b' : '#06b6d4';
-        
-        ctx.fillStyle = color;
-        ctx.beginPath(); ctx.arc(n.x, n.y, size, 0, Math.PI*2); ctx.fill();
-    });
-    
-    ctx.fillStyle = '#fff';
-    if(mode == 0) ctx.fillText("Dominance: Wealth", w/2, 20);
-    else ctx.fillText("Dominance: Legitimacy", w/2, 20);
-}
+            // Draw Nodes
+            simState.nodes.forEach(n => {
+                // Rotate
+                let x = n.x - cx;
+                let z = n.z;
+                let x1 = x * Math.cos(angle) - z * Math.sin(angle);
+                let z1 = z * Math.cos(angle) + x * Math.sin(angle);
 
-function renderLand(w, h, t) {
-    const mode = simParams.p1; // 0 Market, 1 Access
-    
-    // Grid of plots
-    const plots = 5;
-    const size = 40;
-    const startX = w/2 - (plots*size)/2;
-    
-    for(let i=0; i<plots; i++) {
-        const x = startX + i*size;
-        const y = h/2 - 20;
-        
-        if(mode == 0) {
-            // Market: Owned by one color permanently
-            ctx.fillStyle = i < 2 ? '#f59e0b' : '#333'; // Rich own best spots
-        } else {
-            // Access: Colors cycle
-            const cycle = Math.floor(t + i) % 3;
-            const colors = ['#06b6d4', '#10b981', '#ef4444'];
-            ctx.fillStyle = colors[cycle];
+                // Camera at z = -1000
+                let fov = 1000;
+                let scale = fov / (fov + z1);
+
+                if (scale < 0) return; // Behind camera
+
+                let px = cx + x1 * scale;
+                let py = cy + (n.y - cy) * scale;
+
+                n.px = px; n.py = py; n.scale = scale; // Store projected
+
+                // Move
+                n.x += n.vx; n.y += n.vy;
+                if (n.x < 0) n.x = w; if (n.x > w) n.x = 0;
+                if (n.y < 0) n.y = h; if (n.y > h) n.y = 0;
+
+                ctx.fillStyle = `rgba(6, 182, 212, ${Math.min(1, scale)})`;
+                ctx.beginPath(); ctx.arc(px, py, 2 * scale, 0, Math.PI * 2); ctx.fill();
+            });
+
+            // Connections & Pulses
+            ctx.lineWidth = 1;
+            for (let i = 0; i < simState.nodes.length; i++) {
+                for (let j = i + 1; j < simState.nodes.length; j++) {
+                    const n1 = simState.nodes[i];
+                    const n2 = simState.nodes[j];
+                    const dist = (n1.x - n2.x) ** 2 + (n1.y - n2.y) ** 2;
+
+                    if (dist < 15000) {
+                        const alpha = (1 - dist / 15000) * n1.scale;
+                        ctx.strokeStyle = `rgba(6, 182, 212, ${alpha * 0.3})`;
+                        ctx.beginPath(); ctx.moveTo(n1.px, n1.py); ctx.lineTo(n2.px, n2.py); ctx.stroke();
+
+                        // Spawn Pulse
+                        if (Math.random() < 0.001 * density) {
+                            simState.pulses.push({
+                                p: 0,
+                                from: n1,
+                                to: n2,
+                                speed: 0.02 + Math.random() * 0.05
+                            });
+                        }
+                    }
+                }
+            }
+
+            // Render Pulses
+            ctx.fillStyle = '#fff';
+            simState.pulses.forEach((p, i) => {
+                p.p += p.speed;
+                const x = p.from.px + (p.to.px - p.from.px) * p.p;
+                const y = p.from.py + (p.to.py - p.from.py) * p.p;
+
+                ctx.beginPath(); ctx.arc(x, y, 2 * p.from.scale, 0, Math.PI * 2); ctx.fill();
+
+                if (p.p >= 1) simState.pulses.splice(i, 1);
+            });
         }
-        
-        ctx.fillRect(x, y, size-2, size-2);
-    }
-    
-    ctx.fillStyle = '#fff';
-    ctx.fillText(mode == 0 ? "Permanent Ownership" : "Rotating Access", w/2, h/2 + 50);
-}
 
-function renderGuardrails(w, h, t) {
-    const speed = simParams.p1;
-    
-    const cx = w/2, cy = h/2;
-    
-    // Core
-    const risk = speed > 80 ? 10 : 2;
-    const shakeX = (Math.random()-0.5) * risk;
-    const shakeY = (Math.random()-0.5) * risk;
-    
-    ctx.fillStyle = speed > 80 ? '#ef4444' : '#06b6d4';
-    ctx.beginPath(); ctx.arc(cx+shakeX, cy+shakeY, 30, 0, Math.PI*2); ctx.fill();
-    
-    // Rings (Guardrails)
-    ctx.strokeStyle = '#fff';
-    ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.arc(cx, cy, 50, 0, Math.PI*2); ctx.stroke();
-    
-    if(speed > 80) {
-        ctx.fillStyle = '#ef4444';
-        ctx.fillText("WARNING: CONTAINMENT BREACH", cx, cy+80);
-    } else {
-        ctx.fillStyle = '#10b981';
-        ctx.fillText("Systems Stable", cx, cy+80);
-    }
-}
+        function renderAgents(w, h, t) {
+            const aiLevel = simParams.p1;
+            const numAgents = Math.floor(aiLevel / 1.5);
+            const numHumans = 40;
 
-function renderSpace(w, h, t) {
-    // Stars
-    for(let i=0; i<50; i++) {
-        const x = (i*37)%w;
-        const y = (i*103)%h;
-        ctx.fillStyle = '#fff';
-        ctx.fillRect(x, y + (simState.launch ? t*100 : 0) % h, 1, 1);
-    }
-    
-    // Ship
-    const cx = w/2;
-    const cy = simState.launch ? h/2 - t*50 : h - 50;
-    
-    if(cy > -50) {
-        ctx.fillStyle = '#fff';
-        ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx-10, cy+20); ctx.lineTo(cx+10, cy+20); ctx.fill();
-        
-        // Flame
-        if(simState.launch) {
+            if (!simState.agents) {
+                simState.agents = [];
+                // Humans
+                for (let i = 0; i < numHumans; i++) {
+                    simState.agents.push({ x: Math.random() * w, y: Math.random() * h, vx: (Math.random() - 0.5), vy: (Math.random() - 0.5), type: 'human' });
+                }
+                // AI (Pool)
+                for (let i = 0; i < 100; i++) {
+                    simState.agents.push({ x: Math.random() * w, y: Math.random() * h, vx: 0, vy: 0, type: 'ai', active: false });
+                }
+            }
+
+            // Activate AI based on slider
+            simState.agents.forEach((a, i) => {
+                if (a.type === 'ai') a.active = i < (numHumans + numAgents);
+            });
+
+            // Tasks
+            if (!simState.tasks) simState.tasks = [];
+            if (Math.random() < 0.05) simState.tasks.push({ x: Math.random() * w, y: Math.random() * h, life: 150 });
+
+            // Boids / Swarm Logic
+            simState.agents.forEach(a => {
+                if (a.type === 'ai' && !a.active) return;
+
+                // Physics
+                a.x += a.vx; a.y += a.vy;
+                if (a.x < 0 || a.x > w) a.vx *= -1;
+                if (a.y < 0 || a.y > h) a.vy *= -1;
+
+                // Behavior
+                if (a.type === 'ai') {
+                    // Seek Task
+                    if (simState.tasks.length > 0) {
+                        let closest = null;
+                        let minDist = Infinity;
+                        simState.tasks.forEach(task => {
+                            const d = (task.x - a.x) ** 2 + (task.y - a.y) ** 2;
+                            if (d < minDist) { minDist = d; closest = task; }
+                        });
+
+                        if (closest) {
+                            const angle = Math.atan2(closest.y - a.y, closest.x - a.x);
+                            a.vx += Math.cos(angle) * 0.5;
+                            a.vy += Math.sin(angle) * 0.5;
+                        }
+                    }
+                    // Friction
+                    a.vx *= 0.95; a.vy *= 0.95;
+
+                    ctx.fillStyle = '#06b6d4';
+                    ctx.beginPath();
+                    ctx.moveTo(a.x + a.vx * 2, a.y + a.vy * 2);
+                    ctx.lineTo(a.x - 5, a.y - 5);
+                    ctx.lineTo(a.x - 5, a.y + 5);
+                    ctx.fill();
+                } else {
+                    // Human - Browninan
+                    a.vx += (Math.random() - 0.5) * 0.2;
+                    a.vy += (Math.random() - 0.5) * 0.2;
+                    a.vx = Math.max(-2, Math.min(2, a.vx));
+                    a.vy = Math.max(-2, Math.min(2, a.vy));
+
+                    ctx.fillStyle = '#10b981';
+                    ctx.beginPath(); ctx.arc(a.x, a.y, 4, 0, Math.PI * 2); ctx.fill();
+                }
+            });
+
+            // Tasks
+            simState.tasks.forEach((task, i) => {
+                task.life--;
+                ctx.strokeStyle = `rgba(255, 255, 255, ${task.life / 150})`;
+                ctx.lineWidth = 2;
+                ctx.beginPath(); ctx.arc(task.x, task.y, 8, 0, Math.PI * 2); ctx.stroke();
+
+                // Collision
+                simState.agents.forEach(a => {
+                    if (a.type === 'ai' && a.active) {
+                        if ((a.x - task.x) ** 2 + (a.y - task.y) ** 2 < 400) {
+                            task.life = 0;
+                            // Particle burst
+                            ctx.fillStyle = '#fff';
+                            ctx.beginPath(); ctx.arc(task.x, task.y, 15, 0, Math.PI * 2); ctx.fill();
+                        }
+                    }
+                });
+            });
+            simState.tasks = simState.tasks.filter(t => t.life > 0);
+        }
+
+        function renderRobotics(w, h, t) {
+            const skill = simParams.p1;
+            const cx = w / 2;
+            const cy = h;
+
+            // Inverse Kinematics (Simple 2-joint)
+            const targetX = w / 2 + Math.sin(t * (0.5 + skill / 50)) * (w / 3);
+            const targetY = h / 2 + Math.cos(t * (0.8 + skill / 50)) * (h / 4);
+
+            // Arm lengths
+            const L1 = 200;
+            const L2 = 180;
+
+            // Calculate joint angles (simplified)
+            const dx = targetX - cx;
+            const dy = targetY - cy;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            const clampedDist = Math.min(dist, L1 + L2 - 1);
+
+            const a1 = Math.atan2(dy, dx);
+            const a2 = Math.acos((L1 * L1 + clampedDist * clampedDist - L2 * L2) / (2 * L1 * clampedDist));
+
+            const angle1 = a1 - a2;
+            const j1x = cx + Math.cos(angle1) * L1;
+            const j1y = cy + Math.sin(angle1) * L1;
+
+            // Draw Base
+            ctx.fillStyle = '#333';
+            ctx.fillRect(cx - 30, h - 20, 60, 20);
+
+            // Draw Arm 1
+            ctx.strokeStyle = '#555';
+            ctx.lineWidth = 12;
+            ctx.lineCap = 'round';
+            ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(j1x, j1y); ctx.stroke();
+
+            // Draw Arm 2
+            ctx.strokeStyle = '#777';
+            ctx.lineWidth = 8;
+            ctx.beginPath(); ctx.moveTo(j1x, j1y); ctx.lineTo(targetX, targetY); ctx.stroke();
+
+            // Joints
             ctx.fillStyle = '#f59e0b';
-            ctx.beginPath(); ctx.moveTo(cx-5, cy+20); ctx.lineTo(cx, cy+40 + Math.random()*10); ctx.lineTo(cx+5, cy+20); ctx.fill();
+            ctx.beginPath(); ctx.arc(cx, cy, 10, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(j1x, j1y, 8, 0, Math.PI * 2); ctx.fill();
+
+            // End Effector
+            const jitter = (100 - skill) * 0.8;
+            const jx = (Math.random() - 0.5) * jitter;
+            const jy = (Math.random() - 0.5) * jitter;
+
+            ctx.fillStyle = '#ef4444';
+            ctx.beginPath(); ctx.arc(targetX + jx, targetY + jy, 12, 0, Math.PI * 2); ctx.fill();
+
+            // Trail
+            if (!simState.trail) simState.trail = [];
+            simState.trail.push({ x: targetX + jx, y: targetY + jy, age: 20 });
+            simState.trail.forEach((p, i) => {
+                p.age--;
+                ctx.fillStyle = `rgba(239, 68, 68, ${p.age / 20})`;
+                ctx.beginPath(); ctx.arc(p.x, p.y, 2, 0, Math.PI * 2); ctx.fill();
+            });
+            simState.trail = simState.trail.filter(p => p.age > 0);
         }
-    } else {
-        ctx.fillStyle = '#fff';
-        ctx.font = '20px sans-serif';
-        ctx.fillText("ARCHIVE END.", w/2, h/2);
-    }
-}
-window.triggerLaunch = () => { simState.launch = true; }
 
+        function renderEnergy(w, h, t) {
+            const efficiency = simParams.p1;
+            const cellSize = 20;
+            const cols = Math.ceil(w / cellSize);
+            const rows = Math.ceil(h / cellSize);
 
-// BOOT
-init();
+            // Cellular Automaton Grid
+            if (!simState.grid || simState.grid.length !== cols * rows) {
+                simState.grid = new Array(cols * rows).fill(0);
+                // Seed center
+                const cx = Math.floor(cols / 2);
+                const cy = Math.floor(rows / 2);
+                simState.grid[cy * cols + cx] = 1;
+            }
 
-</script>
+            // Growth Logic (runs every few frames)
+            if (Math.floor(t * 60) % 5 === 0) {
+                const newGrid = [...simState.grid];
+                const growthRate = efficiency / 200; // 0 to 0.5 chance
+
+                for (let y = 0; y < rows; y++) {
+                    for (let x = 0; x < cols; x++) {
+                        const idx = y * cols + x;
+                        if (simState.grid[idx] === 1) {
+                            // Try to grow neighbors
+                            const neighbors = [
+                                idx - 1, idx + 1, idx - cols, idx + cols
+                            ];
+                            neighbors.forEach(n => {
+                                if (n >= 0 && n < newGrid.length && newGrid[n] === 0) {
+                                    if (Math.random() < growthRate) newGrid[n] = 1;
+                                }
+                            });
+                        }
+                    }
+                }
+                simState.grid = newGrid;
+            }
+
+            // Reset if efficiency is low
+            if (efficiency < 5) {
+                simState.grid.fill(0);
+                simState.grid[Math.floor(rows / 2) * cols + Math.floor(cols / 2)] = 1;
+            }
+
+            // Draw
+            let activeCount = 0;
+            for (let y = 0; y < rows; y++) {
+                for (let x = 0; x < cols; x++) {
+                    if (simState.grid[y * cols + x] === 1) {
+                        activeCount++;
+                        const px = x * cellSize;
+                        const py = y * cellSize;
+
+                        // Color gradient from center
+                        const dist = Math.hypot(x - cols / 2, y - rows / 2);
+                        const hue = 200 + (dist * 5) % 50;
+
+                        ctx.fillStyle = `hsl(${hue}, 70%, 50%)`;
+                        ctx.fillRect(px, py, cellSize - 1, cellSize - 1);
+
+                        // Sparkle
+                        if (Math.random() > 0.98) {
+                            ctx.fillStyle = '#fff';
+                            ctx.fillRect(px, py, cellSize - 1, cellSize - 1);
+                        }
+                    }
+                }
+            }
+
+            // Stats
+            const coverage = (activeCount / (cols * rows)) * 100;
+            const cost = Math.max(0, 100 - (coverage * 2)); // Cost drops as coverage grows
+
+            ctx.fillStyle = 'rgba(0,0,0,0.7)';
+            ctx.fillRect(20, h - 60, 300, 40);
+            ctx.fillStyle = '#fff';
+            ctx.font = '20px monospace';
+            ctx.fillText(`ENERGY COST: $${cost.toFixed(2)}/MWh`, 30, h - 35);
+        }
+
+        function renderBoom(w, h, t) {
+            const auto = simParams.p1;
+            const graphH = h * 0.6;
+            const graphY = 50;
+
+            // Grid
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(50, graphY + graphH); ctx.lineTo(w - 50, graphY + graphH); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(50, graphY + graphH); ctx.lineTo(50, graphY); ctx.stroke();
+
+            // GDP (Yellow)
+            ctx.strokeStyle = '#f59e0b';
+            ctx.lineWidth = 4;
+            ctx.shadowColor = '#f59e0b';
+            ctx.shadowBlur = 10;
+            ctx.beginPath();
+            ctx.moveTo(50, graphY + graphH);
+            for (let x = 50; x < w - 50; x += 5) {
+                const progress = (x - 50) / (w - 100);
+                const y = (graphY + graphH) - (progress * progress * 200) - (progress * auto * 2.5);
+                ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            // Wages (Green)
+            ctx.strokeStyle = '#10b981';
+            ctx.lineWidth = 4;
+            ctx.shadowColor = '#10b981';
+            ctx.shadowBlur = 10;
+            ctx.beginPath();
+            ctx.moveTo(50, graphY + graphH);
+            for (let x = 50; x < w - 50; x += 5) {
+                const progress = (x - 50) / (w - 100);
+                let y = (graphY + graphH) - (progress * 100);
+                if (progress > 0.6) y += (progress - 0.6) * 50 * (auto / 50);
+                ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            ctx.fillStyle = '#f59e0b'; ctx.font = 'bold 16px sans-serif'; ctx.fillText("GDP (Corporate Profits)", w - 250, graphY + graphH - 220);
+            ctx.fillStyle = '#10b981'; ctx.fillText("Median Wage", w - 250, graphY + graphH - 60);
+        }
+
+        function renderSqueeze(w, h, t) {
+            const pressure = simParams.p1;
+
+            if (!simState.workers) {
+                simState.workers = [];
+                for (let i = 0; i < 100; i++) {
+                    simState.workers.push({
+                        x: Math.random() * w,
+                        y: Math.random() * (h - 150),
+                        vy: 0,
+                        solvent: true,
+                        r: 4 + Math.random() * 4
+                    });
+                }
+            }
+
+            simState.workers.forEach((p, i) => {
+                // Insolvency check
+                const threshold = (100 - pressure) / 100;
+                const resilience = (i / 100);
+                p.solvent = resilience < threshold;
+
+                if (!p.solvent) {
+                    p.vy += 0.2; // Gravity
+                    p.y += p.vy;
+                } else {
+                    p.y += Math.sin(t + i) * 0.2; // Float
+                    p.vy = 0;
+                }
+
+                ctx.fillStyle = p.solvent ? '#10b981' : '#ef4444';
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
+            });
+
+            // "The Floor"
+            ctx.fillStyle = '#ef4444';
+            ctx.globalAlpha = 0.2;
+            ctx.fillRect(0, h, w, -50);
+            ctx.globalAlpha = 1;
+            ctx.fillStyle = '#fff';
+            ctx.textAlign = 'center';
+            ctx.fillText("INSOLVENCY ZONE", w / 2, h - 20);
+        }
+
+        function renderFreeze(w, h, t) {
+            const concentration = simParams.p1;
+            const particleCount = 100;
+            if (!simState.freeze) {
+                simState.freeze = Array.from({ length: particleCount }, () => ({
+                    x: Math.random() * w, y: Math.random() * h,
+                    vx: (Math.random() - 0.5) * 8, vy: (Math.random() - 0.5) * 8
+                }));
+            }
+
+            const speedMod = Math.max(0.00, 1 - (concentration / 95)); // Stops completely at high wealth
+
+            simState.freeze.forEach(p => {
+                p.x += p.vx * speedMod;
+                p.y += p.vy * speedMod;
+                if (p.x < 0 || p.x > w) p.vx *= -1;
+                if (p.y < 0 || p.y > h) p.vy *= -1;
+
+                const speed = Math.hypot(p.vx * speedMod, p.vy * speedMod);
+                const color = speed < 0.1 ? '#555' : '#10b981';
+
+                ctx.fillStyle = color;
+                ctx.beginPath(); ctx.arc(p.x, p.y, 3, 0, Math.PI * 2); ctx.fill();
+            });
+
+            // Black Hole of Wealth
+            const r = (concentration / 100) * 150;
+            ctx.fillStyle = 'rgba(245, 158, 11, 0.2)';
+            ctx.beginPath(); ctx.arc(w / 2, h / 2, r, 0, Math.PI * 2); ctx.fill();
+            ctx.strokeStyle = '#f59e0b';
+            ctx.beginPath(); ctx.arc(w / 2, h / 2, r, 0, Math.PI * 2); ctx.stroke();
+
+            if (concentration > 90) {
+                ctx.fillStyle = '#ef4444';
+                ctx.font = '30px monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText("VELOCITY: ZERO", w / 2, h / 2);
+            }
+        }
+
+        function renderCrash(w, h, t) {
+            const year = simParams.p1;
+            const progress = (year - 2040) / 30;
+            const isCrash = year >= 2060;
+
+            // Screen Shake
+            let sx = 0, sy = 0;
+            if (isCrash) {
+                sx = (Math.random() - 0.5) * 10;
+                sy = (Math.random() - 0.5) * 10;
+            }
+            ctx.save();
+            ctx.translate(sx, sy);
+
+            // Background Warning
+            if (isCrash) {
+                ctx.fillStyle = `rgba(239, 68, 68, ${0.1 + Math.sin(t * 10) * 0.05})`;
+                ctx.fillRect(0, 0, w, h);
+
+                // Glitch Lines
+                for (let i = 0; i < 10; i++) {
+                    ctx.fillStyle = 'rgba(255,255,255,0.1)';
+                    const y = Math.random() * h;
+                    ctx.fillRect(0, y, w, Math.random() * 5);
+                }
+            }
+
+            // Graph
+            const pad = 60;
+            const graphW = w - pad * 2;
+            const graphH = h - pad * 2;
+
+            // Axes
+            ctx.strokeStyle = '#555';
+            ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(pad, h - pad); ctx.lineTo(w - pad, h - pad); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(pad, h - pad); ctx.lineTo(pad, pad); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(w - pad, h - pad); ctx.lineTo(w - pad, pad); ctx.stroke();
+
+            // Productivity (Blue)
+            ctx.strokeStyle = '#06b6d4';
+            ctx.lineWidth = 4;
+            ctx.shadowColor = '#06b6d4'; ctx.shadowBlur = 10;
+            ctx.beginPath(); ctx.moveTo(pad, h - pad);
+
+            const currentX = pad + graphW * progress;
+            for (let x = pad; x <= currentX; x += 5) {
+                const p = (x - pad) / graphW;
+                const y = (h - pad) - (p * p * graphH); // Exponential
+                ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            // Employment (Green -> Red)
+            ctx.lineWidth = 4;
+            ctx.beginPath(); ctx.moveTo(pad, pad + graphH * 0.2);
+
+            for (let x = pad; x <= currentX; x += 5) {
+                const p = (x - pad) / graphW;
+                let y = pad + graphH * 0.2;
+
+                if (p > 0.6) { // Crash starts
+                    y += (p - 0.6) * graphH * 3; // Steep drop
+                    // Noise
+                    y += (Math.random() - 0.5) * 20;
+                    ctx.strokeStyle = '#ef4444'; // Turn red
+                    ctx.shadowColor = '#ef4444'; ctx.shadowBlur = 10;
+                } else {
+                    ctx.strokeStyle = '#10b981';
+                    ctx.shadowColor = '#10b981'; ctx.shadowBlur = 5;
+                }
+
+                // Break line if crashing
+                if (p > 0.6 && Math.random() > 0.9) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            // Labels
+            ctx.fillStyle = '#06b6d4'; ctx.font = 'bold 14px monospace'; ctx.fillText("PRODUCTIVITY (AI)", pad + 10, pad + 20);
+            ctx.fillStyle = isCrash ? '#ef4444' : '#10b981'; ctx.textAlign = 'right'; ctx.fillText("HUMAN EMPLOYMENT", w - pad - 10, pad + 20);
+
+            // CRASH OVERLAY
+            if (isCrash) {
+                ctx.textAlign = 'center';
+
+                // Big Text
+                ctx.save();
+                ctx.translate(w / 2, h / 2);
+                ctx.rotate((Math.random() - 0.5) * 0.1);
+                ctx.fillStyle = '#ef4444';
+                ctx.font = '900 60px sans-serif';
+                ctx.fillText("SYSTEM FAILURE", 0, 0);
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 24px monospace';
+                ctx.fillText("DEMAND COLLAPSE // UNEMPLOYMENT > 60%", 0, 40);
+                ctx.restore();
+
+                // Binary Rain
+                ctx.fillStyle = 'rgba(239, 68, 68, 0.5)';
+                ctx.font = '12px monospace';
+                for (let i = 0; i < 20; i++) {
+                    ctx.fillText(Math.random() > 0.5 ? "1" : "0", Math.random() * w, Math.random() * h);
+                }
+            }
+
+            ctx.restore();
+        }
+
+        function renderStimulus(w, h, t) {
+            const bx = w / 2 - 60;
+            const by = h / 2 - 50;
+            const bw = 120;
+            const bh = 150;
+
+            // Bucket
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 6;
+            ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(bx, by + bh); ctx.lineTo(bx + bw, by + bh); ctx.lineTo(bx + bw, by); ctx.stroke();
+
+            // Hole
+            ctx.clearRect(bx + 40, by + bh - 4, 40, 10);
+
+            if (simState.stimulusActive) {
+                simState.waterLevel = 150;
+                simState.stimulusActive = false;
+                simState.particles = [];
+                for (let i = 0; i < 50; i++) simState.particles.push({ x: bx + 10 + Math.random() * 100, y: by - 100 - Math.random() * 100, vy: 5 + Math.random() * 5 });
+            }
+
+            // Pouring in
+            if (simState.particles) {
+                ctx.fillStyle = '#10b981';
+                simState.particles.forEach(p => {
+                    p.y += p.vy;
+                    if (p.y > by + bh - simState.waterLevel) {
+                        // Hit water
+                    } else {
+                        ctx.beginPath(); ctx.arc(p.x, p.y, 4, 0, Math.PI * 2); ctx.fill();
+                    }
+                });
+            }
+
+            if (simState.waterLevel > 0) {
+                simState.waterLevel -= 3;
+                const level = simState.waterLevel;
+                ctx.fillStyle = '#10b981';
+                ctx.fillRect(bx + 5, by + bh - level, bw - 10, level);
+
+                // Leaking out
+                ctx.fillStyle = '#10b981';
+                ctx.fillRect(bx + 45, by + bh + 5, 30, h - (by + bh));
+
+                // Splash at bottom
+                ctx.fillStyle = 'rgba(16, 185, 129, 0.5)';
+                ctx.beginPath(); ctx.arc(bx + 60, h, 20 + Math.random() * 10, 0, Math.PI * 2); ctx.fill();
+            }
+
+            ctx.fillStyle = '#fff';
+            ctx.textAlign = 'center';
+            ctx.fillText("LABOR MARKET (BROKEN)", w / 2, by + bh + 40);
+        }
+        window.triggerStimulus = () => { simState.stimulusActive = true; }
+
+        function renderScale(w, h, t) {
+            // Circuit Rewiring
+            const shift = simParams.p1; // 0 to 100
+
+            const prodX = w * 0.2;
+            const consX = w * 0.8;
+            const laborY = h * 0.8;
+            const directY = h * 0.2;
+
+            // Nodes
+            ctx.fillStyle = '#f59e0b'; ctx.beginPath(); ctx.arc(prodX, h / 2, 30, 0, Math.PI * 2); ctx.fill(); // Prod
+            ctx.fillStyle = '#fff'; ctx.fillText("PRODUCTION", prodX, h / 2 + 50);
+
+            ctx.fillStyle = '#10b981'; ctx.beginPath(); ctx.arc(consX, h / 2, 30, 0, Math.PI * 2); ctx.fill(); // Cons
+            ctx.fillStyle = '#fff'; ctx.fillText("CONSUMPTION", consX, h / 2 + 50);
+
+            // Old Path (Labor)
+            ctx.strokeStyle = '#555'; ctx.lineWidth = 8;
+            ctx.beginPath(); ctx.moveTo(prodX, h / 2); ctx.lineTo(w / 2, laborY); ctx.lineTo(consX, h / 2); ctx.stroke();
+
+            // New Path (Direct) - Opacity based on shift
+            ctx.strokeStyle = `rgba(6, 182, 212, ${shift / 100})`;
+            ctx.lineWidth = 8 + (Math.sin(t * 10) * 2); // Pulse
+            ctx.shadowColor = '#06b6d4'; ctx.shadowBlur = shift / 5;
+            ctx.beginPath(); ctx.moveTo(prodX, h / 2); ctx.lineTo(w / 2, directY); ctx.lineTo(consX, h / 2); ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            // Electrons
+            if (Math.floor(t * 10) % 3 === 0) {
+                if (!simState.electrons) simState.electrons = [];
+                simState.electrons.push({ p: 0, path: shift > 50 ? 'new' : 'old' });
+            }
+
+            if (simState.electrons) {
+                simState.electrons.forEach((e, i) => {
+                    e.p += 0.02;
+                    let ex, ey;
+                    if (e.path === 'old') {
+                        if (e.p < 0.5) {
+                            ex = prodX + (w / 2 - prodX) * (e.p * 2);
+                            ey = h / 2 + (laborY - h / 2) * (e.p * 2);
+                        } else {
+                            ex = w / 2 + (consX - w / 2) * ((e.p - 0.5) * 2);
+                            ey = laborY + (h / 2 - laborY) * ((e.p - 0.5) * 2);
+                        }
+                        // Broken path effect
+                        if (shift > 20 && Math.random() > 0.8) ctx.fillStyle = 'red';
+                        else ctx.fillStyle = '#fff';
+                    } else {
+                        if (e.p < 0.5) {
+                            ex = prodX + (w / 2 - prodX) * (e.p * 2);
+                            ey = h / 2 + (directY - h / 2) * (e.p * 2);
+                        } else {
+                            ex = w / 2 + (consX - w / 2) * ((e.p - 0.5) * 2);
+                            ey = directY + (h / 2 - directY) * ((e.p - 0.5) * 2);
+                        }
+                        ctx.fillStyle = '#06b6d4';
+                    }
+
+                    ctx.beginPath(); ctx.arc(ex, ey, 6, 0, Math.PI * 2); ctx.fill();
+                    if (e.p >= 1) simState.electrons.splice(i, 1);
+                });
+            }
+        }
+
+        function renderDividend(w, h, t) {
+            const flow = simParams.p1;
+
+            // Factory
+            ctx.fillStyle = '#333'; ctx.fillRect(50, h / 2 - 40, 80, 80);
+            ctx.fillStyle = '#f59e0b'; ctx.fillText("ROBOTS", 60, h / 2 + 5);
+
+            // People
+            ctx.fillStyle = '#333'; ctx.fillRect(w - 130, h / 2 - 40, 80, 80);
+            ctx.fillStyle = '#10b981'; ctx.fillText("PEOPLE", w - 120, h / 2 + 5);
+
+            // Pipes
+            ctx.strokeStyle = '#444'; ctx.lineWidth = 20;
+            ctx.beginPath(); ctx.moveTo(130, h / 2); ctx.lineTo(w - 130, h / 2); ctx.stroke();
+
+            // Valve
+            ctx.fillStyle = flow > 0 ? '#10b981' : '#ef4444';
+            ctx.fillRect(w / 2 - 15, h / 2 - 30, 30, 60);
+
+            // Particles
+            if (flow > 0) {
+                if (Math.random() < flow / 50) {
+                    if (!simState.divs) simState.divs = [];
+                    simState.divs.push({ x: 130, y: h / 2 + (Math.random() - 0.5) * 10 });
+                }
+            }
+
+            if (simState.divs) {
+                simState.divs.forEach((d, i) => {
+                    d.x += 8;
+                    ctx.fillStyle = '#10b981';
+                    ctx.beginPath(); ctx.arc(d.x, d.y, 5, 0, Math.PI * 2); ctx.fill();
+                    if (d.x > w - 130) simState.divs.splice(i, 1);
+                });
+            }
+        }
+
+        function renderPurpose(w, h, t) {
+            const focus = simParams.p1; // 0 to 100
+
+            // Tree of Life
+            const cx = w / 2;
+            const cy = h;
+
+            // Recursively draw tree
+            function drawBranch(x, y, len, angle, width, depth) {
+                ctx.beginPath();
+                ctx.save();
+                ctx.strokeStyle = depth === 0 ? '#8b5a2b' : '#10b981';
+                ctx.fillStyle = '#10b981';
+                ctx.lineWidth = width;
+                ctx.translate(x, y);
+                ctx.rotate(angle * Math.PI / 180);
+                ctx.moveTo(0, 0);
+                ctx.lineTo(0, -len);
+                ctx.stroke();
+
+                if (len < 10) {
+                    // Leaf
+                    if (focus > 20) {
+                        ctx.beginPath(); ctx.arc(0, -len, 5, 0, Math.PI * 2); ctx.fill();
+                    }
+                    ctx.restore();
+                    return;
+                }
+
+                // Growth factor based on focus
+                const growth = Math.max(0.1, focus / 100);
+
+                if (depth < 4) { // Limit recursion
+                    drawBranch(0, -len, len * 0.7 * growth + 5, angle + 20 + Math.sin(t) * 5, width * 0.7, depth + 1);
+                    drawBranch(0, -len, len * 0.7 * growth + 5, angle - 20 + Math.sin(t + 1) * 5, width * 0.7, depth + 1);
+                }
+                ctx.restore();
+            }
+
+            drawBranch(cx, cy, 100, 0, 15, 0);
+
+            if (focus < 20) {
+                ctx.fillStyle = '#555';
+                ctx.textAlign = 'center';
+                ctx.fillText("The garden needs attention...", cx, h - 20);
+            }
+        }
+
+        function renderStatus(w, h, t) {
+            const mode = simParams.p1; // 0 Money, 1 Trust
+
+            const nodes = [
+                { id: 'rich', x: w / 2, y: h / 2 - 150, r: 40, color: '#f59e0b', label: "WEALTH" },
+                { id: 'trust', x: w / 2, y: h / 2 + 150, r: 40, color: '#06b6d4', label: "TRUST" },
+            ];
+
+            if (!simState.followers) {
+                simState.followers = [];
+                for (let i = 0; i < 30; i++) simState.followers.push({ x: w / 2 + (Math.random() - 0.5) * 400, y: h / 2 + (Math.random() - 0.5) * 400, r: 5 });
+            }
+
+            // Draw Links & Move
+            simState.followers.forEach(n => {
+                const target = mode < 0.5 ? nodes[0] : nodes[1];
+
+                // Move towards target
+                const dx = target.x - n.x;
+                const dy = target.y - n.y;
+                n.x += dx * 0.03;
+                n.y += dy * 0.03;
+
+                // Jitter
+                n.x += (Math.random() - 0.5) * 2;
+                n.y += (Math.random() - 0.5) * 2;
+
+                ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+                ctx.beginPath(); ctx.moveTo(n.x, n.y); ctx.lineTo(target.x, target.y); ctx.stroke();
+
+                ctx.fillStyle = '#fff';
+                ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2); ctx.fill();
+            });
+
+            nodes.forEach(n => {
+                ctx.fillStyle = n.color || '#fff';
+                ctx.shadowColor = n.color;
+                ctx.shadowBlur = 20;
+                ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2); ctx.fill();
+                ctx.shadowBlur = 0;
+
+                ctx.fillStyle = '#000';
+                ctx.textAlign = 'center';
+                ctx.font = 'bold 12px sans-serif';
+                ctx.fillText(n.label, n.x, n.y + 4);
+            });
+        }
+
+        function renderLand(w, h, t) {
+            const mode = simParams.p1; // 0 Market, 1 Access
+
+            // Map Zones
+            const zones = [
+                { id: 'A', color: '#f59e0b', x: 50, y: 50, w: w / 2 - 60, h: h / 2 - 60, label: "ZONE A (Beach)" },
+                { id: 'B', color: '#06b6d4', x: w / 2 + 10, y: 50, w: w / 2 - 60, h: h / 2 - 60, label: "ZONE B (City)" },
+                { id: 'C', color: '#10b981', x: 50, y: h / 2 + 10, w: w / 2 - 60, h: h / 2 - 60, label: "ZONE C (Forest)" },
+                { id: 'D', color: '#94a3b8', x: w / 2 + 10, y: h / 2 + 10, w: w / 2 - 60, h: h / 2 - 60, label: "ZONE D (Suburbs)" },
+            ];
+
+            zones.forEach(z => {
+                ctx.fillStyle = z.color;
+                ctx.globalAlpha = 0.2;
+                ctx.fillRect(z.x, z.y, z.w, z.h);
+                ctx.globalAlpha = 1;
+                ctx.strokeStyle = z.color;
+                ctx.strokeRect(z.x, z.y, z.w, z.h);
+                ctx.fillStyle = '#fff';
+                ctx.fillText(z.label, z.x + 20, z.y + 30);
+            });
+
+            // Player Dot
+            if (!simState.playerPos) simState.playerPos = { x: zones[3].x + 50, y: zones[3].y + 50, target: 3 };
+
+            if (mode === 1) {
+                // Access Mode: Move between zones
+                if (Math.floor(t) % 3 === 0 && Math.random() < 0.05) {
+                    const nextZoneIdx = Math.floor(Math.random() * 4);
+                    const z = zones[nextZoneIdx];
+                    simState.playerPos.targetX = z.x + z.w / 2 + (Math.random() - 0.5) * 50;
+                    simState.playerPos.targetY = z.y + z.h / 2 + (Math.random() - 0.5) * 50;
+                }
+
+                if (simState.playerPos.targetX) {
+                    simState.playerPos.x += (simState.playerPos.targetX - simState.playerPos.x) * 0.05;
+                    simState.playerPos.y += (simState.playerPos.targetY - simState.playerPos.y) * 0.05;
+                }
+            } else {
+                // Market Mode: Stuck in D
+                const z = zones[3];
+                simState.playerPos.x += (z.x + z.w / 2 - simState.playerPos.x) * 0.1;
+                simState.playerPos.y += (z.y + z.h / 2 - simState.playerPos.y) * 0.1;
+            }
+
+            ctx.fillStyle = '#fff';
+            ctx.shadowColor = '#fff'; ctx.shadowBlur = 10;
+            ctx.beginPath(); ctx.arc(simState.playerPos.x, simState.playerPos.y, 10, 0, Math.PI * 2); ctx.fill();
+            ctx.shadowBlur = 0;
+            ctx.fillText("YOU", simState.playerPos.x - 15, simState.playerPos.y - 20);
+        }
+
+        function renderGuardrails(w, h, t) {
+            const speed = simParams.p1;
+            const cx = w / 2, cy = h / 2;
+            const risk = speed > 80 ? (speed - 80) : 0;
+            const shakeX = (Math.random() - 0.5) * risk;
+            const shakeY = (Math.random() - 0.5) * risk;
+
+            // Core
+            ctx.fillStyle = speed > 80 ? '#ef4444' : '#06b6d4';
+            ctx.shadowColor = ctx.fillStyle;
+            ctx.shadowBlur = speed;
+            ctx.beginPath(); ctx.arc(cx + shakeX, cy + shakeY, 30 + (Math.sin(t * 10) * 5), 0, Math.PI * 2); ctx.fill();
+            ctx.shadowBlur = 0;
+
+            // Rings
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.arc(cx, cy, 60, t, t + Math.PI); ctx.stroke();
+            ctx.beginPath(); ctx.arc(cx, cy, 80, -t, -t + Math.PI); ctx.stroke();
+
+            if (speed > 80) {
+                ctx.fillStyle = '#ef4444';
+                ctx.textAlign = 'center';
+                ctx.font = 'bold 20px monospace';
+                ctx.fillText("WARNING: CONTAINMENT BREACH", cx, cy + 120);
+            } else {
+                ctx.fillStyle = '#10b981';
+                ctx.textAlign = 'center';
+                ctx.fillText("Systems Stable", cx, cy + 120);
+            }
+        }
+
+        function renderSpace(w, h, t) {
+            // Starfield (Parallax)
+            if (!simState.stars) {
+                simState.stars = Array.from({ length: 200 }, () => ({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    z: Math.random() * 2 + 0.5 // Speed/Depth
+                }));
+            }
+
+            // Move Stars
+            const speed = simState.launch ? (simState.launchTime * simState.launchTime * 0.5) : 0;
+            simState.stars.forEach(s => {
+                s.y += speed * s.z;
+                if (s.y > h) { s.y = 0; s.x = Math.random() * w; }
+
+                const brightness = Math.min(1, speed / 10 + 0.5);
+                ctx.fillStyle = `rgba(255, 255, 255, ${brightness})`;
+                ctx.fillRect(s.x, s.y, s.z, s.z * (1 + speed / 5)); // Stretch
+            });
+
+            // Earth (Fades out)
+            if (!simState.launch || simState.launchTime < 5) {
+                const earthY = h + (simState.launch ? simState.launchTime * 50 : 0);
+                ctx.fillStyle = '#1d4ed8'; // Ocean
+                ctx.beginPath(); ctx.arc(w / 2, earthY + 800, 900, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = '#10b981'; // Land
+                ctx.beginPath(); ctx.arc(w / 2 + 100, earthY + 800, 850, 0, Math.PI * 2); ctx.fill();
+            }
+
+            // Ship
+            const shipY = simState.launch ? (h - 100 - simState.launchTime * 2) : (h - 100);
+            const shake = simState.launch ? (Math.random() - 0.5) * Math.min(5, simState.launchTime) : 0;
+
+            ctx.save();
+            ctx.translate(w / 2 + shake, Math.min(h / 2, shipY)); // Camera follows ship after midpoint
+
+            // Rocket Body
+            ctx.fillStyle = '#e2e8f0';
+            ctx.beginPath();
+            ctx.moveTo(0, -40);
+            ctx.quadraticCurveTo(15, -10, 15, 30);
+            ctx.lineTo(-15, 30);
+            ctx.quadraticCurveTo(-15, -10, 0, -40);
+            ctx.fill();
+
+            // Fins
+            ctx.fillStyle = '#ef4444';
+            ctx.beginPath(); ctx.moveTo(-15, 10); ctx.lineTo(-25, 40); ctx.lineTo(-15, 30); ctx.fill();
+            ctx.beginPath(); ctx.moveTo(15, 10); ctx.lineTo(25, 40); ctx.lineTo(15, 30); ctx.fill();
+
+            // Window
+            ctx.fillStyle = '#06b6d4';
+            ctx.beginPath(); ctx.arc(0, -10, 5, 0, Math.PI * 2); ctx.fill();
+
+            // Engine Plume
+            if (simState.launch) {
+                simState.launchTime += 0.05;
+
+                ctx.fillStyle = '#f59e0b';
+                ctx.shadowColor = '#f59e0b'; ctx.shadowBlur = 20;
+                ctx.beginPath();
+                ctx.moveTo(-10, 30);
+                ctx.lineTo(0, 30 + 50 + Math.random() * 50 + (simState.launchTime * 10));
+                ctx.lineTo(10, 30);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+
+                // Particles
+                for (let i = 0; i < 5; i++) {
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                    ctx.beginPath();
+                    ctx.arc((Math.random() - 0.5) * 20, 30 + Math.random() * 50, Math.random() * 5, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+            ctx.restore();
+
+            // Text Overlay
+            if (!simState.launch) {
+                ctx.fillStyle = '#fff';
+                ctx.textAlign = 'center';
+                ctx.font = '16px monospace';
+                ctx.fillText("AWAITING LAUNCH COMMAND", w / 2, h / 2 - 60);
+            } else if (simState.launchTime > 10) {
+                ctx.fillStyle = `rgba(255, 255, 255, ${Math.min(1, (simState.launchTime - 10) / 5)})`;
+                ctx.textAlign = 'center';
+                ctx.font = '30px monospace';
+                ctx.fillText("DESTINATION: ALPHA CENTAURI", w / 2, h / 2);
+            }
+        }
+
+        window.triggerLaunch = () => {
+            simState.launch = true;
+            simState.launchTime = 0;
+        }
+    </script>
 </body>
+
 </html>
