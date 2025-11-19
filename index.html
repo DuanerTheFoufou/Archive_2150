@@ -623,19 +623,20 @@
                 },
                 {
                     year: "2042",
-                    title: isEn ? "The Energy Zero" : "Le Zéro Énergétique",
-                    subtitle: isEn ? "Infinite Power" : "Énergie Infinie",
+                    year: "2042",
+                    title: isEn ? "The Infrastructure Build-Out" : "Le Déploiement de l'Infrastructure",
+                    subtitle: isEn ? "AI builds its own body" : "L'IA construit son propre corps",
                     text: isEn ?
-                        `<p>Robots needed energy, and they found a way to make it themselves. Self-replicating solar arrays began to cover the deserts.</p>
-                        <p>With AI optimizing the grid and robots manufacturing panels for the cost of raw sand, the price of energy collapsed to near zero.</p>
+                        `<p>AI didn't just optimize code; it optimized the physical world. It built the factories, the mines, and the power grids needed to sustain itself and humanity.</p>
+                        <p>The logic was simple: Solar was the only energy source that scaled indefinitely with zero marginal cost. The machines carpeted the deserts, not for profit, but for efficiency.</p>
                         <p>This was the "Energy Zero" event. Suddenly, the cost to run a factory, desalinate water, or smelt steel became negligible. The only limit was raw materials.</p>
-                        <p><strong>Simulation:</strong> Solar Bloom. Watch the arrays multiply organically like a living organism, driving energy costs to zero.</p>` :
-                        `<p>Les robots avaient besoin d'énergie, et ils ont trouvé un moyen de la produire eux-mêmes. Des panneaux solaires auto-réplicants ont commencé à couvrir les déserts.</p>
-                        <p>Avec l'IA optimisant le réseau et les robots fabriquant des panneaux pour le prix du sable, le coût de l'énergie s'est effondré.</p>
-                        <p>C'était l'événement "Zéro Énergétique". Soudain, le coût pour faire tourner une usine ou dessaler l'eau est devenu négligeable.</p>
-                        <p><strong>Simulation :</strong> Floraison Solaire. Regardez les panneaux se multiplier organiquement comme un organisme vivant, réduisant les coûts énergétiques à zéro.</p>`,
+                        <p><strong>Simulation:</strong> Infrastructure Growth. Watch the AI construct a self-sustaining energy grid. Increase <em>Construction Speed</em> to see the network expand.</p>` :
+                        `<p>L'IA n'a pas seulement optimisé le code ; elle a optimisé le monde physique. Elle a construit les usines, les mines et les réseaux électriques.</p>
+                        <p>La logique était simple : le solaire était la seule source d'énergie évolutive à coût marginal nul. Les machines ont tapissé les déserts par souci d'efficacité.</p>
+                        <p>C'était l'événement "Zéro Énergétique". Soudain, le coût de l'énergie est devenu négligeable.</p>
+                        <p><strong>Simulation :</strong> Croissance de l'infrastructure. Regardez l'IA construire un réseau énergétique autonome. Augmentez la <em>Vitesse de Construction</em> pour voir le réseau s'étendre.</p>`,
                     simId: "ENERGY",
-                    controls: `<label>${translations[lang].controls.solar} <span id="val1">Low</span></label><input type="range" min="0" max="100" value="10" oninput="updateParam('p1', this.value)">`
+                    controls: `<label>${translations[lang].controls.solar || "Construction Speed"} <span id="val1">Low</span></label><input type="range" min="0" max="100" value="10" oninput="updateParam('p1', this.value)">`
                 },
                 {
                     year: "2045-2050",
@@ -733,18 +734,18 @@
                 {
                     year: "2065",
                     title: isEn ? "The Dividend Compact" : "Le Pacte du Dividende",
-                    subtitle: isEn ? "Dividend Socialism" : "Socialisme de Dividende",
+                    subtitle: isEn ? "Deflation funds the Dividend" : "La Déflation finance le Dividende",
                     text: isEn ?
-                        `<p>The treaty was signed. The "Automation Tax" was implemented. Every robot hour worked generated a micro-tax.</p>
-                        <p>This revenue was not filtered through bureaucracy; it was distributed instantly to every citizen as a <strong>Universal Dividend</strong>.</p>
-                        <p>This wasn't charity. It was the fuel injection required to make the machine run. The moment the dividend went live, the warehouses opened, goods moved, and the economy restarted.</p>
-                        <p><strong>Simulation:</strong> The Flow. Open the valve to let the "Tax Particles" flow from the factories to the people, restarting the cycle.</p>` :
-                        `<p>Le traité a été signé. La "Taxe d'Automatisation" a été mise en œuvre. Chaque heure de robot générait une micro-taxe.</p>
-                        <p>Ce revenu était distribué instantanément à chaque citoyen sous forme de <strong>Dividende Universel</strong>.</p>
-                        <p>Ce n'était pas de la charité. C'était l'injection de carburant nécessaire pour faire tourner la machine.</p>
-                        <p><strong>Simulation :</strong> Le Flux. Ouvrez la vanne pour laisser les "Particules de Taxe" couler des usines vers les gens, redémarrant le cycle.</p>`,
+                        `<p>The math was simple: <strong>More Robots = Cheaper Goods = Negative Inflation.</strong></p>
+                        <p>As AI production scaled, the cost of living collapsed. The "Automation Tax" captured this surplus value and redistributed it.</p>
+                        <p>It wasn't just free money; it was the purchasing power generated by a trillion-robot workforce. The more they built, the more we received.</p>
+                        <p><strong>Simulation:</strong> The Deflationary Dividend. Advance the timeline. Watch as the Robot Army grows, driving costs to zero and the Universal Dividend to the moon.</p>` :
+                        `<p>Les mathématiques étaient simples : <strong>Plus de Robots = Biens Moins Chers = Inflation Négative.</strong></p>
+                        <p>Alors que la production de l'IA augmentait, le coût de la vie s'effondrait. La "Taxe d'Automatisation" capturait cette plus-value et la redistribuait.</p>
+                        <p>Ce n'était pas seulement de l'argent gratuit ; c'était le pouvoir d'achat généré par une main-d'œuvre de mille milliards de robots.</p>
+                        <p><strong>Simulation :</strong> Le Dividende Déflationniste. Avancez la chronologie. Regardez l'Armée de Robots grandir, poussant les coûts vers zéro et le Dividende Universel vers la lune.</p>`,
                     simId: "DIVIDEND",
-                    controls: `<label>${translations[lang].controls.valve} <span id="val1">Closed</span></label><input type="range" min="0" max="100" value="0" oninput="updateParam('p1', this.value)">`
+                    controls: `<label>${translations[lang].controls.timeline || "Timeline"} <span id="val1">2060</span></label><input type="range" min="2060" max="2100" value="2060" oninput="updateParam('p1', this.value)">`
                 },
                 {
                     year: "2070",
@@ -792,17 +793,18 @@
                 {
                     year: "2090",
                     title: isEn ? "Allocation of the Scarce" : "Allocation de la Rareté",
-                    subtitle: isEn ? "Land and Reality" : "Terre et Réalité",
+                    subtitle: isEn ? "The Universal Lottery" : "La Loterie Universelle",
                     text: isEn ?
-                        `<p>Robots could print goods, but they couldn't print Land. Who gets the beach house?</p>
-                        <p>We moved to "Access Rights." Instead of buying land forever, you gained time-limited leases based on lotteries and merit.</p>
-                        <p>This prevented a permanent aristocracy. It ensured that the "Prime Reality" circulated among the population rather than being hoarded.</p>
-                        <p><strong>Simulation:</strong> The Zone Lottery. You are the Green Dot. Watch your location shift between Zones A (Beach), B (City), C (Forest), and D (Suburbs) over time.</p>` :
-                        `<p>Les robots pouvaient imprimer des biens, mais pas la Terre. Qui obtient la maison sur la plage ?</p>
-                        <p>Nous sommes passés aux "Droits d'Accès". Au lieu d'acheter la terre pour toujours, vous obteniez des baux limités dans le temps.</p>
-                        <p><strong>Simulation :</strong> La Loterie de Zone. Vous êtes le point vert. Regardez votre emplacement changer entre les zones A (Plage), B (Ville), C (Forêt) et D (Banlieue) au fil du temps.</p>`,
+                        `<p>In a world of post-scarcity, the only thing that remained scarce was <strong>Prime Location</strong>.</p>
+                        <p>The solution was the <strong>Universal Rotation Lottery</strong>. Ownership was abolished. Instead, every citizen holds a temporary 3-year lease.</p>
+                        <p>When the cycle ends, the system randomizes. You might live in a beachside villa today and a dense urban hub tomorrow. It is the ultimate equalizer.</p>
+                        <p><strong>Simulation:</strong> The Lottery. Watch as the population is periodically shuffled between Housing Tiers, ensuring fair access to the best zones over time.</p>` :
+                        `<p>Dans un monde de post-rareté, la seule chose qui restait rare était <strong>l'Emplacement de Choix</strong>.</p>
+                        <p>La solution fut la <strong>Loterie de Rotation Universelle</strong>. La propriété a été abolie. Au lieu de cela, chaque citoyen détient un bail temporaire de 3 ans.</p>
+                        <p>À la fin du cycle, le système randomise. C'est l'égaliseur ultime.</p>
+                        <p><strong>Simulation :</strong> La Loterie. Regardez la population être périodiquement mélangée entre les niveaux de logement.</p>`,
                     simId: "LAND",
-                    controls: `<button class="nav-btn" onclick="updateParam('p1', 0)">${translations[lang].controls.market}</button> <button class="nav-btn" onclick="updateParam('p1', 1)">${translations[lang].controls.access}</button>`
+                    controls: "" // No controls, self-playing
                 },
                 {
                     year: "2100",
@@ -1422,84 +1424,226 @@
         }
 
         function renderEnergy(w, h, t) {
-            const efficiency = simParams.p1;
-            const cellSize = 20;
-            const cols = Math.ceil(w / cellSize);
-            const rows = Math.ceil(h / cellSize);
+            const speed = simParams.p1; // 0 to 100
+            const cx = w / 2;
+            const cy = h / 2;
 
-            // Cellular Automaton Grid
-            if (!simState.grid || simState.grid.length !== cols * rows) {
-                simState.grid = new Array(cols * rows).fill(0);
-                // Seed center
-                const cx = Math.floor(cols / 2);
-                const cy = Math.floor(rows / 2);
-                simState.grid[cy * cols + cx] = 1;
+            // Initialize State
+            if (!simState.energy) {
+                simState.energy = {
+                    nodes: [{ x: cx, y: cy, q: 0, r: 0 }], // Axial coordinates for Hex
+                    drones: [],
+                    sparks: [],
+                    pulses: [],
+                    hexSize: 25,
+                    lastSpawn: 0
+                };
+                // Spawn initial drone swarm
+                for (let i = 0; i < 20; i++) {
+                    simState.energy.drones.push({
+                        x: cx + (Math.random() - 0.5) * 100,
+                        y: cy + (Math.random() - 0.5) * 100,
+                        vx: 0, vy: 0,
+                        state: 'IDLE',
+                        target: null
+                    });
+                }
+            }
+            const state = simState.energy;
+            const hexSize = state.hexSize;
+
+            // --- LOGIC ---
+
+            // 1. Drone Management (Spawn & Assign)
+            // Maintain drone count based on slider
+            const targetDrones = 20 + Math.floor(speed);
+            if (state.drones.length < targetDrones && Math.random() < 0.1) {
+                state.drones.push({ x: cx, y: cy, vx: (Math.random() - 0.5) * 5, vy: (Math.random() - 0.5) * 5, state: 'IDLE' });
             }
 
-            // Growth Logic (runs every few frames)
-            if (Math.floor(t * 60) % 5 === 0) {
-                const newGrid = [...simState.grid];
-                const growthRate = efficiency / 200; // 0 to 0.5 chance
+            // Assign Tasks
+            state.drones.forEach(d => {
+                if (d.state === 'IDLE') {
+                    // Orbit behavior
+                    const dx = d.x - cx;
+                    const dy = d.y - cy;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const angle = Math.atan2(dy, dx) + 0.05; // Orbit
+                    const targetDist = 100 + Math.sin(t * 2) * 50;
 
-                for (let y = 0; y < rows; y++) {
-                    for (let x = 0; x < cols; x++) {
-                        const idx = y * cols + x;
-                        if (simState.grid[idx] === 1) {
-                            // Try to grow neighbors
-                            const neighbors = [
-                                idx - 1, idx + 1, idx - cols, idx + cols
-                            ];
-                            neighbors.forEach(n => {
-                                if (n >= 0 && n < newGrid.length && newGrid[n] === 0) {
-                                    if (Math.random() < growthRate) newGrid[n] = 1;
-                                }
+                    d.vx += (Math.cos(angle) * targetDist - dx) * 0.01;
+                    d.vy += (Math.sin(angle) * targetDist - dy) * 0.01;
+
+                    // Chance to build if we have speed
+                    if (Math.random() < (speed / 5000)) {
+                        // Find a spot
+                        const parent = state.nodes[Math.floor(Math.random() * state.nodes.length)];
+                        // Hex neighbors (axial)
+                        const neighbors = [
+                            { q: 1, r: 0 }, { q: 1, r: -1 }, { q: 0, r: -1 },
+                            { q: -1, r: 0 }, { q: -1, r: 1 }, { q: 0, r: 1 }
+                        ];
+                        const dir = neighbors[Math.floor(Math.random() * 6)];
+                        const nq = parent.q + dir.q;
+                        const nr = parent.r + dir.r;
+
+                        // Check if exists
+                        const exists = state.nodes.some(n => n.q === nq && n.r === nr);
+                        if (!exists) {
+                            // Calc pixel pos
+                            const nx = cx + hexSize * (3 / 2 * nq);
+                            const ny = cy + hexSize * (Math.sqrt(3) / 2 * nq + Math.sqrt(3) * nr);
+
+                            // Check bounds
+                            if (nx > 50 && nx < w - 50 && ny > 50 && ny < h - 50) {
+                                d.state = 'BUILD';
+                                d.target = { x: nx, y: ny, q: nq, r: nr };
+                            }
+                        }
+                    }
+                } else if (d.state === 'BUILD') {
+                    // Fly to target
+                    const dx = d.target.x - d.x;
+                    const dy = d.target.y - d.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 5) {
+                        // Build!
+                        state.nodes.push({ x: d.target.x, y: d.target.y, q: d.target.q, r: d.target.r });
+                        d.state = 'IDLE';
+
+                        // Sparks
+                        for (let i = 0; i < 8; i++) {
+                            state.sparks.push({
+                                x: d.target.x, y: d.target.y,
+                                vx: (Math.random() - 0.5) * 10, vy: (Math.random() - 0.5) * 10,
+                                life: 20
                             });
                         }
+
+                        // Pulse back to center
+                        state.pulses.push({
+                            x: d.target.x, y: d.target.y,
+                            tx: cx, ty: cy,
+                            life: 1
+                        });
+
+                    } else {
+                        d.vx += dx * 0.05;
+                        d.vy += dy * 0.05;
                     }
                 }
-                simState.grid = newGrid;
+
+                // Physics
+                d.x += d.vx;
+                d.y += d.vy;
+                d.vx *= 0.9;
+                d.vy *= 0.9;
+            });
+
+            // 2. Energy Pulses (Flow from nodes to center)
+            if (Math.random() < 0.1) {
+                const start = state.nodes[Math.floor(Math.random() * state.nodes.length)];
+                state.pulses.push({ x: start.x, y: start.y, tx: cx, ty: cy, life: 1 });
             }
 
-            // Reset if efficiency is low
-            if (efficiency < 5) {
-                simState.grid.fill(0);
-                simState.grid[Math.floor(rows / 2) * cols + Math.floor(cols / 2)] = 1;
+            // Reset if too big
+            if (state.nodes.length > 400) {
+                state.nodes = [{ x: cx, y: cy, q: 0, r: 0 }];
+                state.sparks = [];
             }
 
-            // Draw
-            let activeCount = 0;
-            for (let y = 0; y < rows; y++) {
-                for (let x = 0; x < cols; x++) {
-                    if (simState.grid[y * cols + x] === 1) {
-                        activeCount++;
-                        const px = x * cellSize;
-                        const py = y * cellSize;
+            // --- RENDER ---
 
-                        // Color gradient from center
-                        const dist = Math.hypot(x - cols / 2, y - rows / 2);
-                        const hue = 200 + (dist * 5) % 50;
-
-                        ctx.fillStyle = `hsl(${hue}, 70%, 50%)`;
-                        ctx.fillRect(px, py, cellSize - 1, cellSize - 1);
-
-                        // Sparkle
-                        if (Math.random() > 0.98) {
-                            ctx.fillStyle = '#fff';
-                            ctx.fillRect(px, py, cellSize - 1, cellSize - 1);
-                        }
+            // Draw Connections (Hex Grid)
+            ctx.strokeStyle = 'rgba(6, 182, 212, 0.15)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            state.nodes.forEach(n => {
+                // Connect to neighbors
+                // Simple distance check is faster than hex math for drawing
+                state.nodes.forEach(n2 => {
+                    const d = Math.hypot(n.x - n2.x, n.y - n2.y);
+                    if (d < hexSize * 2.1 && d > 1) {
+                        ctx.moveTo(n.x, n.y);
+                        ctx.lineTo(n2.x, n2.y);
                     }
+                });
+            });
+            ctx.stroke();
+
+            // Draw Pulses
+            ctx.strokeStyle = '#f59e0b';
+            ctx.lineWidth = 2;
+            ctx.shadowColor = '#f59e0b';
+            ctx.shadowBlur = 10;
+            ctx.beginPath();
+            state.pulses.forEach(p => {
+                p.x += (p.tx - p.x) * 0.1;
+                p.y += (p.ty - p.y) * 0.1;
+                if (Math.hypot(p.x - p.tx, p.y - p.ty) < 5) p.life = 0;
+
+                ctx.moveTo(p.x, p.y);
+                ctx.lineTo(p.x - (p.tx - p.x) * 0.2, p.y - (p.ty - p.y) * 0.2); // Trail
+            });
+            ctx.stroke();
+            state.pulses = state.pulses.filter(p => p.life > 0);
+            ctx.shadowBlur = 0;
+
+            // Draw Nodes (Solar Panels)
+            state.nodes.forEach(n => {
+                ctx.fillStyle = '#0f172a';
+                ctx.strokeStyle = '#06b6d4';
+                ctx.lineWidth = 1;
+
+                // Hexagon shape
+                ctx.beginPath();
+                for (let i = 0; i < 6; i++) {
+                    const angle = 2 * Math.PI / 6 * i;
+                    const x_i = n.x + hexSize * 0.8 * Math.cos(angle);
+                    const y_i = n.y + hexSize * 0.8 * Math.sin(angle);
+                    if (i === 0) ctx.moveTo(x_i, y_i); else ctx.lineTo(x_i, y_i);
                 }
-            }
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+
+                // Inner glow
+                ctx.fillStyle = 'rgba(6, 182, 212, 0.3)';
+                ctx.fill();
+            });
+
+            // Draw Drones
+            state.drones.forEach(d => {
+                ctx.fillStyle = '#fff';
+                ctx.shadowColor = '#fff';
+                ctx.shadowBlur = 5;
+                ctx.beginPath(); ctx.arc(d.x, d.y, 2, 0, Math.PI * 2); ctx.fill();
+                // Thruster trail
+                ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+                ctx.beginPath(); ctx.moveTo(d.x, d.y); ctx.lineTo(d.x - d.vx * 2, d.y - d.vy * 2); ctx.stroke();
+            });
+            ctx.shadowBlur = 0;
+
+            // Draw Sparks
+            ctx.fillStyle = '#f59e0b';
+            state.sparks.forEach(s => {
+                s.x += s.vx; s.y += s.vy; s.life--;
+                ctx.globalAlpha = s.life / 20;
+                ctx.beginPath(); ctx.arc(s.x, s.y, 1, 0, Math.PI * 2); ctx.fill();
+            });
+            ctx.globalAlpha = 1;
+            state.sparks = state.sparks.filter(s => s.life > 0);
 
             // Stats
-            const coverage = (activeCount / (cols * rows)) * 100;
-            const cost = Math.max(0, 100 - (coverage * 2)); // Cost drops as coverage grows
-
-            ctx.fillStyle = 'rgba(0,0,0,0.7)';
-            ctx.fillRect(20, h - 60, 300, 40);
-            ctx.fillStyle = '#fff';
-            ctx.font = '20px monospace';
-            ctx.fillText(`ENERGY COST: $${cost.toFixed(2)}/MWh`, 30, h - 35);
+            ctx.fillStyle = 'rgba(0,0,0,0.8)';
+            ctx.fillRect(20, h - 70, 320, 50);
+            ctx.fillStyle = '#06b6d4';
+            ctx.font = 'bold 16px monospace';
+            ctx.fillText(`GRID CAPACITY: ${(state.nodes.length * 1.2).toFixed(1)} GW`, 30, h - 45);
+            ctx.fillStyle = '#f59e0b';
+            ctx.font = '12px monospace';
+            ctx.fillText(`ACTIVE DRONES: ${state.drones.length}`, 30, h - 25);
         }
 
         function renderBoom(w, h, t) {
@@ -1980,40 +2124,133 @@
         }
 
         function renderDividend(w, h, t) {
-            const flow = simParams.p1;
+            const year = parseInt(simParams.p1); // 2060 to 2100
+            const progress = (year - 2060) / 40; // 0 to 1
+            const cx = w / 2;
+            const cy = h / 2;
 
-            // Factory
-            ctx.fillStyle = '#333'; ctx.fillRect(50, h / 2 - 40, 80, 80);
-            ctx.fillStyle = '#f59e0b'; ctx.fillText("ROBOTS", 60, h / 2 + 5);
+            // 1. BACKGROUND: ROBOT ARMY
+            // A grid of dots/icons that gets denser and brighter
+            const rows = 10;
+            const cols = 20;
+            const robotCount = Math.floor(progress * 200); // 0 to 200 robots
 
-            // People
-            ctx.fillStyle = '#333'; ctx.fillRect(w - 130, h / 2 - 40, 80, 80);
-            ctx.fillStyle = '#10b981'; ctx.fillText("PEOPLE", w - 120, h / 2 + 5);
+            ctx.fillStyle = '#111';
+            ctx.fillRect(0, 0, w, h); // Dark bg
 
-            // Pipes
-            ctx.strokeStyle = '#444'; ctx.lineWidth = 20;
-            ctx.beginPath(); ctx.moveTo(130, h / 2); ctx.lineTo(w - 130, h / 2); ctx.stroke();
+            for (let i = 0; i < 200; i++) {
+                const r = Math.floor(i / cols);
+                const c = i % cols;
+                const x = 50 + c * ((w - 100) / cols);
+                const y = 50 + r * ((h / 2) / rows);
 
-            // Valve
-            ctx.fillStyle = flow > 0 ? '#10b981' : '#ef4444';
-            ctx.fillRect(w / 2 - 15, h / 2 - 30, 30, 60);
+                if (i < robotCount) {
+                    // Active Robot
+                    ctx.fillStyle = '#f59e0b';
+                    ctx.shadowColor = '#f59e0b';
+                    ctx.shadowBlur = 5;
+                    ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI * 2); ctx.fill();
+                    ctx.shadowBlur = 0;
 
-            // Particles
-            if (flow > 0) {
-                if (Math.random() < flow / 50) {
-                    if (!simState.divs) simState.divs = [];
-                    simState.divs.push({ x: 130, y: h / 2 + (Math.random() - 0.5) * 10 });
+                    // Connection lines (Network effect)
+                    if (Math.random() < 0.05) {
+                        ctx.strokeStyle = 'rgba(245, 158, 11, 0.2)';
+                        ctx.lineWidth = 1;
+                        ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + (Math.random() - 0.5) * 50, y + (Math.random() - 0.5) * 50); ctx.stroke();
+                    }
+                } else {
+                    // Inactive/Ghost
+                    ctx.fillStyle = '#333';
+                    ctx.beginPath(); ctx.arc(x, y, 2, 0, Math.PI * 2); ctx.fill();
                 }
             }
 
-            if (simState.divs) {
-                simState.divs.forEach((d, i) => {
-                    d.x += 8;
-                    ctx.fillStyle = '#10b981';
-                    ctx.beginPath(); ctx.arc(d.x, d.y, 5, 0, Math.PI * 2); ctx.fill();
-                    if (d.x > w - 130) simState.divs.splice(i, 1);
+            // 2. METRICS (The Graphs)
+            const graphY = h * 0.6;
+            const graphH = h * 0.3;
+            const graphW = w * 0.4;
+
+            // A. COST OF LIVING (Plummeting)
+            const costVal = 1.0 - (progress * 0.95); // Drops to 5%
+            const costH = costVal * graphH;
+
+            ctx.fillStyle = '#ef4444';
+            ctx.fillRect(50, graphY + (graphH - costH), 40, costH);
+            ctx.textAlign = 'center';
+            ctx.font = '12px monospace';
+            ctx.fillStyle = '#fff';
+            ctx.fillText("COSTS", 70, graphY + graphH + 20);
+            ctx.fillText((costVal * 100).toFixed(0) + "%", 70, graphY + (graphH - costH) - 10);
+
+            // B. DIVIDEND (Skyrocketing)
+            // Exponential growth
+            const divVal = 0.1 + (Math.pow(progress, 2) * 0.9);
+            const divH = divVal * graphH;
+
+            // Animated Bar
+            const barX = w - 100;
+            const barW = 60;
+
+            // Gradient
+            const grad = ctx.createLinearGradient(0, graphY + graphH - divH, 0, graphY + graphH);
+            grad.addColorStop(0, '#10b981');
+            grad.addColorStop(1, '#064e3b');
+
+            ctx.fillStyle = grad;
+            ctx.shadowColor = '#10b981';
+            ctx.shadowBlur = 20 * progress;
+            ctx.fillRect(barX, graphY + graphH - divH, barW, divH);
+            ctx.shadowBlur = 0;
+
+            ctx.fillStyle = '#fff';
+            ctx.fillText("DIVIDEND", barX + barW / 2, graphY + graphH + 20);
+            ctx.font = 'bold 16px monospace';
+            ctx.fillText("$" + (1000 + progress * 9000).toFixed(0), barX + barW / 2, graphY + graphH - divH - 10);
+
+            // 3. FLOW PARTICLES (Transfer)
+            // Particles flying from Robot Army to Dividend Bar
+            if (progress > 0.1) {
+                if (!simState.divFlow) simState.divFlow = [];
+
+                // Spawn based on progress
+                const spawnRate = progress * 0.5;
+                if (Math.random() < spawnRate) {
+                    simState.divFlow.push({
+                        x: w * 0.3 + (Math.random() * w * 0.2), // Start from robot area
+                        y: h * 0.2 + (Math.random() * h * 0.2),
+                        vx: (Math.random() * 2) + 2,
+                        vy: (Math.random() * 2) + 2,
+                        life: 1.0
+                    });
+                }
+
+                ctx.fillStyle = '#10b981';
+                simState.divFlow.forEach((p, i) => {
+                    // Move towards Dividend Bar top
+                    const targetX = barX + barW / 2;
+                    const targetY = graphY + graphH - divH;
+
+                    const dx = targetX - p.x;
+                    const dy = targetY - p.y;
+
+                    p.x += dx * 0.05;
+                    p.y += dy * 0.05;
+
+                    // Draw
+                    ctx.beginPath(); ctx.arc(p.x, p.y, 3, 0, Math.PI * 2); ctx.fill();
+
+                    // Kill if close
+                    if (Math.abs(dx) < 10 && Math.abs(dy) < 10) {
+                        simState.divFlow.splice(i, 1);
+                    }
                 });
             }
+
+            // 4. YEAR DISPLAY
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 40px monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText(year, w / 2, h - 30);
         }
 
         function renderPurpose(w, h, t) {
@@ -2380,86 +2617,303 @@
         };
 
         function renderLand(w, h, t) {
-            const mode = simParams.p1; // 0 Market, 1 Access
+            // AUTO-LOTTERY SIMULATION
+            // Concept: 3 Tiers. Agents live there. Every few seconds, they shuffle.
 
-            // Map Zones
-            const zones = [
-                { id: 'A', color: '#f59e0b', x: 50, y: 50, w: w / 2 - 60, h: h / 2 - 60, label: "ZONE A (Beach)" },
-                { id: 'B', color: '#06b6d4', x: w / 2 + 10, y: 50, w: w / 2 - 60, h: h / 2 - 60, label: "ZONE B (City)" },
-                { id: 'C', color: '#10b981', x: 50, y: h / 2 + 10, w: w / 2 - 60, h: h / 2 - 60, label: "ZONE C (Forest)" },
-                { id: 'D', color: '#94a3b8', x: w / 2 + 10, y: h / 2 + 10, w: w / 2 - 60, h: h / 2 - 60, label: "ZONE D (Suburbs)" },
+            const bottomPadding = 200;
+            const usableH = h - bottomPadding - 50;
+
+            // Initialize State
+            if (!simState.land || simState.land.grid) { // Reset if coming from Fluid Reality
+                simState.land = {
+                    households: [],
+                    phase: 'DWELL', // DWELL, SHUFFLE, MIGRATE
+                    timer: 0,
+                    cycle: 0
+                };
+                // Create 100 households
+                for (let i = 0; i < 100; i++) {
+                    // Initial random distribution
+                    const tier = Math.floor(Math.random() * 3) + 1;
+                    simState.land.households.push({
+                        id: i,
+                        tier: tier,
+                        targetTier: tier,
+                        x: Math.random() * w,
+                        y: Math.random() * h, // Will be fixed by logic
+                        color: '#fff'
+                    });
+                }
+            }
+            const state = simState.land;
+
+            // Tiers Layout
+            const tiers = [
+                { id: 1, label: "TIER 1: LUXURY (Beach/Sky)", color: '#f59e0b', y: 50, h: usableH * 0.25 },
+                { id: 2, label: "TIER 2: PREMIUM (City)", color: '#06b6d4', y: 50 + usableH * 0.28, h: usableH * 0.3 },
+                { id: 3, label: "TIER 3: STANDARD (Metro)", color: '#10b981', y: 50 + usableH * 0.61, h: usableH * 0.39 }
             ];
 
-            zones.forEach(z => {
-                ctx.fillStyle = z.color;
-                ctx.globalAlpha = 0.2;
-                ctx.fillRect(z.x, z.y, z.w, z.h);
-                ctx.globalAlpha = 1;
-                ctx.strokeStyle = z.color;
-                ctx.strokeRect(z.x, z.y, z.w, z.h);
-                ctx.fillStyle = '#fff';
-                ctx.fillText(z.label, z.x + 20, z.y + 30);
-            });
+            // Logic
+            state.timer += 0.016;
 
-            // Player Dot
-            if (!simState.playerPos) simState.playerPos = { x: zones[3].x + 50, y: zones[3].y + 50, target: 3 };
-
-            if (mode === 1) {
-                // Access Mode: Move between zones
-                if (Math.floor(t) % 3 === 0 && Math.random() < 0.05) {
-                    const nextZoneIdx = Math.floor(Math.random() * 4);
-                    const z = zones[nextZoneIdx];
-                    simState.playerPos.targetX = z.x + z.w / 2 + (Math.random() - 0.5) * 50;
-                    simState.playerPos.targetY = z.y + z.h / 2 + (Math.random() - 0.5) * 50;
+            if (state.phase === 'DWELL') {
+                if (state.timer > 3.0) {
+                    state.phase = 'SHUFFLE';
+                    state.timer = 0;
                 }
+            } else if (state.phase === 'SHUFFLE') {
+                if (state.timer > 1.0) {
+                    state.phase = 'MIGRATE';
+                    state.timer = 0;
+                    state.cycle++;
 
-                if (simState.playerPos.targetX) {
-                    simState.playerPos.x += (simState.playerPos.targetX - simState.playerPos.x) * 0.05;
-                    simState.playerPos.y += (simState.playerPos.targetY - simState.playerPos.y) * 0.05;
+                    // RANDOMIZE TIERS
+                    state.households.forEach(p => {
+                        // Weighted random for realism? Or pure random?
+                        // Let's do pure random to emphasize the "Lottery" aspect
+                        const r = Math.random();
+                        if (r < 0.15) p.targetTier = 1; // 15% Luxury
+                        else if (r < 0.45) p.targetTier = 2; // 30% Premium
+                        else p.targetTier = 3; // 55% Standard
+                    });
                 }
-            } else {
-                // Market Mode: Stuck in D
-                const z = zones[3];
-                simState.playerPos.x += (z.x + z.w / 2 - simState.playerPos.x) * 0.1;
-                simState.playerPos.y += (z.y + z.h / 2 - simState.playerPos.y) * 0.1;
+            } else if (state.phase === 'MIGRATE') {
+                if (state.timer > 2.0) {
+                    state.phase = 'DWELL';
+                    state.timer = 0;
+                    state.households.forEach(p => p.tier = p.targetTier);
+                }
             }
 
-            ctx.fillStyle = '#fff';
-            ctx.shadowColor = '#fff'; ctx.shadowBlur = 10;
-            ctx.beginPath(); ctx.arc(simState.playerPos.x, simState.playerPos.y, 10, 0, Math.PI * 2); ctx.fill();
+            // Update Particles
+            state.households.forEach(p => {
+                const currentTierObj = tiers.find(t => t.id === (state.phase === 'MIGRATE' ? p.targetTier : p.tier));
+
+                // Target Position
+                let tx = p.x;
+                let ty = p.y;
+
+                if (state.phase === 'DWELL' || state.phase === 'SHUFFLE') {
+                    // Drift within current tier
+                    const tierObj = tiers.find(t => t.id === p.tier);
+                    // Keep x within bounds
+                    if (!p.tx || Math.random() < 0.02) {
+                        p.tx = 50 + Math.random() * (w - 100);
+                        p.ty = tierObj.y + 20 + Math.random() * (tierObj.h - 40);
+                    }
+                    tx = p.tx;
+                    ty = p.ty;
+                } else if (state.phase === 'MIGRATE') {
+                    // Move to new tier
+                    const tierObj = tiers.find(t => t.id === p.targetTier);
+                    if (!p.txMigrate || Math.random() < 0.05) {
+                        p.txMigrate = 50 + Math.random() * (w - 100);
+                        p.tyMigrate = tierObj.y + 20 + Math.random() * (tierObj.h - 40);
+                    }
+                    tx = p.txMigrate;
+                    ty = p.tyMigrate;
+                }
+
+                // Move
+                const speed = (state.phase === 'MIGRATE') ? 0.1 : 0.02;
+                p.x += (tx - p.x) * speed;
+                p.y += (ty - p.y) * speed;
+            });
+
+            // --- RENDER ---
+
+            // Draw Tiers
+            tiers.forEach(tier => {
+                // Glow
+                const grad = ctx.createLinearGradient(0, tier.y, 0, tier.y + tier.h);
+                grad.addColorStop(0, tier.color + '11');
+                grad.addColorStop(1, tier.color + '00');
+                ctx.fillStyle = grad;
+                ctx.fillRect(20, tier.y, w - 40, tier.h);
+
+                // Border
+                ctx.strokeStyle = tier.color;
+                ctx.lineWidth = 1;
+                ctx.globalAlpha = 0.5;
+                ctx.strokeRect(20, tier.y, w - 40, tier.h);
+                ctx.globalAlpha = 1;
+
+                // Label
+                ctx.fillStyle = tier.color;
+                ctx.font = 'bold 12px monospace';
+                ctx.fillText(tier.label, 30, tier.y + 20);
+            });
+
+            // Draw Households
+            state.households.forEach(p => {
+                // Color
+                let color = '#fff';
+                const tierId = (state.phase === 'MIGRATE') ? p.targetTier : p.tier;
+                const tierObj = tiers.find(t => t.id === tierId);
+                if (tierObj) color = tierObj.color;
+
+                ctx.fillStyle = color;
+                ctx.shadowColor = color;
+                ctx.shadowBlur = 10;
+
+                ctx.beginPath();
+                if (tierId === 1) { // Triangle
+                    ctx.moveTo(p.x, p.y - 5); ctx.lineTo(p.x + 5, p.y + 5); ctx.lineTo(p.x - 5, p.y + 5);
+                } else if (tierId === 2) { // Square
+                    ctx.rect(p.x - 4, p.y - 4, 8, 8);
+                } else { // Circle
+                    ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+                }
+                ctx.fill();
+            });
             ctx.shadowBlur = 0;
-            ctx.fillText("YOU", simState.playerPos.x - 15, simState.playerPos.y - 20);
+
+            // Status Text
+            ctx.fillStyle = '#fff';
+            ctx.textAlign = 'center';
+            ctx.font = '16px monospace';
+
+            let status = `CYCLE ${state.cycle}: STABLE OCCUPANCY`;
+            if (state.phase === 'SHUFFLE') {
+                ctx.fillStyle = '#f59e0b';
+                status = "⚠ LEASE EXPIRING... INITIATING LOTTERY ⚠";
+            } else if (state.phase === 'MIGRATE') {
+                ctx.fillStyle = '#06b6d4';
+                status = ">>> RE-ALLOCATION IN PROGRESS >>>";
+            }
+
+            ctx.fillText(status, w / 2, h - bottomPadding + 30);
+
         }
 
         function renderGuardrails(w, h, t) {
-            const speed = simParams.p1;
-            const cx = w / 2, cy = h / 2;
-            const risk = speed > 80 ? (speed - 80) : 0;
-            const shakeX = (Math.random() - 0.5) * risk;
-            const shakeY = (Math.random() - 0.5) * risk;
+            const autonomy = simParams.p1; // 0 to 100
+            const cx = w / 2;
+            const cy = h / 2;
 
-            // Core
-            ctx.fillStyle = speed > 80 ? '#ef4444' : '#06b6d4';
-            ctx.shadowColor = ctx.fillStyle;
-            ctx.shadowBlur = speed;
-            ctx.beginPath(); ctx.arc(cx + shakeX, cy + shakeY, 30 + (Math.sin(t * 10) * 5), 0, Math.PI * 2); ctx.fill();
-            ctx.shadowBlur = 0;
+            // Risk Calculation
+            const riskLevel = Math.max(0, (autonomy - 70) / 30); // 0 to 1 starting at 70
+            const isCritical = autonomy > 90;
 
-            // Rings
-            ctx.strokeStyle = '#fff';
-            ctx.lineWidth = 2;
-            ctx.beginPath(); ctx.arc(cx, cy, 60, t, t + Math.PI); ctx.stroke();
-            ctx.beginPath(); ctx.arc(cx, cy, 80, -t, -t + Math.PI); ctx.stroke();
+            // Shake Effect (Global if critical)
+            let sx = 0, sy = 0;
+            if (riskLevel > 0) {
+                const shake = riskLevel * 5;
+                sx = (Math.random() - 0.5) * shake;
+                sy = (Math.random() - 0.5) * shake;
+            }
 
-            if (speed > 80) {
+            ctx.save();
+            ctx.translate(cx + sx, cy + sy);
+
+            // 1. THE CORE (AI Intelligence)
+            // Pulsing size based on autonomy
+            const corePulse = Math.sin(t * (5 + riskLevel * 20)) * (5 + riskLevel * 10);
+            const coreSize = 40 + (autonomy / 100) * 20 + corePulse;
+
+            // Core Color: Cyan -> Orange -> Red
+            let coreColor = `hsl(180, 100%, 50%)`; // Cyan
+            if (autonomy > 50) coreColor = `hsl(40, 100%, 60%)`; // Orange
+            if (autonomy > 85) coreColor = `hsl(0, 100%, 50%)`; // Red
+
+            // Core Glow
+            const grad = ctx.createRadialGradient(0, 0, coreSize * 0.2, 0, 0, coreSize);
+            grad.addColorStop(0, '#fff');
+            grad.addColorStop(0.4, coreColor);
+            grad.addColorStop(1, 'transparent');
+
+            ctx.fillStyle = grad;
+            ctx.beginPath(); ctx.arc(0, 0, coreSize, 0, Math.PI * 2); ctx.fill();
+
+            // Inner Core Noise (Data processing)
+            ctx.fillStyle = '#fff';
+            for (let i = 0; i < 5; i++) {
+                const a = Math.random() * Math.PI * 2;
+                const r = Math.random() * coreSize * 0.5;
+                ctx.beginPath(); ctx.arc(Math.cos(a) * r, Math.sin(a) * r, 2, 0, Math.PI * 2); ctx.fill();
+            }
+
+            // 2. CONTAINMENT SHIELDS (Rings)
+            // 3 Layers of shields
+            const shields = [
+                { r: 80, speed: 1, segments: 3, width: 4 },
+                { r: 110, speed: -0.8, segments: 5, width: 2 },
+                { r: 140, speed: 0.5, segments: 12, width: 6 }
+            ];
+
+            shields.forEach((shield, i) => {
+                ctx.rotate(t * shield.speed * (1 + riskLevel * 2)); // Spin faster with risk
+
+                // Shield Integrity (Flicker/Break if high risk)
+                const integrity = 1 - (riskLevel * 0.8 * Math.random());
+
+                ctx.strokeStyle = (isCritical && Math.random() < 0.3) ? '#ef4444' : '#06b6d4';
+                ctx.lineWidth = shield.width;
+                ctx.lineCap = 'round';
+
+                const segAngle = (Math.PI * 2) / shield.segments;
+                const gap = 0.2 + riskLevel * 0.5; // Gaps widen with risk
+
+                for (let j = 0; j < shield.segments; j++) {
+                    if (Math.random() > integrity) continue; // Segment failed
+
+                    ctx.beginPath();
+                    ctx.arc(0, 0, shield.r, j * segAngle, j * segAngle + segAngle - gap);
+                    ctx.stroke();
+                }
+
+                ctx.rotate(-t * shield.speed * (1 + riskLevel * 2)); // Reset rotation for next
+            });
+
+            // 3. BREACH PARTICLES
+            if (riskLevel > 0) {
+                const pCount = Math.floor(riskLevel * 20);
                 ctx.fillStyle = '#ef4444';
-                ctx.textAlign = 'center';
-                ctx.font = 'bold 20px monospace';
-                ctx.fillText("WARNING: CONTAINMENT BREACH", cx, cy + 120);
+                for (let i = 0; i < pCount; i++) {
+                    const a = Math.random() * Math.PI * 2;
+                    const r = 60 + Math.random() * 100;
+                    const size = Math.random() * 4;
+                    ctx.beginPath(); ctx.arc(Math.cos(a) * r, Math.sin(a) * r, size, 0, Math.PI * 2); ctx.fill();
+                }
+            }
+
+            ctx.restore();
+
+            // 4. HUD / STATUS TEXT
+            ctx.textAlign = 'center';
+            ctx.font = 'bold 16px monospace';
+
+            // Bar at bottom
+            const barW = 300;
+            const barH = 10;
+            const barX = cx - barW / 2;
+            const barY = cy + 180;
+
+            // Background
+            ctx.fillStyle = '#333';
+            ctx.fillRect(barX, barY, barW, barH);
+
+            // Fill
+            ctx.fillStyle = coreColor;
+            ctx.fillRect(barX, barY, barW * (autonomy / 100), barH);
+
+            // Text
+            ctx.fillStyle = '#fff';
+            ctx.fillText(`AUTONOMY LEVEL: ${autonomy}%`, cx, barY - 15);
+
+            if (isCritical) {
+                if (Math.floor(t * 5) % 2 === 0) { // Flash
+                    ctx.fillStyle = '#ef4444';
+                    ctx.font = 'bold 24px monospace';
+                    ctx.fillText("⚠ CONTAINMENT FAILURE IMMINENT ⚠", cx, barY + 40);
+                }
+            } else if (riskLevel > 0) {
+                ctx.fillStyle = '#f59e0b';
+                ctx.fillText("WARNING: STABILITY COMPROMISED", cx, barY + 40);
             } else {
-                ctx.fillStyle = '#10b981';
-                ctx.textAlign = 'center';
-                ctx.fillText("Systems Stable", cx, cy + 120);
+                ctx.fillStyle = '#06b6d4';
+                ctx.fillText("SYSTEMS NOMINAL", cx, barY + 40);
             }
         }
 
