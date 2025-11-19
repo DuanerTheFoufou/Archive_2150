@@ -760,22 +760,34 @@
                         <p>Nous avons dû nous réinventer culturellement. L'art, la philosophie, le sport et la communauté sont devenus les nouveaux critères de succès.</p>
                         <p><strong>Simulation :</strong> L'Arbre de Vie. Allouez du temps à la "Communauté", à "l'Art" et au "Sport" pour voir l'arbre grandir. Négligez-les, et il se flétrit.</p>`,
                     simId: "PURPOSE",
-                    controls: `<label>${translations[lang].controls.focus} <span id="val1">0%</span></label><input type="range" min="0" max="100" value="0" oninput="updateParam('p1', this.value)">`
+                    controls: `
+                        <label>${translations[lang].controls.focus} <span id="val1">0%</span></label>
+                        <input type="range" min="0" max="100" value="0" oninput="updateParam('p1', this.value)">
+                        <button class="nav-btn" style="margin-top:10px; width:100%; font-size:0.8rem" onclick="simState.seed = Date.now()">↻ New Tree Variant</button>
+                    `
                 },
                 {
                     year: "2080",
                     title: isEn ? "The Legitimacy Economy" : "L'Économie de la Légitimité",
                     subtitle: isEn ? "Status without Wealth" : "Statut sans Richesse",
                     text: isEn ?
-                        `<p>In 2080, being a "Billionaire" became meaningless. If everyone can afford a Ferrari (printed by robots), the Ferrari loses status.</p>
-                        <p>Status shifted to things robots couldn't produce: <strong>Legitimacy, Trust, and Attention.</strong></p>
-                        <p>The leaders of this era weren't the richest; they were the most trusted. Social capital replaced financial capital as the primary power structure.</p>
-                        <p><strong>Simulation:</strong> Network Graph. Watch how the nodes gravitate towards the "High Trust" leader rather than the "High Wealth" leader.</p>` :
-                        `<p>En 2080, être "Milliardaire" n'avait plus de sens. Si tout le monde peut s'offrir une Ferrari (imprimée par des robots), la Ferrari perd son statut.</p>
-                        <p>Le statut s'est déplacé vers ce que les robots ne pouvaient pas produire : <strong>Légitimité, Confiance et Attention.</strong></p>
-                        <p><strong>Simulation :</strong> Graphe de réseau. Observez comment les nœuds gravitent vers le leader "Haute Confiance" plutôt que vers le leader "Haute Richesse".</p>`,
+                        `<p>In 2080, the scarcity wasn't money—it was <strong>Trust</strong>.</p>
+                        <p>With AI generating infinite content, reality became a battlefield. Narratives acted like viruses, competing for host minds in a "Darwinian War of Ideas."</p>
+                        <p>To maintain Legitimacy, leaders had to balance <strong>Reach</strong> (how far the message spreads) with <strong>Stickiness</strong> (how deeply it convinces).</p>
+                        <p><strong>Simulation:</strong> The Narrative War. You are the <span style="color:#06b6d4">Blue Narrative</span>. Defeat the <span style="color:#ef4444">Red Misinformation</span>. Adjust your viral parameters to win the crowd (Grey).</p>` :
+                        `<p>En 2080, la rareté n'était pas l'argent, mais la <strong>Confiance</strong>.</p>
+                        <p>Les récits agissaient comme des virus, s'affrontant pour les esprits dans une "Guerre Darwinienne des Idées".</p>
+                        <p><strong>Simulation :</strong> La Guerre Narrative. Vous êtes le <span style="color:#06b6d4">Récit Bleu</span>. Vainquez la <span style="color:#ef4444">Désinformation Rouge</span>. Ajustez vos paramètres viraux pour gagner la foule.</p>`,
                     simId: "STATUS",
-                    controls: `<label>${translations[lang].controls.metric} <span id="val1">Money</span></label><input type="range" min="0" max="1" step="1" value="0" oninput="updateParam('p1', this.value)">`
+                    controls: `
+                        <label>${translations[lang].controls.reach || "Viral Reach"} <span id="val1">Medium</span></label>
+                        <input type="range" min="10" max="100" value="50" oninput="updateParam('p1', this.value)">
+                        
+                        <label>${translations[lang].controls.stickiness || "Stickiness"} <span id="val2">Medium</span></label>
+                        <input type="range" min="10" max="100" value="50" oninput="updateParam('p2', this.value)">
+                        
+                        <button class="nav-btn" style="margin-top:10px; width:100%; font-size:0.8rem" onclick="resetStatusSim()">↻ Deploy New Narrative</button>
+                    `
                 },
                 {
                     year: "2090",
@@ -992,89 +1004,95 @@
         // --- SIMULATIONS ---
 
         function renderSpark(w, h, t) {
-            const density = simParams.p1;
-            const count = Math.floor(density * 2) + 20;
+            const density = simParams.p1; // 0 to 100
+            const nodeCount = Math.floor(20 + (density / 100) * 80); // 20 to 100 nodes
+            const connectDist = 150;
 
-            if (!simState.nodes || simState.nodes.length !== count) {
-                simState.nodes = Array.from({ length: count }, () => ({
+            // Initialize Pool
+            if (!simState.nodes || simState.nodes.length !== 100) {
+                simState.nodes = Array.from({ length: 100 }, () => ({
                     x: Math.random() * w,
                     y: Math.random() * h,
-                    z: Math.random() * 200 - 100, // 3D depth
-                    vx: (Math.random() - 0.5) * 0.5,
-                    vy: (Math.random() - 0.5) * 0.5
+                    vx: (Math.random() - 0.5) * 0.8,
+                    vy: (Math.random() - 0.5) * 0.8,
+                    size: 1.5 + Math.random() * 2,
+                    phase: Math.random() * Math.PI * 2
                 }));
                 simState.pulses = [];
             }
 
-            // 3D Rotation
-            const angle = t * 0.2;
-            const cx = w / 2, cy = h / 2;
-
-            // Draw Nodes
+            // Update Nodes
             simState.nodes.forEach(n => {
-                // Rotate
-                let x = n.x - cx;
-                let z = n.z;
-                let x1 = x * Math.cos(angle) - z * Math.sin(angle);
-                let z1 = z * Math.cos(angle) + x * Math.sin(angle);
+                n.x += n.vx;
+                n.y += n.vy;
 
-                // Camera at z = -1000
-                let fov = 1000;
-                let scale = fov / (fov + z1);
+                // Wrap
+                if (n.x < -50) n.x = w + 50;
+                if (n.x > w + 50) n.x = -50;
+                if (n.y < -50) n.y = h + 50;
+                if (n.y > h + 50) n.y = -50;
 
-                if (scale < 0) return; // Behind camera
-
-                let px = cx + x1 * scale;
-                let py = cy + (n.y - cy) * scale;
-
-                n.px = px; n.py = py; n.scale = scale; // Store projected
-
-                // Move
-                n.x += n.vx; n.y += n.vy;
-                if (n.x < 0) n.x = w; if (n.x > w) n.x = 0;
-                if (n.y < 0) n.y = h; if (n.y > h) n.y = 0;
-
-                ctx.fillStyle = `rgba(6, 182, 212, ${Math.min(1, scale)})`;
-                ctx.beginPath(); ctx.arc(px, py, 2 * scale, 0, Math.PI * 2); ctx.fill();
+                // Pulse Size
+                n.currentSize = n.size + Math.sin(t * 2 + n.phase) * 0.5;
             });
 
-            // Connections & Pulses
-            ctx.lineWidth = 1;
-            for (let i = 0; i < simState.nodes.length; i++) {
-                for (let j = i + 1; j < simState.nodes.length; j++) {
-                    const n1 = simState.nodes[i];
+            // Draw Connections & Pulses
+            ctx.lineWidth = 1.5;
+            for (let i = 0; i < nodeCount; i++) {
+                const n1 = simState.nodes[i];
+                for (let j = i + 1; j < nodeCount; j++) {
                     const n2 = simState.nodes[j];
-                    const dist = (n1.x - n2.x) ** 2 + (n1.y - n2.y) ** 2;
+                    const dx = n1.x - n2.x;
+                    const dy = n1.y - n2.y;
+                    const dist = Math.hypot(dx, dy);
 
-                    if (dist < 15000) {
-                        const alpha = (1 - dist / 15000) * n1.scale;
-                        ctx.strokeStyle = `rgba(6, 182, 212, ${alpha * 0.3})`;
-                        ctx.beginPath(); ctx.moveTo(n1.px, n1.py); ctx.lineTo(n2.px, n2.py); ctx.stroke();
+                    if (dist < connectDist) {
+                        // Line
+                        const alpha = (1 - dist / connectDist);
+                        ctx.strokeStyle = `rgba(6, 182, 212, ${alpha * 0.5})`;
+                        ctx.beginPath(); ctx.moveTo(n1.x, n1.y); ctx.lineTo(n2.x, n2.y); ctx.stroke();
 
                         // Spawn Pulse
-                        if (Math.random() < 0.001 * density) {
+                        if (Math.random() < 0.0005 * density) {
                             simState.pulses.push({
-                                p: 0,
                                 from: n1,
                                 to: n2,
-                                speed: 0.02 + Math.random() * 0.05
+                                p: 0,
+                                speed: 0.02 + Math.random() * 0.03,
+                                life: 1
                             });
                         }
                     }
                 }
             }
 
-            // Render Pulses
+            // Draw Pulses
             ctx.fillStyle = '#fff';
+            ctx.shadowColor = '#fff';
+            ctx.shadowBlur = 6;
             simState.pulses.forEach((p, i) => {
                 p.p += p.speed;
-                const x = p.from.px + (p.to.px - p.from.px) * p.p;
-                const y = p.from.py + (p.to.py - p.from.py) * p.p;
+                if (p.p >= 1) { p.life = 0; return; }
 
-                ctx.beginPath(); ctx.arc(x, y, 2 * p.from.scale, 0, Math.PI * 2); ctx.fill();
+                const x = p.from.x + (p.to.x - p.from.x) * p.p;
+                const y = p.from.y + (p.to.y - p.from.y) * p.p;
 
-                if (p.p >= 1) simState.pulses.splice(i, 1);
+                ctx.globalAlpha = p.life;
+                ctx.beginPath(); ctx.arc(x, y, 2, 0, Math.PI * 2); ctx.fill();
+                ctx.globalAlpha = 1;
             });
+            simState.pulses = simState.pulses.filter(p => p.life > 0);
+            ctx.shadowBlur = 0;
+
+            // Draw Nodes
+            for (let i = 0; i < nodeCount; i++) {
+                const n = simState.nodes[i];
+                ctx.fillStyle = '#06b6d4';
+                ctx.shadowColor = '#06b6d4';
+                ctx.shadowBlur = 15;
+                ctx.beginPath(); ctx.arc(n.x, n.y, n.currentSize, 0, Math.PI * 2); ctx.fill();
+            }
+            ctx.shadowBlur = 0;
         }
 
         function renderAgents(w, h, t) {
@@ -1173,23 +1191,197 @@
         }
 
         function renderRobotics(w, h, t) {
-            const skill = simParams.p1;
+            const precision = simParams.p1; // 0 to 100
             const cx = w / 2;
-            const cy = h;
+            const cy = h / 2 + 100; // Moved up significantly
 
-            // Inverse Kinematics (Simple 2-joint)
-            const targetX = w / 2 + Math.sin(t * (0.5 + skill / 50)) * (w / 3);
-            const targetY = h / 2 + Math.cos(t * (0.8 + skill / 50)) * (h / 4);
+            // Initialize State
+            if (!simState.robot) {
+                simState.robot = {
+                    state: 'IDLE', // IDLE, MOVE_TO_PICK, GRAB, MOVE_TO_DROP, DROP
+                    target: { x: cx, y: cy - 200 },
+                    current: { x: cx, y: cy - 200 },
+                    heldBall: null,
+                    timer: 0,
+                    balls: [], // Balls in the air/bowls
+                    score: 0
+                };
+                // Pre-fill source bowl
+                for (let i = 0; i < 5; i++) {
+                    simState.robot.balls.push({
+                        x: cx - 150 + (Math.random() - 0.5) * 40,
+                        y: cy - 20 - Math.random() * 30,
+                        vx: 0, vy: 0,
+                        state: 'SOURCE' // SOURCE, HELD, DROPPED, DEST
+                    });
+                }
+            }
 
-            // Arm lengths
-            const L1 = 200;
-            const L2 = 180;
+            const robot = simState.robot;
+            const speed = 0.05 + (precision / 100) * 0.15; // Speed based on precision
+            const jitterAmt = Math.max(0, (100 - precision) * 0.8); // More jitter
 
-            // Calculate joint angles (simplified)
-            const dx = targetX - cx;
-            const dy = targetY - cy;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            const clampedDist = Math.min(dist, L1 + L2 - 1);
+            // Bowl Positions
+            const sourcePos = { x: cx - 150, y: cy - 50 };
+            const destPos = { x: cx + 150, y: cy - 50 };
+
+            // --- LOGIC ---
+
+            // State Machine
+            switch (robot.state) {
+                case 'IDLE':
+                    robot.state = 'MOVE_TO_PICK';
+                    // Find a ball in source
+                    const targetBall = robot.balls.find(b => b.state === 'SOURCE');
+                    if (targetBall) {
+                        robot.target = { x: targetBall.x, y: targetBall.y - 10 };
+                    } else {
+                        // Spawn new ball if empty
+                        robot.balls.push({ x: sourcePos.x, y: sourcePos.y - 100, vx: 0, vy: 0, state: 'SOURCE' });
+                        robot.state = 'IDLE'; // Wait for it to fall
+                    }
+                    break;
+
+                case 'MOVE_TO_PICK':
+                    if (dist(robot.current, robot.target) < 15) {
+                        robot.state = 'GRAB';
+                        robot.timer = 0;
+                    }
+                    break;
+
+                case 'GRAB':
+                    robot.timer++;
+                    if (robot.timer > 10) {
+                        // Grab closest ball
+                        const ball = robot.balls.find(b => b.state === 'SOURCE' && dist(b, robot.current) < 40);
+
+                        // Failure chance: Miss the grab
+                        const fumbleChance = (100 - precision) * 0.005; // Up to 50% chance to miss at 0 precision
+
+                        if (ball && Math.random() > fumbleChance) {
+                            ball.state = 'HELD';
+                            robot.heldBall = ball;
+                            robot.state = 'MOVE_TO_DROP';
+                            robot.target = { x: destPos.x, y: destPos.y - 100 };
+                        } else {
+                            // Missed or fumbled
+                            robot.state = 'IDLE';
+                            // If we missed but there was a ball, maybe knock it
+                            if (ball) {
+                                ball.vx = (Math.random() - 0.5) * 5;
+                                ball.vy = -2;
+                            }
+                        }
+                    }
+                    break;
+
+                case 'MOVE_TO_DROP':
+                    if (dist(robot.current, robot.target) < 15) {
+                        robot.state = 'DROP';
+                        robot.timer = 0;
+                    }
+                    // Chance to drop mid-air (Higher failure rate)
+                    // At 0 precision, ~2% chance per frame to drop
+                    if (robot.heldBall && Math.random() < (100 - precision) * 0.002) {
+                        robot.heldBall.state = 'DROPPED';
+                        robot.heldBall.vx = (Math.random() - 0.5) * 5;
+                        robot.heldBall.vy = -2;
+                        robot.heldBall = null;
+                        robot.state = 'IDLE'; // Reset
+                    }
+                    break;
+
+                case 'DROP':
+                    robot.timer++;
+                    if (robot.timer > 10) {
+                        if (robot.heldBall) {
+                            robot.heldBall.state = 'DEST';
+                            robot.heldBall.vx = (Math.random() - 0.5) * 2;
+                            robot.heldBall.vy = 2;
+                            robot.heldBall = null;
+                            robot.score++;
+                        }
+                        robot.state = 'IDLE';
+                    }
+                    break;
+            }
+
+            // Move Arm towards Target (Smooth Lerp)
+            // Add jitter to target
+            const noisyTarget = {
+                x: robot.target.x + (Math.random() - 0.5) * jitterAmt,
+                y: robot.target.y + (Math.random() - 0.5) * jitterAmt
+            };
+
+            robot.current.x += (noisyTarget.x - robot.current.x) * speed;
+            robot.current.y += (noisyTarget.y - robot.current.y) * speed;
+
+            // --- PHYSICS (Balls) ---
+            robot.balls.forEach(b => {
+                if (b.state === 'HELD') {
+                    b.x = robot.current.x;
+                    b.y = robot.current.y + 10;
+                    b.vx = 0; b.vy = 0;
+                } else {
+                    // Gravity
+                    b.vy += 0.5;
+                    b.x += b.vx;
+                    b.y += b.vy;
+                    b.vx *= 0.95; // Air resistance
+
+                    // Floor / Bowl Collisions
+                    // Source Bowl
+                    if (b.x > sourcePos.x - 40 && b.x < sourcePos.x + 40 && b.y > sourcePos.y) {
+                        b.y = sourcePos.y;
+                        b.vy *= -0.5;
+                        b.vx *= 0.8;
+                        // Keep in bowl
+                        if (b.x < sourcePos.x - 30) b.vx += 1;
+                        if (b.x > sourcePos.x + 30) b.vx -= 1;
+                    }
+                    // Dest Bowl
+                    if (b.x > destPos.x - 40 && b.x < destPos.x + 40 && b.y > destPos.y) {
+                        b.y = destPos.y;
+                        b.vy *= -0.5;
+                        b.vx *= 0.8;
+                        if (b.x < destPos.x - 30) b.vx += 1;
+                        if (b.x > destPos.x + 30) b.vx -= 1;
+                    }
+                    // Floor
+                    if (b.y > h - 20) {
+                        b.y = h - 20;
+                        b.vy *= -0.6;
+                        b.vx *= 0.8;
+                    }
+                }
+            });
+
+            // Cleanup fallen balls
+            if (robot.balls.length > 15) robot.balls.shift();
+
+
+            // --- RENDER ---
+
+            // Draw Bowls
+            ctx.fillStyle = '#333';
+            // Source
+            ctx.beginPath(); ctx.arc(sourcePos.x, sourcePos.y, 40, 0, Math.PI, false); ctx.fill();
+            // Dest
+            ctx.beginPath(); ctx.arc(destPos.x, destPos.y, 40, 0, Math.PI, false); ctx.fill();
+
+            // Draw Balls
+            robot.balls.forEach(b => {
+                ctx.fillStyle = b.state === 'DEST' ? '#10b981' : (b.state === 'HELD' ? '#fff' : '#f59e0b');
+                ctx.beginPath(); ctx.arc(b.x, b.y, 8, 0, Math.PI * 2); ctx.fill();
+            });
+
+            // Inverse Kinematics for Arm
+            const L1 = 180;
+            const L2 = 160;
+            const dx = robot.current.x - cx;
+            const dy = robot.current.y - cy;
+            const distToTarget = Math.sqrt(dx * dx + dy * dy);
+            const clampedDist = Math.min(distToTarget, L1 + L2 - 1);
 
             const a1 = Math.atan2(dy, dx);
             const a2 = Math.acos((L1 * L1 + clampedDist * clampedDist - L2 * L2) / (2 * L1 * clampedDist));
@@ -1198,43 +1390,35 @@
             const j1x = cx + Math.cos(angle1) * L1;
             const j1y = cy + Math.sin(angle1) * L1;
 
-            // Draw Base
-            ctx.fillStyle = '#333';
-            ctx.fillRect(cx - 30, h - 20, 60, 20);
-
-            // Draw Arm 1
-            ctx.strokeStyle = '#555';
-            ctx.lineWidth = 12;
+            // Draw Arm
             ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            // Base
+            ctx.fillStyle = '#444';
+            ctx.fillRect(cx - 20, cy - 10, 40, 20);
+
+            // Segment 1
+            ctx.strokeStyle = '#666';
+            ctx.lineWidth = 16;
             ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(j1x, j1y); ctx.stroke();
 
-            // Draw Arm 2
-            ctx.strokeStyle = '#777';
-            ctx.lineWidth = 8;
-            ctx.beginPath(); ctx.moveTo(j1x, j1y); ctx.lineTo(targetX, targetY); ctx.stroke();
+            // Segment 2
+            ctx.strokeStyle = '#888';
+            ctx.lineWidth = 12;
+            ctx.beginPath(); ctx.moveTo(j1x, j1y); ctx.lineTo(robot.current.x, robot.current.y); ctx.stroke();
 
             // Joints
-            ctx.fillStyle = '#f59e0b';
+            ctx.fillStyle = '#111';
             ctx.beginPath(); ctx.arc(cx, cy, 10, 0, Math.PI * 2); ctx.fill();
             ctx.beginPath(); ctx.arc(j1x, j1y, 8, 0, Math.PI * 2); ctx.fill();
 
-            // End Effector
-            const jitter = (100 - skill) * 0.8;
-            const jx = (Math.random() - 0.5) * jitter;
-            const jy = (Math.random() - 0.5) * jitter;
-
+            // Gripper
             ctx.fillStyle = '#ef4444';
-            ctx.beginPath(); ctx.arc(targetX + jx, targetY + jy, 12, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(robot.current.x, robot.current.y, 10, 0, Math.PI * 2); ctx.fill();
 
-            // Trail
-            if (!simState.trail) simState.trail = [];
-            simState.trail.push({ x: targetX + jx, y: targetY + jy, age: 20 });
-            simState.trail.forEach((p, i) => {
-                p.age--;
-                ctx.fillStyle = `rgba(239, 68, 68, ${p.age / 20})`;
-                ctx.beginPath(); ctx.arc(p.x, p.y, 2, 0, Math.PI * 2); ctx.fill();
-            });
-            simState.trail = simState.trail.filter(p => p.age > 0);
+            // Helper func
+            function dist(a, b) { return Math.hypot(a.x - b.x, a.y - b.y); }
         }
 
         function renderEnergy(w, h, t) {
@@ -1365,7 +1549,7 @@
         }
 
         function renderSqueeze(w, h, t) {
-            const pressure = simParams.p1;
+            const pressure = simParams.p1; // 0 to 100
 
             if (!simState.workers) {
                 simState.workers = [];
@@ -1591,57 +1775,142 @@
         }
 
         function renderStimulus(w, h, t) {
-            const bx = w / 2 - 60;
-            const by = h / 2 - 50;
-            const bw = 120;
-            const bh = 150;
+            const cx = w / 2;
+            const cy = h / 2;
+            const bucketW = 200;
+            const bucketH = 220;
+            const floorY = cy + 100;
+            const holeW = 80; // Wider hole
+            const tilt = 40; // Steeper tilt
 
-            // Bucket
-            ctx.strokeStyle = '#fff';
-            ctx.lineWidth = 6;
-            ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(bx, by + bh); ctx.lineTo(bx + bw, by + bh); ctx.lineTo(bx + bw, by); ctx.stroke();
+            // 1. Draw Container (Glass)
+            ctx.save();
+            ctx.shadowColor = 'rgba(255,255,255,0.2)';
+            ctx.shadowBlur = 10;
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            // Left Wall
+            ctx.moveTo(cx - bucketW / 2, cy - bucketH / 2);
+            ctx.lineTo(cx - bucketW / 2, floorY - tilt);
+            // Left Floor (Tilted)
+            ctx.lineTo(cx - holeW / 2, floorY);
+            // Right Floor (Tilted)
+            ctx.moveTo(cx + holeW / 2, floorY);
+            ctx.lineTo(cx + bucketW / 2, floorY - tilt);
+            // Right Wall
+            ctx.lineTo(cx + bucketW / 2, cy - bucketH / 2);
+            ctx.stroke();
 
-            // Hole
-            ctx.clearRect(bx + 40, by + bh - 4, 40, 10);
-
-            if (simState.stimulusActive) {
-                simState.waterLevel = 150;
-                simState.stimulusActive = false;
-                simState.particles = [];
-                for (let i = 0; i < 50; i++) simState.particles.push({ x: bx + 10 + Math.random() * 100, y: by - 100 - Math.random() * 100, vy: 5 + Math.random() * 5 });
-            }
-
-            // Pouring in
-            if (simState.particles) {
-                ctx.fillStyle = '#10b981';
-                simState.particles.forEach(p => {
-                    p.y += p.vy;
-                    if (p.y > by + bh - simState.waterLevel) {
-                        // Hit water
-                    } else {
-                        ctx.beginPath(); ctx.arc(p.x, p.y, 4, 0, Math.PI * 2); ctx.fill();
-                    }
-                });
-            }
-
-            if (simState.waterLevel > 0) {
-                simState.waterLevel -= 3;
-                const level = simState.waterLevel;
-                ctx.fillStyle = '#10b981';
-                ctx.fillRect(bx + 5, by + bh - level, bw - 10, level);
-
-                // Leaking out
-                ctx.fillStyle = '#10b981';
-                ctx.fillRect(bx + 45, by + bh + 5, 30, h - (by + bh));
-
-                // Splash at bottom
-                ctx.fillStyle = 'rgba(16, 185, 129, 0.5)';
-                ctx.beginPath(); ctx.arc(bx + 60, h, 20 + Math.random() * 10, 0, Math.PI * 2); ctx.fill();
-            }
-
-            ctx.fillStyle = '#fff';
+            // Label
+            ctx.fillStyle = 'rgba(255,255,255,0.5)';
+            ctx.font = '12px monospace';
             ctx.textAlign = 'center';
-            ctx.fillText("LABOR MARKET (BROKEN)", w / 2, by + bh + 40);
+            ctx.fillText("THE LABOR MARKET", cx, floorY + 30);
+
+            ctx.shadowBlur = 0;
+            ctx.restore();
+
+            // 2. Particle System
+            if (!simState.droplets) simState.droplets = [];
+
+            // Emitter (The Stimulus)
+            if (simState.stimulusActive) {
+                // Pour MORE particles (smaller)
+                for (let i = 0; i < 20; i++) {
+                    simState.droplets.push({
+                        x: cx + (Math.random() - 0.5) * 40,
+                        y: cy - bucketH / 2,
+                        vx: (Math.random() - 0.5) * 2,
+                        vy: 5 + Math.random() * 5,
+                        r: 1.5 + Math.random() * 1.5,
+                        life: 300
+                    });
+                }
+                // Timer logic
+                if (!simState.timer) simState.timer = 0;
+                simState.timer++;
+                if (simState.timer > 60) { // 1 second pour (shorter)
+                    simState.stimulusActive = false;
+                    simState.timer = 0;
+                }
+            }
+
+            // Physics & Render
+            ctx.fillStyle = '#06b6d4'; // Cyan Water
+
+            simState.droplets.forEach(p => {
+                p.vy += 0.3; // Gravity
+                p.x += p.vx;
+                p.y += p.vy;
+
+                // Floor Collision (Tilted)
+                let floorHeightAtX = floorY;
+
+                // Left Side
+                if (p.x < cx - holeW / 2 && p.x > cx - bucketW / 2) {
+                    const progress = (p.x - (cx - bucketW / 2)) / ((bucketW - holeW) / 2);
+                    floorHeightAtX = (floorY - tilt) + progress * tilt;
+
+                    if (p.y > floorHeightAtX - p.r) {
+                        p.y = floorHeightAtX - p.r;
+                        // Slide towards center (positive x)
+                        p.vx += 0.8; // Stronger slide
+                        p.vy *= -0.4; // Dampen
+                        p.vx *= 0.9;  // Friction
+                    }
+                }
+                // Right Side
+                else if (p.x > cx + holeW / 2 && p.x < cx + bucketW / 2) {
+                    const progress = ((cx + bucketW / 2) - p.x) / ((bucketW - holeW) / 2);
+                    floorHeightAtX = (floorY - tilt) + progress * tilt;
+
+                    if (p.y > floorHeightAtX - p.r) {
+                        p.y = floorHeightAtX - p.r;
+                        // Slide towards center (negative x)
+                        p.vx -= 0.8; // Stronger slide
+                        p.vy *= -0.4; // Dampen
+                        p.vx *= 0.9;  // Friction
+                    }
+                }
+
+                // Wall Collision
+                if (p.x < cx - bucketW / 2 + p.r) {
+                    p.x = cx - bucketW / 2 + p.r;
+                    p.vx *= -0.5;
+                }
+                if (p.x > cx + bucketW / 2 - p.r) {
+                    p.x = cx + bucketW / 2 - p.r;
+                    p.vx *= -0.5;
+                }
+
+                // Draw
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Cleanup
+                if (p.y > h) p.life = 0;
+            });
+
+            // Remove dead particles
+            simState.droplets = simState.droplets.filter(p => p.life > 0);
+
+            // Text Overlay
+            if (simState.droplets.length === 0 && !simState.stimulusActive) {
+                ctx.fillStyle = '#fff';
+                ctx.textAlign = 'center';
+                ctx.font = '16px monospace';
+                ctx.fillText("SYSTEM READY FOR INJECTION", cx, cy - 60);
+            } else if (simState.droplets.length > 0) {
+                // Count particles in bucket
+                const trapped = simState.droplets.filter(p => p.y < floorY && p.y > floorY - 50).length;
+                if (trapped < 10 && !simState.stimulusActive) {
+                    ctx.fillStyle = '#ef4444';
+                    ctx.textAlign = 'center';
+                    ctx.fillText("LIQUIDITY DRAINING...", cx, cy - 20);
+                }
+            }
         }
         window.triggerStimulus = () => { simState.stimulusActive = true; }
 
@@ -1749,99 +2018,366 @@
 
         function renderPurpose(w, h, t) {
             const focus = simParams.p1; // 0 to 100
+            const vitality = focus / 100; // 0 to 1
 
-            // Tree of Life
+            // Initialize Seed
+            if (!simState.seed) simState.seed = 12345;
+
+            // Stateless PRNG (Hash)
+            function hash(n) {
+                return Math.abs(Math.sin(n * 12.9898 + simState.seed) * 43758.5453) % 1;
+            }
+
+            // 1. Background
+            const r = 10 + (200 * vitality);
+            const g = 15 + (180 * vitality);
+            const b = 30 + (100 * vitality);
+
+            const grad = ctx.createLinearGradient(0, 0, 0, h);
+            grad.addColorStop(0, `rgb(${r * 0.5}, ${g * 0.5}, ${b * 0.8})`);
+            grad.addColorStop(1, `rgb(${r}, ${g}, ${b})`);
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, w, h);
+
+            // Sun
+            const sunY = h * 0.8 - (h * 0.6 * vitality);
+            ctx.fillStyle = `rgba(255, 255, 200, ${0.1 + vitality * 0.4})`;
+            ctx.shadowColor = '#fff';
+            ctx.shadowBlur = 20 + vitality * 50;
+            ctx.beginPath(); ctx.arc(w / 2, sunY, 40 + vitality * 40, 0, Math.PI * 2); ctx.fill();
+            ctx.shadowBlur = 0;
+
+            // 2. Birds
+            if (vitality > 0.4) {
+                if (!simState.birds) {
+                    simState.birds = Array.from({ length: 10 }, (_, i) => ({
+                        x: Math.random() * w,
+                        y: Math.random() * h * 0.5,
+                        speed: 0.5 + Math.random(),
+                        offset: Math.random() * 100
+                    }));
+                }
+
+                ctx.fillStyle = `rgba(0,0,0,${vitality})`;
+                simState.birds.forEach(bird => {
+                    bird.x += bird.speed;
+                    if (bird.x > w) bird.x = -20;
+
+                    const flyY = bird.y + Math.sin(t * 2 + bird.offset) * 10;
+                    const wing = Math.sin(t * 10 + bird.offset) * 5;
+
+                    ctx.beginPath();
+                    ctx.moveTo(bird.x, flyY);
+                    ctx.lineTo(bird.x - 5, flyY - wing); // Left wing
+                    ctx.lineTo(bird.x + 5, flyY - wing); // Right wing
+                    ctx.lineTo(bird.x, flyY + 2); // Body
+                    ctx.fill();
+                });
+            }
+
+            // 3. Stable Procedural Tree
             const cx = w / 2;
             const cy = h;
+            const maxDepth = 10;
 
-            // Recursively draw tree
-            function drawBranch(x, y, len, angle, width, depth) {
+            // Wind
+            const wind = Math.sin(t * 0.5) * 2 + Math.sin(t * 1.5) * 0.5;
+
+            // Recursive function passes a unique 'id' for randomness
+            function drawBranch(x, y, len, angle, width, depth, id) {
                 ctx.beginPath();
                 ctx.save();
-                ctx.strokeStyle = depth === 0 ? '#8b5a2b' : '#10b981';
-                ctx.fillStyle = '#10b981';
+
+                // Properties derived from ID (Stable)
+                const rCurve = hash(id + 1);
+                const rBranchCount = hash(id + 2);
+
+                // Color
+                if (depth < 3) ctx.strokeStyle = '#5d4037';
+                else ctx.strokeStyle = vitality > 0.5 ? '#10b981' : '#8b5a2b';
+
                 ctx.lineWidth = width;
                 ctx.translate(x, y);
-                ctx.rotate(angle * Math.PI / 180);
+
+                const finalAngle = angle + (wind * (depth * 0.5));
+                ctx.rotate(finalAngle * Math.PI / 180);
+
                 ctx.moveTo(0, 0);
-                ctx.lineTo(0, -len);
+                const curveX = (rCurve - 0.5) * 20;
+                ctx.quadraticCurveTo(curveX, -len / 2, 0, -len);
                 ctx.stroke();
 
-                if (len < 10) {
-                    // Leaf
-                    if (focus > 20) {
-                        ctx.beginPath(); ctx.arc(0, -len, 5, 0, Math.PI * 2); ctx.fill();
+                if (depth >= maxDepth || len < 5) {
+                    // Flowers
+                    const rFlower = hash(id + 3);
+                    if (vitality > 0.3 && rFlower > 0.5) {
+                        const type = hash(id + 4);
+                        ctx.fillStyle = type > 0.7 ? '#f59e0b' : (type > 0.4 ? '#ec4899' : '#10b981');
+                        ctx.shadowColor = ctx.fillStyle;
+                        ctx.shadowBlur = vitality * 10;
+
+                        const size = (vitality * 6) * hash(id + 5);
+                        if (size > 0) {
+                            ctx.beginPath();
+                            ctx.arc(0, -len, size, 0, Math.PI * 2);
+                            ctx.fill();
+                        }
+                        ctx.shadowBlur = 0;
                     }
                     ctx.restore();
                     return;
                 }
 
-                // Growth factor based on focus
-                const growth = Math.max(0.1, focus / 100);
+                // Branching
+                const growthThreshold = depth / maxDepth;
+                if (vitality > growthThreshold - 0.2) {
+                    const branchCount = 2 + Math.floor(rBranchCount * 1.5); // 2 or 3
 
-                if (depth < 4) { // Limit recursion
-                    drawBranch(0, -len, len * 0.7 * growth + 5, angle + 20 + Math.sin(t) * 5, width * 0.7, depth + 1);
-                    drawBranch(0, -len, len * 0.7 * growth + 5, angle - 20 + Math.sin(t + 1) * 5, width * 0.7, depth + 1);
+                    for (let i = 0; i < branchCount; i++) {
+                        // Unique ID for child: ParentID * Prime + Index
+                        const childId = id * 13 + i * 7;
+
+                        const rLen = hash(childId + 10);
+                        const rSpread = hash(childId + 11);
+                        const rAngle = hash(childId + 12);
+
+                        const nextLen = len * (0.6 + rLen * 0.2);
+                        const nextWidth = width * 0.7;
+                        const spread = 20 + rSpread * 40;
+                        const nextAngle = -spread / 2 + (spread * i) + (rAngle - 0.5) * 20;
+
+                        drawBranch(0, -len, nextLen, nextAngle, nextWidth, depth + 1, childId);
+                    }
                 }
+
                 ctx.restore();
             }
 
-            drawBranch(cx, cy, 100, 0, 15, 0);
+            // Start Tree with ID 1
+            const baseLen = 100 + hash(simState.seed) * 40;
+            drawBranch(cx, cy, baseLen * (0.2 + vitality * 0.8), 0, 15, 0, 1);
 
-            if (focus < 20) {
-                ctx.fillStyle = '#555';
+            // 4. Particles
+            if (vitality > 0.3) {
+                if (Math.random() < vitality * 0.2) {
+                    if (!simState.pollen) simState.pollen = [];
+                    simState.pollen.push({
+                        x: cx + (Math.random() - 0.5) * 300,
+                        y: h - Math.random() * 300,
+                        vx: (Math.random() - 0.5) * 2,
+                        vy: -Math.random() * 2,
+                        life: 1
+                    });
+                }
+            }
+
+            if (simState.pollen) {
+                simState.pollen.forEach((p, i) => {
+                    p.x += p.vx + Math.sin(t + p.y * 0.01);
+                    p.y += p.vy;
+                    p.life -= 0.01;
+                    ctx.fillStyle = `rgba(255, 215, 0, ${p.life})`;
+                    ctx.beginPath(); ctx.arc(p.x, p.y, 2, 0, Math.PI * 2); ctx.fill();
+                    if (p.life <= 0) simState.pollen.splice(i, 1);
+                });
+            }
+
+            if (vitality < 0.1) {
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
                 ctx.textAlign = 'center';
-                ctx.fillText("The garden needs attention...", cx, h - 20);
+                ctx.font = '14px monospace';
+                ctx.fillText("The seed is dormant...", cx, h - 20);
             }
         }
 
         function renderStatus(w, h, t) {
-            const mode = simParams.p1; // 0 Money, 1 Trust
+            const reach = simParams.p1; // 10-100 Speed/Range
+            const stickiness = simParams.p2 || 50; // 10-100 Conversion Power
 
-            const nodes = [
-                { id: 'rich', x: w / 2, y: h / 2 - 150, r: 40, color: '#f59e0b', label: "WEALTH" },
-                { id: 'trust', x: w / 2, y: h / 2 + 150, r: 40, color: '#06b6d4', label: "TRUST" },
-            ];
-
-            if (!simState.followers) {
-                simState.followers = [];
-                for (let i = 0; i < 30; i++) simState.followers.push({ x: w / 2 + (Math.random() - 0.5) * 400, y: h / 2 + (Math.random() - 0.5) * 400, r: 5 });
+            // Initialize Battle
+            if (!simState.boids) {
+                simState.boids = [];
+                // 100 Grey (Public)
+                for (let i = 0; i < 100; i++) simState.boids.push(createBoid(w, h, 'grey'));
+                // 5 Red (Enemy)
+                for (let i = 0; i < 5; i++) simState.boids.push(createBoid(w, h, 'red'));
+                // 5 Blue (Player)
+                for (let i = 0; i < 5; i++) simState.boids.push(createBoid(w, h, 'blue'));
             }
 
-            // Draw Links & Move
-            simState.followers.forEach(n => {
-                const target = mode < 0.5 ? nodes[0] : nodes[1];
+            // Stats
+            let blueCount = 0;
+            let redCount = 0;
 
-                // Move towards target
-                const dx = target.x - n.x;
-                const dy = target.y - n.y;
-                n.x += dx * 0.03;
-                n.y += dy * 0.03;
+            // Update Boids
+            simState.boids.forEach(b => {
+                if (b.team === 'blue') blueCount++;
+                if (b.team === 'red') redCount++;
 
-                // Jitter
-                n.x += (Math.random() - 0.5) * 2;
-                n.y += (Math.random() - 0.5) * 2;
+                // 1. Physics (Flocking + Pursuit)
+                let alignX = 0, alignY = 0;
+                let cohX = 0, cohY = 0;
+                let sepX = 0, sepY = 0;
+                let targetX = 0, targetY = 0;
+                let neighborCount = 0;
 
-                ctx.strokeStyle = 'rgba(255,255,255,0.1)';
-                ctx.beginPath(); ctx.moveTo(n.x, n.y); ctx.lineTo(target.x, target.y); ctx.stroke();
+                // Find neighbors
+                simState.boids.forEach(other => {
+                    if (b === other) return;
+                    const dx = other.x - b.x;
+                    const dy = other.y - b.y;
+                    const dist = Math.hypot(dx, dy);
 
-                ctx.fillStyle = '#fff';
-                ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2); ctx.fill();
+                    // Flocking (Same Team)
+                    if (b.team === other.team && dist < 50) {
+                        alignX += other.vx;
+                        alignY += other.vy;
+                        cohX += other.x;
+                        cohY += other.y;
+                        neighborCount++;
+                    }
+
+                    // Separation (Everyone)
+                    if (dist < 20) {
+                        sepX -= dx / dist;
+                        sepY -= dy / dist;
+                    }
+
+                    // Pursuit/Battle (Different Team)
+                    // Blue chases Grey/Red. Red chases Grey/Blue.
+                    if (b.team !== 'grey' && other.team !== b.team && dist < 150) {
+                        // Attract to convertible targets
+                        targetX += other.x;
+                        targetY += other.y;
+                    }
+                });
+
+                // Apply Flocking Forces
+                if (neighborCount > 0) {
+                    alignX /= neighborCount; alignY /= neighborCount;
+                    cohX /= neighborCount; cohY /= neighborCount;
+
+                    // Steer towards cohesion
+                    b.vx += (cohX - b.x) * 0.005;
+                    b.vy += (cohY - b.y) * 0.005;
+                    // Match velocity
+                    b.vx += (alignX - b.vx) * 0.01;
+                    b.vy += (alignY - b.vy) * 0.01;
+                }
+
+                // Apply Separation
+                b.vx += sepX * 0.5;
+                b.vy += sepY * 0.5;
+
+                // Apply Targeting (The "Reach" param affects how aggressive Blue is)
+                if (b.team === 'blue') {
+                    const aggression = reach / 5000;
+                    b.vx += (targetX - b.x) * aggression;
+                    b.vy += (targetY - b.y) * aggression;
+                } else if (b.team === 'red') {
+                    b.vx += (targetX - b.x) * 0.01; // Fixed aggression for Red
+                    b.vy += (targetY - b.y) * 0.01;
+                }
+
+                // Friction & Speed Limit
+                const speed = Math.hypot(b.vx, b.vy);
+                const maxSpeed = b.team === 'blue' ? (2 + reach / 20) : 3; // Blue speed depends on Reach
+                if (speed > maxSpeed) {
+                    b.vx = (b.vx / speed) * maxSpeed;
+                    b.vy = (b.vy / speed) * maxSpeed;
+                }
+
+                // Move
+                b.x += b.vx;
+                b.y += b.vy;
+
+                // Wrap
+                if (b.x < 0) b.x = w; if (b.x > w) b.x = 0;
+                if (b.y < 0) b.y = h; if (b.y > h) b.y = 0;
+
+                // 2. Infection / Combat Logic
+                simState.boids.forEach(other => {
+                    if (b === other) return;
+                    const dx = other.x - b.x;
+                    const dy = other.y - b.y;
+                    const dist = Math.hypot(dx, dy);
+
+                    if (dist < 10) {
+                        // Collision!
+                        if (b.team === 'blue' && other.team !== 'blue') {
+                            // Blue tries to convert
+                            // Chance = Stickiness vs Resistance
+                            // Grey has low resistance. Red has high.
+                            let chance = stickiness / 100;
+                            if (other.team === 'red') chance *= 0.2; // Hard to convert Red
+
+                            if (Math.random() < chance) {
+                                other.team = 'blue';
+                                // Spark effect
+                                ctx.fillStyle = '#fff';
+                                ctx.beginPath(); ctx.arc(other.x, other.y, 10, 0, Math.PI * 2); ctx.fill();
+                            }
+                        } else if (b.team === 'red' && other.team !== 'red') {
+                            // Red tries to convert
+                            if (Math.random() < 0.05) { // Fixed Red power
+                                other.team = 'red';
+                            }
+                        }
+                    }
+                });
+
+                // 3. Draw
+                ctx.save();
+                ctx.translate(b.x, b.y);
+                ctx.rotate(Math.atan2(b.vy, b.vx));
+
+                if (b.team === 'blue') {
+                    ctx.fillStyle = '#06b6d4';
+                    ctx.shadowColor = '#06b6d4'; ctx.shadowBlur = 10;
+                } else if (b.team === 'red') {
+                    ctx.fillStyle = '#ef4444';
+                    ctx.shadowColor = '#ef4444'; ctx.shadowBlur = 10;
+                } else {
+                    ctx.fillStyle = '#475569'; // Grey
+                    ctx.shadowBlur = 0;
+                }
+
+                // Triangle
+                ctx.beginPath();
+                ctx.moveTo(6, 0);
+                ctx.lineTo(-4, 3);
+                ctx.lineTo(-4, -3);
+                ctx.fill();
+                ctx.restore();
             });
 
-            nodes.forEach(n => {
-                ctx.fillStyle = n.color || '#fff';
-                ctx.shadowColor = n.color;
-                ctx.shadowBlur = 20;
-                ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2); ctx.fill();
-                ctx.shadowBlur = 0;
+            // Score Overlay
+            ctx.font = 'bold 20px monospace';
+            ctx.textAlign = 'left';
+            ctx.fillStyle = '#06b6d4'; ctx.fillText(`BLUE: ${blueCount}`, 20, 40);
+            ctx.fillStyle = '#ef4444'; ctx.fillText(`RED:  ${redCount}`, 20, 70);
 
-                ctx.fillStyle = '#000';
+            if (blueCount > 90) {
                 ctx.textAlign = 'center';
-                ctx.font = 'bold 12px sans-serif';
-                ctx.fillText(n.label, n.x, n.y + 4);
-            });
+                ctx.fillStyle = '#06b6d4';
+                ctx.font = 'bold 40px sans-serif';
+                ctx.fillText("NARRATIVE DOMINANCE", w / 2, h / 2);
+            }
         }
+
+        function createBoid(w, h, team) {
+            return {
+                x: Math.random() * w,
+                y: Math.random() * h,
+                vx: (Math.random() - 0.5) * 2,
+                vy: (Math.random() - 0.5) * 2,
+                team: team
+            };
+        }
+
+        window.resetStatusSim = () => {
+            simState.boids = null;
+        };
 
         function renderLand(w, h, t) {
             const mode = simParams.p1; // 0 Market, 1 Access
@@ -2013,16 +2549,21 @@
                 ctx.fillText("AWAITING LAUNCH COMMAND", w / 2, h / 2 - 60);
             } else if (simState.launchTime > 10) {
                 ctx.save();
-                ctx.shadowColor = '#06b6d4';
-                ctx.shadowBlur = 20;
+                // Apple Style: Clean, no glow, thin weight
                 ctx.fillStyle = '#fff';
                 ctx.textAlign = 'center';
-                ctx.font = '900 60px sans-serif'; // Larger font
-                ctx.fillText("MISSION: CENTAURI", w / 2, h / 2); // New text
-                ctx.font = '20px monospace';
-                ctx.shadowBlur = 0;
-                ctx.fillStyle = 'rgba(255,255,255,0.8)';
-                ctx.fillText("VELOCITY: 0.2c // ETA: 20 YEARS", w / 2, h / 2 + 40);
+
+                // Main Title
+                ctx.font = '300 50px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
+                ctx.letterSpacing = '2px';
+                ctx.fillText("MISSION: CENTAURI", w / 2, h / 2 - 120);
+
+                // Subtitle
+                ctx.font = '400 14px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+                ctx.letterSpacing = '1px';
+                ctx.fillText("VELOCITY: 0.2c  |  ETA: 20 YEARS", w / 2, h / 2 - 80);
+
                 ctx.restore();
             }
         }
