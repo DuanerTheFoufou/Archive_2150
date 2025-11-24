@@ -690,8 +690,8 @@
                         <p>The economy was stable. People worked for wages. Capital (machines) and Labor (humans) were roughly balanced partners. But the spark had been lit. The cost of intelligence was dropping by 10x every year.</p>
                         <p><strong>Simulation:</strong> Observe the neural network. It is growing, but isolated. Adjust the <em>Compute Power</em> to see how the network density increases.</p>` :
                         `<p>Bienvenue, étudiant. Vous accédez à cette archive depuis l'an 2150. Nous regardons en arrière sur le siècle le plus turbulent de l'histoire humaine.</p>
-                        <p>Tout commence en <strong>2025</strong>. À ce moment, l'IA était encore "Numérique". Les LLM pouvaient écrire du code et de la poésie, mais ils étaient piégés dans des serveurs. Ils n'avaient pas de mains.</p>
-                        <p>L'économie était stable. Les gens travaillaient pour un salaire. Le Capital (machines) et le Travail (humains) étaient des partenaires à peu près équilibrés. Mais l'étincelle avait été allumée.</p>
+                        <p>Tout commence en <strong>2025</strong>. À ce moment, l'IA était encore "Numérique". Les Grands Modèles de Langage (LLM) pouvaient écrire du code et de la poésie, mais ils étaient piégés dans des serveurs. Ils n'avaient pas de mains.</p>
+                        <p>L'économie était stable. Les gens travaillaient pour un salaire. Le Capital (machines) et le Travail (humains) étaient des partenaires à peu près équilibrés. Mais l'étincelle avait été allumée. Le coût de l'intelligence chutait de 10x chaque année.</p>
                         <p><strong>Simulation :</strong> Observez le réseau neuronal. Il grandit, mais reste isolé. Ajustez la <em>Puissance de Calcul</em> pour voir la densité du réseau augmenter.</p>`,
                     simId: "SPARK",
                     controls: `<label>${translations[lang].controls.compute} <span id="val1">Low</span></label><input type="range" min="10" max="100" value="20" oninput="updateParam('p1', this.value)">`
@@ -706,9 +706,9 @@
                         <p>Data entry, basic coding, translation, and customer service began to automate. However, the economy held up because new roles (supervisors, prompt engineers) were created.</p>
                         <p><strong>Simulation:</strong> Watch the "Swarm". Agents (Blue) actively hunt for tasks, moving faster and more efficiently than humans (Green).</p>` :
                         `<p>Vers 2030, l'IA a cessé d'être un "chatbot" pour devenir un "Agent".</p>
-                        <p>Un Agent ne fait pas que parler ; il <em>agit</em>. Il pouvait naviguer sur le web, utiliser des logiciels et coder des applications entières sans intervention humaine.</p>
-                        <p>La saisie de données, le codage de base et le service client ont commencé à s'automatiser. L'économie a tenu bon grâce à la création de nouveaux rôles.</p>
-                        <p><strong>Simulation :</strong> Regardez l'essaim. Les agents (bleus) chassent activement les tâches, se déplaçant plus vite et plus efficacement que les humains (verts).</p>`,
+                        <p>Un Agent ne fait pas que parler ; il <em>agit</em>. Il pouvait naviguer sur le web, utiliser des logiciels, envoyer des courriels et coder des applications entières sans intervention humaine. C'était la première vague de déplacement : les tâches numériques de cols blancs.</p>
+                        <p>La saisie de données, le codage de base, la traduction et le service client ont commencé à s'automatiser. Cependant, l'économie a tenu bon car de nouveaux rôles (superviseurs, ingénieurs de prompts) ont été créés.</p>
+                        <p><strong>Simulation :</strong> Regardez "l'Essaim". Les Agents (Bleus) chassent activement les tâches, se déplaçant plus vite et plus efficacement que les humains (Verts).</p>`,
                     simId: "AGENTS",
                     controls: `<label>${translations[lang].controls.autonomy} <span id="val1">0%</span></label><input type="range" min="0" max="100" value="0" oninput="updateParam('p1', this.value)">`
                 },
@@ -721,9 +721,9 @@
                         <p>We were wrong. By the late 2030s, humanoid robotics solved the battery and motor issues. Combined with the "Brain" of advanced AI, robots could now learn physical tasks by watching videos.</p>
                         <p>This was the turning point. Automation left the screen and entered the factory, the warehouse, and the construction site.</p>
                         <p><strong>Simulation:</strong> The robot arm. Increase <em>Dexterity</em> to see it match human speed and precision.</p>` :
-                        `<p>Pendant longtemps, nous pensions que les emplois manuels étaient sûrs. "L'IA ne peut pas réparer un tuyau", disions-nous.</p>
-                        <p>Nous avions tort. À la fin des années 2030, la robotique humanoïde a résolu les problèmes de batterie et de moteur. Combinés au "Cerveau" de l'IA avancée, les robots pouvaient apprendre des tâches physiques.</p>
-                        <p>C'était le tournant. L'automatisation a quitté l'écran pour entrer dans l'usine et le chantier.</p>
+                        `<p>Pendant longtemps, nous pensions que les emplois manuels étaient sûrs. "L'IA ne peut pas réparer un tuyau bouché", disions-nous.</p>
+                        <p>Nous avions tort. À la fin des années 2030, la robotique humanoïde a résolu les problèmes de batterie et de moteur. Combinés au "Cerveau" de l'IA avancée, les robots pouvaient désormais apprendre des tâches physiques en regardant des vidéos.</p>
+                        <p>C'était le tournant. L'automatisation a quitté l'écran pour entrer dans l'usine, l'entrepôt et le chantier de construction.</p>
                         <p><strong>Simulation :</strong> Le bras robotique. Augmentez la <em>Dextérité</em> pour le voir égaler la vitesse et la précision humaines.</p>`,
                     simId: "ROBOTICS",
                     controls: `<label>${translations[lang].controls.dexterity} <span id="val1">Clumsy</span></label><input type="range" min="0" max="100" value="10" oninput="updateParam('p1', this.value)">`
@@ -738,10 +738,10 @@
                         <p>The logic was simple: Solar was the only energy source that scaled indefinitely with zero marginal cost. The machines carpeted the deserts, not for profit, but for efficiency.</p>
                         <p>This was the "Energy Zero" event. Suddenly, the cost to run a factory, desalinate water, or smelt steel became negligible. The only limit was raw materials.</p>
                         <p><strong>Simulation:</strong> Infrastructure Growth. Watch the AI construct a self-sustaining energy grid. Increase <em>Construction Speed</em> to see the network expand.</p>` :
-                        `<p>L'IA n'a pas seulement optimisé le code ; elle a optimisé le monde physique. Elle a construit les usines, les mines et les réseaux électriques.</p>
-                        <p>La logique était simple : le solaire était la seule source d'énergie évolutive à coût marginal nul. Les machines ont tapissé les déserts par souci d'efficacité.</p>
-                        <p>C'était l'événement "Zéro Énergétique". Soudain, le coût de l'énergie est devenu négligeable.</p>
-                        <p><strong>Simulation :</strong> Croissance de l'infrastructure. Regardez l'IA construire un réseau énergétique autonome. Augmentez la <em>Vitesse de Construction</em> pour voir le réseau s'étendre.</p>`,
+                        `<p>L'IA n'a pas seulement optimisé le code ; elle a optimisé le monde physique. Elle a construit les usines, les mines et les réseaux électriques nécessaires pour se maintenir elle-même et l'humanité.</p>
+                        <p>La logique était simple : Le solaire était la seule source d'énergie qui évoluait indéfiniment avec un coût marginal nul. Les machines ont tapissé les déserts, non pas pour le profit, mais pour l'efficacité.</p>
+                        <p>C'était l'événement "Zéro Énergétique". Soudain, le coût de fonctionnement d'une usine, de dessalement de l'eau ou de fonte de l'acier est devenu négligeable. La seule limite était les matières premières.</p>
+                        <p><strong>Simulation :</strong> Croissance de l'Infrastructure. Regardez l'IA construire un réseau énergétique autonome. Augmentez la <em>Vitesse de Construction</em> pour voir le réseau s'étendre.</p>`,
                     simId: "ENERGY",
                     controls: `<label>${translations[lang].controls.solar || "Construction Speed"} <span id="val1">Low</span></label><input type="range" min="0" max="100" value="10" oninput="updateParam('p1', this.value)">`
                 },
@@ -755,8 +755,8 @@
                         <p>Unemployment rose to 15%, but people survived on "Gig" work and cheap prices. We called it the "Golden Twilight" because everything looked shiny, but the sun was setting on the wage-labor system.</p>
                         <p><strong>Simulation:</strong> Observe the "GDP" (Yellow Line) vs "Median Wage" (Green Line). Increase automation to see GDP soar while wages stagnate.</p>` :
                         `<p>Cette décennie est souvent mal comprise. Ce n'était pas une dépression ; c'était un <strong>Boom</strong>.</p>
-                        <p>Avec des robots travaillant 24/7 pour des centimes, le coût des biens a chuté. Les profits des entreprises ont atteint des sommets.</p>
-                        <p>Le chômage a augmenté, mais les gens survivaient grâce à l'économie des "petits boulots". Nous l'avons appelé le "Crépuscule Doré".</p>
+                        <p>Avec des robots travaillant 24/7 pour des centimes, le coût des biens a chuté. Les téléviseurs, les voitures et les maisons sont devenus moins chers à construire. Les profits des entreprises ont atteint des sommets historiques.</p>
+                        <p>Le chômage a atteint 15%, mais les gens survivaient grâce aux "petits boulots" et aux prix bas. Nous l'avons appelé le "Crépuscule Doré" car tout semblait brillant, mais le soleil se couchait sur le système salarial.</p>
                         <p><strong>Simulation :</strong> Observez le "PIB" (Ligne Jaune) vs "Salaire Médian" (Ligne Verte). Augmentez l'automatisation pour voir le PIB monter en flèche tandis que les salaires stagnent.</p>`,
                     simId: "BOOM",
                     controls: `<label>${translations[lang].controls.auto} <span id="val1">Low</span></label><input type="range" min="0" max="100" value="0" oninput="updateParam('p1', this.value)">`
@@ -771,9 +771,9 @@
                         <p>Crucially, debt began to default. People couldn't pay mortgages. The cracks in the foundation were visible to everyone.</p>
                         <p><strong>Simulation:</strong> The Worker Pool. As you increase <em>Cost Pressure</em>, workers turn red (insolvent) and drop out of the economy.</p>` :
                         `<p>En 2050, la tendance était indéniable. Le travail humain n'était plus compétitif. Pourquoi embaucher un humain à 20$/h quand un robot le fait pour 0,05$/h ?</p>
-                        <p>Les salaires ont commencé à baisser. L'économie des petits boulots est devenue l'économie du désespoir.</p>
-                        <p>Les dettes ont commencé à faire défaut. Les fissures dans la fondation étaient visibles pour tous.</p>
-                        <p><strong>Simulation :</strong> Le bassin de travailleurs. En augmentant la <em>Pression des Coûts</em>, les travailleurs deviennent rouges (insolvables) et sortent de l'économie.</p>`,
+                        <p>Les salaires ont commencé à baisser activement. Les gens ont pris des 2e et 3e emplois pour rester compétitifs. L'économie des "petits boulots" est devenue l'économie du "désespoir".</p>
+                        <p>Crucialement, les dettes ont commencé à faire défaut. Les gens ne pouvaient pas payer leurs hypothèques. Les fissures dans la fondation étaient visibles pour tous.</p>
+                        <p><strong>Simulation :</strong> Le Bassin de Travailleurs. En augmentant la <em>Pression des Coûts</em>, les travailleurs deviennent rouges (insolvables) et sortent de l'économie.</p>`,
                     simId: "SQUEEZE",
                     controls: `<label>${translations[lang].controls.pressure} <span id="val1">Normal</span></label><input type="range" min="0" max="100" value="0" oninput="updateParam('p1', this.value)">`
                 },
@@ -787,8 +787,9 @@
                         <p>Deflation set in. Prices dropped, but no one bought anything because they were waiting for prices to drop further, or simply had zero income.</p>
                         <p><strong>Simulation:</strong> Velocity visualization. Watch the particles (transactions) slow down as Wealth Concentration hits 99%.</p>` :
                         `<p>Une économie nécessite la <strong>Vélocité de l'Argent</strong>. Je vous paie, vous payez l'épicier, l'épicier paie le fermier.</p>
-                        <p>En 2058, cette boucle a ralenti. Les entreprises avaient tout l'argent, mais personne à qui vendre. Elles avaient automatisé le client jusqu'à l'inexistence.</p>
-                        <p><strong>Simulation :</strong> Visualisation de la vélocité. Regardez les particules (transactions) ralentir alors que la concentration des richesses atteint 99%.</p>`,
+                        <p>En 2058, cette boucle a ralenti jusqu'à presque s'arrêter. Les entreprises avaient tout l'argent, mais personne à qui vendre. Elles avaient automatisé le client jusqu'à l'inexistence.</p>
+                        <p>La déflation s'est installée. Les prix baissaient, mais personne n'achetait quoi que ce soit parce qu'ils attendaient que les prix baissent encore, ou simplement n'avaient aucun revenu.</p>
+                        <p><strong>Simulation :</strong> Visualisation de la Vélocité. Regardez les particules (transactions) ralentir alors que la Concentration des Richesses atteint 99%.</p>`,
                     simId: "FREEZE",
                     controls: `<label>${translations[lang].controls.wealth} <span id="val1">Low</span></label><input type="range" min="0" max="100" value="0" oninput="updateParam('p1', this.value)">`
                 },
@@ -802,9 +803,9 @@
                         <p>It wasn't a stock market crash; it was a <strong>Demand Crash</strong>. The engine of capitalism (Labor for Income for Consumption) seized up completely.</p>
                         <p><strong>Simulation:</strong> The Economy Graph. Watch Productivity (Blue) go vertical while Employment (Green) crashes. When unemployment hits 50%, the system breaks.</p>` :
                         `<p><strong>C'est le point de bascule de l'histoire.</strong></p>
-                        <p>En 2060, la chaîne d'approvisionnement mondiale s'est arrêtée. Les entrepôts étaient pleins. Mais la couche transactionnelle a cessé d'exister. Le chômage a atteint 60%.</p>
-                        <p>Ce n'était pas un krach boursier ; c'était un <strong>Krach de la Demande</strong>. Le moteur du capitalisme s'est grippé.</p>
-                        <p><strong>Simulation :</strong> Le graphique de l'économie. Regardez la productivité (bleu) devenir verticale tandis que l'emploi (vert) s'effondre. Quand le chômage atteint 50%, le système casse.</p>`,
+                        <p>En 2060, la chaîne d'approvisionnement mondiale s'est arrêtée. Les entrepôts étaient pleins de marchandises. Les robots étaient prêts à en construire davantage. Mais la couche transactionnelle a cessé d'exister. Le chômage a atteint 60%.</p>
+                        <p>Ce n'était pas un krach boursier ; c'était un <strong>Krach de la Demande</strong>. Le moteur du capitalisme (Travail pour Revenu pour Consommation) s'est complètement grippé.</p>
+                        <p><strong>Simulation :</strong> Le Graphique de l'Économie. Regardez la Productivité (Bleu) devenir verticale tandis que l'Emploi (Vert) s'effondre. Quand le chômage atteint 50%, le système se brise.</p>`,
                     simId: "CRASH",
                     controls: `<label>${translations[lang].controls.timeline} <span id="val1">2040</span></label><input type="range" min="2040" max="2070" value="2040" oninput="updateParam('p1', this.value)">`
                 },
@@ -817,9 +818,10 @@
                         <p>It failed immediately. Why? Because you can only lend money to people who have jobs to pay it back. With no jobs, the credit was worthless.</p>
                         <p>The money was printed, given out, spent once on food, and immediately vacuumed back up by the automated corporations, sitting in their accounts doing nothing. The loop was broken.</p>
                         <p><strong>Simulation:</strong> Attempt to inject liquidity. Watch the water (money) pour in, but drain out instantly because there is no "Labor Floor" to hold it.</p>` :
-                        `<p>Les gouvernements ont paniqué. Ils ont essayé la vieille méthode : Imprimer de l'argent et le prêter aux gens.</p>
-                        <p>Cela a échoué immédiatement. On ne peut prêter de l'argent qu'à ceux qui ont un emploi pour le rembourser. Sans emploi, le crédit ne valait rien.</p>
-                        <p><strong>Simulation :</strong> Tentative d'injection de liquidités. Regardez l'eau (argent) couler, mais se vider instantanément car il n'y a pas de "sol de travail" pour la retenir.</p>`,
+                        `<p>Les gouvernements ont paniqué. Ils ont essayé l'ancienne méthode : Imprimer de l'argent et le prêter aux gens (Stimulus/Dette).</p>
+                        <p>Cela a échoué immédiatement. Pourquoi ? Parce qu'on ne peut prêter de l'argent qu'aux gens qui ont un emploi pour le rembourser. Sans emploi, le crédit ne valait rien.</p>
+                        <p>L'argent a été imprimé, distribué, dépensé une fois pour la nourriture, et immédiatement aspiré par les entreprises automatisées, restant dans leurs comptes sans rien faire. La boucle était brisée.</p>
+                        <p><strong>Simulation :</strong> Tentez d'injecter de la liquidité. Regardez l'eau (argent) couler, mais se vider instantanément car il n'y a pas de "Plancher du Travail" pour la retenir.</p>`,
                     simId: "STIMULUS",
                     controls: `<button class="nav-btn" style="width:100%; background:#ef4444" onclick="triggerStimulus()">${translations[lang].controls.stimulus}</button>`
                 },
@@ -833,8 +835,9 @@
                         <p>If robots make the resources, we just need to distribute the tickets.</p>
                         <p><strong>Simulation:</strong> Circuit Rewiring. Connect the "Production" node directly to the "Consumption" node, bypassing the broken "Labor" switch.</p>` :
                         `<p>La société faisait face à un choix : Mourir de faim au milieu de l'abondance, ou changer le système d'exploitation.</p>
-                        <p>Les économistes ont réalisé que l'automatisation avait rendu le travail obsolète. <strong>L'argent devait être découplé du Travail.</strong></p>
-                        <p><strong>Simulation :</strong> Recâblage du circuit. Connectez le nœud "Production" directement au nœud "Consommation", en contournant l'interrupteur cassé du "Travail".</p>`,
+                        <p>Les économistes ont réalisé que l'automatisation avait transformé le travail en une fonctionnalité obsolète. La réalisation était simple : <strong>L'argent doit être découplé du Travail.</strong></p>
+                        <p>Si les robots fabriquent les ressources, nous avons juste besoin de distribuer les tickets.</p>
+                        <p><strong>Simulation :</strong> Recâblage du Circuit. Connectez le nœud "Production" directement au nœud "Consommation", en contournant l'interrupteur cassé du "Travail".</p>`,
                     simId: "SCALE",
                     controls: `<label>${translations[lang].controls.ideology} <span id="val1">Traditional</span></label><input type="range" min="0" max="100" value="0" oninput="updateParam('p1', this.value)">`
                 },
@@ -848,8 +851,8 @@
                         <p>It wasn't just free money; it was the purchasing power generated by a trillion-robot workforce. The more they built, the more we received.</p>
                         <p><strong>Simulation:</strong> The Deflationary Dividend. Advance the timeline. Watch as the Robot Army grows, driving costs to zero and the Universal Dividend to the moon.</p>` :
                         `<p>Les mathématiques étaient simples : <strong>Plus de Robots = Biens Moins Chers = Inflation Négative.</strong></p>
-                        <p>Alors que la production de l'IA augmentait, le coût de la vie s'effondrait. La "Taxe d'Automatisation" capturait cette plus-value et la redistribuait.</p>
-                        <p>Ce n'était pas seulement de l'argent gratuit ; c'était le pouvoir d'achat généré par une main-d'œuvre de mille milliards de robots.</p>
+                        <p>Alors que la production de l'IA augmentait à l'échelle, le coût de la vie s'effondrait. La "Taxe d'Automatisation" capturait cette valeur excédentaire et la redistribuait.</p>
+                        <p>Ce n'était pas seulement de l'argent gratuit ; c'était le pouvoir d'achat généré par une main-d'œuvre de mille milliards de robots. Plus ils construisaient, plus nous recevions.</p>
                         <p><strong>Simulation :</strong> Le Dividende Déflationniste. Avancez la chronologie. Regardez l'Armée de Robots grandir, poussant les coûts vers zéro et le Dividende Universel vers la lune.</p>`,
                     simId: "DIVIDEND",
                     controls: `<label>${translations[lang].controls.timeline || "Timeline"} <span id="val1">2060</span></label><input type="range" min="2060" max="2100" value="2060" oninput="updateParam('p1', this.value)">`
@@ -863,9 +866,9 @@
                         <p>For 5,000 years, humans defined themselves by their jobs. "I am a baker." "I am a coder." Without work, depression rates spiked.</p>
                         <p>We had to culturally reinvent ourselves. We moved from a "Production Society" to an "Exploration Society." Art, philosophy, sport, and community became the new metrics of success.</p>
                         <p><strong>Simulation:</strong> The Tree of Life. Allocate time to "Community", "Art", and "Sport" to see the tree grow. Neglect them, and it withers.</p>` :
-                        `<p>La survie était résolue. But a new problem emerged: Meaning.</p>
-                        <p>Pendant 5000 ans, les humains se définissaient par leur travail. Sans travail, la dépression a explosé.</p>
-                        <p>Nous avons dû nous réinventer culturellement. L'art, la philosophie, le sport et la communauté sont devenus les nouveaux critères de succès.</p>
+                        `<p>La survie était résolue. Mais un nouveau problème a émergé : le Sens.</p>
+                        <p>Pendant 5 000 ans, les humains se définissaient par leur travail. "Je suis boulanger." "Je suis programmeur." Sans travail, les taux de dépression ont explosé.</p>
+                        <p>Nous avons dû nous réinventer culturellement. Nous sommes passés d'une "Société de Production" à une "Société d'Exploration". L'art, la philosophie, le sport et la communauté sont devenus les nouvelles métriques de succès.</p>
                         <p><strong>Simulation :</strong> L'Arbre de Vie. Allouez du temps à la "Communauté", à "l'Art" et au "Sport" pour voir l'arbre grandir. Négligez-les, et il se flétrit.</p>`,
                     simId: "PURPOSE",
                     controls: `
@@ -883,9 +886,10 @@
                         <p>With AI generating infinite content, reality became a battlefield. Narratives acted like viruses, competing for host minds in a "Darwinian War of Ideas."</p>
                         <p>To maintain Legitimacy, leaders had to balance <strong>Reach</strong> (how far the message spreads) with <strong>Stickiness</strong> (how deeply it convinces).</p>
                         <p><strong>Simulation:</strong> The Narrative War. You are the <span style="color:#06b6d4">Blue Narrative</span>. Defeat the <span style="color:#ef4444">Red Misinformation</span>. Adjust your viral parameters to win the crowd (Grey).</p>` :
-                        `<p>En 2080, la rareté n'était pas l'argent, mais la <strong>Confiance</strong>.</p>
-                        <p>Les récits agissaient comme des virus, s'affrontant pour les esprits dans une "Guerre Darwinienne des Idées".</p>
-                        <p><strong>Simulation :</strong> La Guerre Narrative. Vous êtes le <span style="color:#06b6d4">Récit Bleu</span>. Vainquez la <span style="color:#ef4444">Désinformation Rouge</span>. Ajustez vos paramètres viraux pour gagner la foule.</p>`,
+                        `<p>En 2080, la rareté n'était pas l'argent — c'était la <strong>Confiance</strong>.</p>
+                        <p>Avec l'IA générant du contenu infini, la réalité est devenue un champ de bataille. Les récits agissaient comme des virus, en compétition pour les esprits hôtes dans une "Guerre Darwinienne des Idées".</p>
+                        <p>Pour maintenir la Légitimité, les leaders devaient équilibrer la <strong>Portée</strong> (à quelle distance le message se propage) avec l'<strong>Adhérence</strong> (à quel point il convainc profondément).</p>
+                        <p><strong>Simulation :</strong> La Guerre Narrative. Vous êtes le <span style="color:#06b6d4">Récit Bleu</span>. Vainquez la <span style="color:#ef4444">Désinformation Rouge</span>. Ajustez vos paramètres viraux pour gagner la foule (Grise).</p>`,
                     simId: "STATUS",
                     controls: `
                         <label>${translations[lang].controls.reach || "Viral Reach"} <span id="val1">Medium</span></label>
@@ -906,10 +910,10 @@
                         <p>The solution was the <strong>Universal Rotation Lottery</strong>. Ownership was abolished. Instead, every citizen holds a temporary 3-year lease.</p>
                         <p>When the cycle ends, the system randomizes. You might live in a beachside villa today and a dense urban hub tomorrow. It is the ultimate equalizer.</p>
                         <p><strong>Simulation:</strong> The Lottery. Watch as the population is periodically shuffled between Housing Tiers, ensuring fair access to the best zones over time.</p>` :
-                        `<p>Dans un monde de post-rareté, la seule chose qui restait rare était <strong>l'Emplacement de Choix</strong>.</p>
+                        `<p>Dans un monde de post-rareté, la seule chose qui restait rare était l'<strong>Emplacement de Choix</strong>.</p>
                         <p>La solution fut la <strong>Loterie de Rotation Universelle</strong>. La propriété a été abolie. Au lieu de cela, chaque citoyen détient un bail temporaire de 3 ans.</p>
-                        <p>À la fin du cycle, le système randomise. C'est l'égaliseur ultime.</p>
-                        <p><strong>Simulation :</strong> La Loterie. Regardez la population être périodiquement mélangée entre les niveaux de logement.</p>`,
+                        <p>Quand le cycle se termine, le système randomise. Vous pourriez vivre dans une villa en bord de mer aujourd'hui et dans un centre urbain dense demain. C'est l'égaliseur ultime.</p>
+                        <p><strong>Simulation :</strong> La Loterie. Regardez la population être périodiquement mélangée entre les Niveaux de Logement, assurant un accès équitable aux meilleures zones au fil du temps.</p>`,
                     simId: "LAND",
                     controls: "" // No controls, self-playing
                 },
@@ -922,9 +926,10 @@
                         <p>Society built the "Great Guardrails." We used AI to police AI. Research was accelerated, but automated safety loops checked every discovery before implementation.</p>
                         <p>We essentially built a nuclear reactor for intelligence, carefully managed to prevent a meltdown.</p>
                         <p><strong>Simulation:</strong> The Reactor. Increase Research Speed, but keep Risk below the critical threshold using Safety Checks.</p>` :
-                        `<p>L'intelligence de l'IA était maintenant des milliards de fois supérieure à l'intelligence humaine. Le risque était existentiel.</p>
-                        <p>La société a construit les "Grands Garde-fous". Nous avons utilisé l'IA pour surveiller l'IA.</p>
-                        <p><strong>Simulation :</strong> Le Réacteur. Augmentez la vitesse de recherche, mais gardez le risque sous le seuil critique en utilisant les contrôles de sécurité.</p>`,
+                        `<p>L'Intelligence de l'IA était maintenant des milliards de fois supérieure à l'intelligence humaine. Le risque n'était plus économique ; il était existentiel.</p>
+                        <p>La société a construit les "Grands Garde-fous". Nous avons utilisé l'IA pour policer l'IA. La recherche a été accélérée, mais des boucles de sécurité automatisées vérifiaient chaque découverte avant la mise en œuvre.</p>
+                        <p>Nous avons essentiellement construit un réacteur nucléaire pour l'intelligence, géré avec soin pour prévenir un effondrement.</p>
+                        <p><strong>Simulation :</strong> Le Réacteur. Augmentez la Vitesse de Recherche, mais gardez le Risque sous le seuil critique en utilisant les Contrôles de Sécurité.</p>`,
                     simId: "GUARDRAILS",
                     controls: `<label>${translations[lang].controls.research} <span id="val1">Safe</span></label><input type="range" min="0" max="100" value="20" oninput="updateParam('p1', this.value)">`
                 },
@@ -938,9 +943,9 @@
                         <p>The only frontier left is outwards. The surplus energy of humanity is now directed at Mars, Europa, and Alpha Centauri. We are no longer laborers; we are explorers.</p>
                         <p><strong>Simulation:</strong> The Departure. Initiate the launch sequence to witness humanity's next step.</p>` :
                         `<p>Nous y sommes, en 2150.</p>
-                        <p>Nous avons découplé la survie du travail. Nous avons une intelligence et une énergie illimitées.</p>
-                        <p>La seule frontière restante est vers l'extérieur. Nous ne sommes plus des travailleurs ; nous sommes des explorateurs.</p>
-                        <p><strong>Simulation :</strong> Le Départ. Lancez la séquence de lancement pour assister à la prochaine étape de l'humanité.</p>`,
+                        <p>Nous avons découplé la survie du travail. Nous avons stabilisé la structure sociale. Nous avons une intelligence et une énergie illimitées.</p>
+                        <p>La seule frontière restante est vers l'extérieur. L'énergie excédentaire de l'humanité est maintenant dirigée vers Mars, Europe et Alpha du Centaure. Nous ne sommes plus des travailleurs ; nous sommes des explorateurs.</p>
+                        <p><strong>Simulation :</strong> Le Départ. Initiez la séquence de lancement pour assister à la prochaine étape de l'humanité.</p>`,
                     simId: "SPACE",
                     controls: `<button class="nav-btn" style="width:100%; background:var(--accent-cyan); padding: 15px; font-weight:bold; letter-spacing:2px;" onclick="triggerLaunch()">${translations[lang].controls.launch}</button>`
                 }
